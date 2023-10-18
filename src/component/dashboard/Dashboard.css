@@ -1,0 +1,20 @@
+
+  /* Dashboard.css */
+/* Dashboard.css */
+
+/* Default background color for list items */
+.list-item {
+  background-color: transparent;
+}
+
+/* Background color for selected list item */
+.selected-item {
+  background-color: #1d5393;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

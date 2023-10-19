@@ -16,14 +16,16 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editJob, getSingleJob } from "../../../actions/job";
 import { ArrowBack } from "./BackArrow";
 import { formattedEditDate } from "./formattedDate";
+import Loader from "../../loader/Loader";
 
 function UpdateJob() {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { loading } = useSelector((state) => state.job);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     soWo: "", // Default to an empty string
@@ -232,161 +234,169 @@ function UpdateJob() {
 
   return (
     <Dashboard>
-      <Box display={"flex"}>
-        <ArrowBack />
-        <h2>Update Job</h2>
-      </Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="spanning table">
-          <TableBody>
-            <TableRow>
-              <TableCell align="center">SO/Wo No</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="So/Wo No"
-                  id="outlined-size-small"
-                  size="small"
-                  variant="outlined"
-                  name="soWo"
-                  value={formData?.soWo}
-                  onChange={handleChange}
-                  error={errors.soWo} // Set error prop based on the error state
-                  helperText={errors.soWo ? "This field is required" : ""}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">Prod.Order No</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="Prod.Order No"
-                  id="outlined-size-small"
-                  size="small"
-                  name="prodOrderNo"
-                  value={formData?.prodOrderNo}
-                  onChange={handleChange}
-                  error={errors.prodOrderNo}
-                  helperText={
-                    errors.prodOrderNo ? "This field is required" : ""
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">WO Date</TableCell>
-              <TableCell align="center">
-                <TextField
-                  id="date"
-                  label="WO Date"
-                  type="date"
-                  size="small"
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  //   value={selectedDate.toISOString().split("T")[0]}
-                  //   onChange={(e) => handleDateChange(new Date(e.target.value))}
-                  name="woDate"
-                  value={formattedEditDate(formData?.woDate)}
-                  onChange={handleChange}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell align="center">Job Name</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="Job Name"
-                  id="outlined-size-small"
-                  size="small"
-                  name="jobName"
-                  value={formData?.jobName}
-                  onChange={handleChange}
-                  error={errors.jobName}
-                  helperText={errors.jobName ? "This field is required" : ""}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">PO No</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="PO No"
-                  id="outlined-size-small"
-                  size="small"
-                  name="poNo"
-                  value={formData?.poNo}
-                  onChange={handleChange}
-                  error={errors.poNo}
-                  helperText={errors.poNo ? "This field is required" : ""}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">Total CT</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="Total CT"
-                  id="outlined-size-small"
-                  size="small"
-                  name="estimatedtotalCT"
-                  value={formData?.estimatedtotalCT}
-                  onChange={handleChange}
-                  error={errors.estimatedtotalCT}
-                  helperText={
-                    errors.estimatedtotalCT ? "This field is required" : ""
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell align="center">Drag No</TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="Drag No"
-                  id="outlined-size-small"
-                  size="small"
-                  name="dragNo"
-                  value={formData?.dragNo}
-                  onChange={handleChange}
-                  error={errors.dragNo}
-                  helperText={errors.dragNo ? "This field is required" : ""}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ProcessTable
-        formData={formData}
-        handleDeleteRow={handleDeleteRow}
-        handleTextFieldChange={handleTextFieldChange}
-        processTableErrors={processTableErrors}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Box display={"flex"}>
+            <ArrowBack />
+            <h2>Update Job</h2>
+          </Box>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="spanning table">
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center">SO/Wo No</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="So/Wo No"
+                      id="outlined-size-small"
+                      size="small"
+                      variant="outlined"
+                      name="soWo"
+                      value={formData?.soWo}
+                      onChange={handleChange}
+                      error={errors.soWo} // Set error prop based on the error state
+                      helperText={errors.soWo ? "This field is required" : ""}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">Prod.Order No</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="Prod.Order No"
+                      id="outlined-size-small"
+                      size="small"
+                      name="prodOrderNo"
+                      value={formData?.prodOrderNo}
+                      onChange={handleChange}
+                      error={errors.prodOrderNo}
+                      helperText={
+                        errors.prodOrderNo ? "This field is required" : ""
+                      }
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">WO Date</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      id="date"
+                      label="WO Date"
+                      type="date"
+                      size="small"
+                      variant="outlined"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      //   value={selectedDate.toISOString().split("T")[0]}
+                      //   onChange={(e) => handleDateChange(new Date(e.target.value))}
+                      name="woDate"
+                      value={formattedEditDate(formData?.woDate)}
+                      onChange={handleChange}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="center">Job Name</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="Job Name"
+                      id="outlined-size-small"
+                      size="small"
+                      name="jobName"
+                      value={formData?.jobName}
+                      onChange={handleChange}
+                      error={errors.jobName}
+                      helperText={
+                        errors.jobName ? "This field is required" : ""
+                      }
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">PO No</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="PO No"
+                      id="outlined-size-small"
+                      size="small"
+                      name="poNo"
+                      value={formData?.poNo}
+                      onChange={handleChange}
+                      error={errors.poNo}
+                      helperText={errors.poNo ? "This field is required" : ""}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">Total CT</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="Total CT"
+                      id="outlined-size-small"
+                      size="small"
+                      name="estimatedtotalCT"
+                      value={formData?.estimatedtotalCT}
+                      onChange={handleChange}
+                      error={errors.estimatedtotalCT}
+                      helperText={
+                        errors.estimatedtotalCT ? "This field is required" : ""
+                      }
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell align="center">Drag No</TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="Drag No"
+                      id="outlined-size-small"
+                      size="small"
+                      name="dragNo"
+                      value={formData?.dragNo}
+                      onChange={handleChange}
+                      error={errors.dragNo}
+                      helperText={errors.dragNo ? "This field is required" : ""}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <ProcessTable
+            formData={formData}
+            handleDeleteRow={handleDeleteRow}
+            handleTextFieldChange={handleTextFieldChange}
+            processTableErrors={processTableErrors}
+          />
 
-      <IconButton size="large" onClick={handleAddRow}>
-        <AddCircleIcon color="primary" />
-      </IconButton>
-      <Button
-        color="primary"
-        sx={{
-          backgroundColor: "#1d5393",
-          color: "#fff",
-        }}
-        onClick={handleSubmit}
-      >
-        Update
-      </Button>
+          <IconButton size="large" onClick={handleAddRow}>
+            <AddCircleIcon color="primary" />
+          </IconButton>
+          <Button
+            color="primary"
+            sx={{
+              backgroundColor: "#1d5393",
+              color: "#fff",
+            }}
+            onClick={handleSubmit}
+          >
+            Update
+          </Button>
+        </>
+      )}
     </Dashboard>
   );
 }

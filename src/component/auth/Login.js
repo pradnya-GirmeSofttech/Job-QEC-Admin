@@ -17,19 +17,20 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import loginImg from "../../utils/logo.png";
+import Loader from "../loader/Loader";
 
 const Login = () => {
   //  const dispatch = useDispatch();
   //   const navigate = useNavigate();
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthenticated) {
       navigate("/dashboard");
     }
-  }, [isAuth, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -66,112 +67,117 @@ const Login = () => {
   };
   return (
     <>
-      <Container
-        fixed
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <img src={loginImg} alt="img" style={{ flex: 1, maxWidth: "40%" }} />
-        <Card
+      {loading ? (
+        <Loader />
+      ) : (
+        <Container
+          fixed
           sx={{
-            padding: 6,
-            margin: 10,
-            flex: 1,
-            maxWidth: "50%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
           }}
         >
-          <Typography
-            variant="h5"
+          <img src={loginImg} alt="img" style={{ flex: 1, maxWidth: "40%" }} />
+          <Card
             sx={{
-              color: "#1d5393",
-              alignItem: "center",
-              justifyContent: "center",
+              padding: 6,
+              margin: 10,
+              flex: 1,
+              maxWidth: "50%",
             }}
           >
-            QUALITY ENGINEERING CO.
-          </Typography>
-          <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
-          <Typography variant="h6">Login</Typography>
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <TextField
-              label="Email address"
-              type="email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              name="email"
-              autoComplete="username"
-              value={formData.email}
-              onChange={handleChange}
-              error={formData.email && !isEmailValid()}
-              helperText={
-                formData.email && !isEmailValid()
-                  ? "Invalid email format"
-                  : error?.message === "Invalid Email or Password"
-                  ? "Email does not exist"
-                  : ""
-              }
-            />
-            <TextField
-              label="Password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              name="password"
-              type={formData.showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              error={formData.password && formData.password.length < 8}
-              helperText={
-                formData.password && formData.password.length < 8
-                  ? "Password must be at least 8 characters"
-                  : error?.message === "Invalid Email or Password"
-                  ? "Incorrect password"
-                  : ""
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleShowPassword}
-                    >
-                      {formData.showPassword ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+            <Typography
+              variant="h5"
+              sx={{
+                color: "#1d5393",
+                alignItem: "center",
+                justifyContent: "center",
               }}
-            />
-            {formData.showAlert || error?.message === "User already exists" ? (
-              <Alert severity="error" sx={{ marginTop: 2 }}>
-                <AlertTitle>Error</AlertTitle>
-                {formData.showAlert
-                  ? "Please enter all fields."
-                  : error?.message === "Invalid Email or Password"
-                  ? "Invalid Email or Password"
-                  : ""}
-              </Alert>
-            ) : null}
-            <Button
-              type="submit"
-              variant="contained"
-              m={2}
-              fullWidth
-              sx={{ backgroundColor: "#1d5393" }}
             >
-              Login
-            </Button>
-          </form>
-        </Card>
-      </Container>
+              QUALITY ENGINEERING CO.
+            </Typography>
+            <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+            <Typography variant="h6">Login</Typography>
+            <form onSubmit={handleSubmit} autoComplete="off">
+              <TextField
+                label="Email address"
+                type="email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name="email"
+                autoComplete="username"
+                value={formData.email}
+                onChange={handleChange}
+                error={formData.email && !isEmailValid()}
+                helperText={
+                  formData.email && !isEmailValid()
+                    ? "Invalid email format"
+                    : error?.message === "Invalid Email or Password"
+                    ? "Email does not exist"
+                    : ""
+                }
+              />
+              <TextField
+                label="Password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name="password"
+                type={formData.showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
+                error={formData.password && formData.password.length < 8}
+                helperText={
+                  formData.password && formData.password.length < 8
+                    ? "Password must be at least 8 characters"
+                    : error?.message === "Invalid Email or Password"
+                    ? "Incorrect password"
+                    : ""
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleShowPassword}
+                      >
+                        {formData.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {formData.showAlert ||
+              error?.message === "User already exists" ? (
+                <Alert severity="error" sx={{ marginTop: 2 }}>
+                  <AlertTitle>Error</AlertTitle>
+                  {formData.showAlert
+                    ? "Please enter all fields."
+                    : error?.message === "Invalid Email or Password"
+                    ? "Invalid Email or Password"
+                    : ""}
+                </Alert>
+              ) : null}
+              <Button
+                type="submit"
+                variant="contained"
+                m={2}
+                fullWidth
+                sx={{ backgroundColor: "#1d5393" }}
+              >
+                Login
+              </Button>
+            </form>
+          </Card>
+        </Container>
+      )}
     </>
   );
 };

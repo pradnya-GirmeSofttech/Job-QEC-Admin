@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   CssBaseline,
   Drawer,
@@ -23,7 +23,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../../utils/logo.png";
 import WorkIcon from "@mui/icons-material/Work";
 import { logout } from "../../actions/auth";
-import { userProfile } from "../../actions/auth";
+
 import UseProfileModal from "./common/UserProfileModal";
 const drawerWidth = 240;
 const Dashboard = ({ children }) => {
@@ -59,9 +59,16 @@ const Dashboard = ({ children }) => {
   const listItemStyle = (path) => {
     if (location.pathname === path) {
       return "selected-item ";
-    } else if (location.pathname === "/dashboard/job/createjob") {
-      // Apply a different style for the "Create Job" route
-      return path === "/dashboard/job" ? "selected-item " : "list-item ";
+    } else if (
+      path === "/dashboard/job" &&
+      location.pathname.startsWith("/dashboard/job")
+    ) {
+      return "selected-item ";
+    } else if (
+      path === "/dashboard/user" &&
+      location.pathname.startsWith("/dashboard/user")
+    ) {
+      return "selected-item ";
     } else {
       return "list-item ";
     }

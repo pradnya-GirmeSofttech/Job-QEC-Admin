@@ -132,8 +132,8 @@ function Job() {
             </Button>
           </Box>
         </Container>
-        <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-          <Table sx={{ minWidth: 650 }}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
                 <TableCell>SO/WO No</TableCell>

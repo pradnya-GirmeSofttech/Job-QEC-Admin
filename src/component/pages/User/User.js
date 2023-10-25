@@ -24,6 +24,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ViewUserDetails from "./common/ViewUserDetails";
 import DeleteUser from "./common/DeleteUser";
 import EditUser from "./common/EditUser";
+import { handleSelection } from "../../../utils/HandleBreadcrumb";
+import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 
 function User() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,6 +38,7 @@ function User() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
@@ -95,11 +98,16 @@ function User() {
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const handleClick = (event, name) => {
+    const newSelected = handleSelection(selected, name);
+    setSelected(newSelected);
+  };
+
   return (
     <Dashboard>
       <Grid container justifyContent="space-between" alignItems="center" m={2}>
         <Grid item>
-          <div>User</div>
+          <CustomBreadcrumb items={["User"]} onClick={handleClick} />
         </Grid>
         <Grid item>
           <Button

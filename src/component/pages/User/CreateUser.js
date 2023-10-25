@@ -107,7 +107,10 @@ function CreateUser() {
   const handleClose = () => setOpen(false);
   return (
     <Dashboard>
-      <CustomBreadcrumb items={["User", "Create-User"]} onClick={handleClick} />
+      <CustomBreadcrumb
+        items={["User", "User/Create-user"]}
+        onClick={handleClick}
+      />
       {successMessage && (
         <Modal
           open={open}

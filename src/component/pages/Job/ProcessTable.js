@@ -93,7 +93,12 @@ export const ProcessTable = ({
                       name={`process-${rowIndex}`}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "process")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
@@ -119,7 +124,12 @@ export const ProcessTable = ({
                       name={`description-${rowIndex}`}
                       value={row.description}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "description")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "description",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.description}
                       helperText={
@@ -138,7 +148,12 @@ export const ProcessTable = ({
                       value={row.machineName}
                       name={`machineName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "machineName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
@@ -163,11 +178,15 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
-                      value={row.toolingUsed || []} // Ensure that value is an array
-                      multiple // Enable multiple selection
+                      value={row.toolingUsed} // Ensure that value is an array
                       name={`toolingUsed-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "toolingUsed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
@@ -194,7 +213,12 @@ export const ProcessTable = ({
                       name={`length-${rowIndex}`}
                       value={row.length}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "length")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "length",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.length}
                       helperText={
@@ -212,7 +236,12 @@ export const ProcessTable = ({
                       name={`width-${rowIndex}`}
                       value={row.width}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "width")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "width",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.width}
                       helperText={
@@ -229,7 +258,9 @@ export const ProcessTable = ({
                       size="small"
                       name={`dc-${rowIndex}`}
                       value={row.dc}
-                      onChange={(e) => handleTextFieldChange(e, rowIndex, "dc")}
+                      onChange={(e) =>
+                        handleTextFieldChange(e, rowIndex, "dc", containerIndex)
+                      }
                       error={processTableErrors[rowIndex]?.dc}
                       helperText={
                         processTableErrors[rowIndex]?.dc
@@ -245,7 +276,9 @@ export const ProcessTable = ({
                       size="small"
                       name={`mr-${rowIndex}`}
                       value={row.dc}
-                      onChange={(e) => handleTextFieldChange(e, rowIndex, "mr")}
+                      onChange={(e) =>
+                        handleTextFieldChange(e, rowIndex, "mr", containerIndex)
+                      }
                       error={processTableErrors[rowIndex]?.mr}
                       helperText={
                         processTableErrors[rowIndex]?.mr
@@ -262,7 +295,12 @@ export const ProcessTable = ({
                       name={`nop-${rowIndex}`}
                       value={row.nop}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "nop")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "nop",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.nop}
                       helperText={
@@ -280,7 +318,12 @@ export const ProcessTable = ({
                       name={`fpp-${rowIndex}`}
                       value={row.fpp}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "fpp")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "fpp",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.fpp}
                       helperText={
@@ -298,7 +341,12 @@ export const ProcessTable = ({
                       name={`feed-${rowIndex}`}
                       value={row.feed}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "feed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "feed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.feed}
                       helperText={
@@ -316,7 +364,12 @@ export const ProcessTable = ({
                       name={`estimatedHrs-${rowIndex}`}
                       value={row.estimatedHrs}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedHrs")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedHrs",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedHrs}
                       helperText={
@@ -334,7 +387,12 @@ export const ProcessTable = ({
                       name={`estimatedCT-${rowIndex}`}
                       value={row.estimatedCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedCT",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedCT}
                       helperText={
@@ -352,7 +410,12 @@ export const ProcessTable = ({
                       name={`actualCT-${rowIndex}`}
                       value={row.actualCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "actualCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "actualCT",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -365,7 +428,12 @@ export const ProcessTable = ({
                       name={`startDate-${rowIndex}`}
                       value={formattedEditDate(row.startDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -384,7 +452,12 @@ export const ProcessTable = ({
                       name={`startTime-${rowIndex}`}
                       value={row.startTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -400,7 +473,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={formattedEditDate(row.endDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -419,7 +497,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.endTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -434,7 +517,12 @@ export const ProcessTable = ({
                       name={`idleCode-${rowIndex}`}
                       value={row.idleCode}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "idleCode")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "idleCode",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -447,7 +535,12 @@ export const ProcessTable = ({
                       value={formattedEditDate(row.startDate1)}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -466,7 +559,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.startTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -482,7 +580,12 @@ export const ProcessTable = ({
                       name={`endDate1-${rowIndex}`}
                       value={formattedEditDate(row.endDate1)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -501,7 +604,12 @@ export const ProcessTable = ({
                       name={`endTime1-${rowIndex}`}
                       value={row.endTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -517,7 +625,12 @@ export const ProcessTable = ({
                       value={row.userName}
                       name={`userName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "userName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "userName",
+                          containerIndex
+                        )
                       }
                     >
                       {userName.map((name) => (
@@ -618,7 +731,12 @@ export const ProcessTable = ({
                       name={`process-${rowIndex}`}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "process")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
@@ -644,7 +762,12 @@ export const ProcessTable = ({
                       name={`description-${rowIndex}`}
                       value={row.description}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "description")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "description",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.description}
                       helperText={
@@ -663,7 +786,12 @@ export const ProcessTable = ({
                       value={row.machineName}
                       name={`machineName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "machineName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
@@ -688,11 +816,16 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
-                      value={row.toolingUsed || []} // Ensure that value is an array
-                      multiple // Enable multiple selection
+                      value={row.toolingUsed} // Ensure that value is an array
+                      // Enable multiple selection
                       name={`toolingUsed-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "toolingUsed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
@@ -719,7 +852,12 @@ export const ProcessTable = ({
                       name={`rpm-${rowIndex}`}
                       value={row.rpm}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "rpm")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "rpm",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.rpm}
                       helperText={
@@ -737,7 +875,12 @@ export const ProcessTable = ({
                       name={`feed-${rowIndex}`}
                       value={row.feed}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "feed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "feed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.feed}
                       helperText={
@@ -755,7 +898,12 @@ export const ProcessTable = ({
                       name={`length-${rowIndex}`}
                       value={row.length}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "length")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "length",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.length}
                       helperText={
@@ -772,7 +920,9 @@ export const ProcessTable = ({
                       size="small"
                       name={`dc-${rowIndex}`}
                       value={row.dc}
-                      onChange={(e) => handleTextFieldChange(e, rowIndex, "dc")}
+                      onChange={(e) =>
+                        handleTextFieldChange(e, rowIndex, "dc", containerIndex)
+                      }
                       error={processTableErrors[rowIndex]?.dc}
                       helperText={
                         processTableErrors[rowIndex]?.dc
@@ -788,7 +938,9 @@ export const ProcessTable = ({
                       size="small"
                       name={`mr-${rowIndex}`}
                       value={row.mr}
-                      onChange={(e) => handleTextFieldChange(e, rowIndex, "mr")}
+                      onChange={(e) =>
+                        handleTextFieldChange(e, rowIndex, "mr", containerIndex)
+                      }
                       error={processTableErrors[rowIndex]?.mr}
                       helperText={
                         processTableErrors[rowIndex]?.mr
@@ -805,7 +957,12 @@ export const ProcessTable = ({
                       name={`nop-${rowIndex}`}
                       value={row.nop}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "nop")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "nop",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.nop}
                       helperText={
@@ -823,7 +980,12 @@ export const ProcessTable = ({
                       name={`fpp-${rowIndex}`}
                       value={row.fpp}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "fpp")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "fpp",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.fpp}
                       helperText={
@@ -842,7 +1004,12 @@ export const ProcessTable = ({
                       name={`estimatedHrs-${rowIndex}`}
                       value={row.estimatedHrs}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedHrs")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedHrs",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedHrs}
                       helperText={
@@ -860,7 +1027,12 @@ export const ProcessTable = ({
                       name={`estimatedCT-${rowIndex}`}
                       value={row.estimatedCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedCT",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedCT}
                       helperText={
@@ -878,7 +1050,12 @@ export const ProcessTable = ({
                       name={`actualCT-${rowIndex}`}
                       value={row.actualCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "actualCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "actualCT",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -891,7 +1068,12 @@ export const ProcessTable = ({
                       name={`startDate-${rowIndex}`}
                       value={formattedEditDate(row.startDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -910,7 +1092,12 @@ export const ProcessTable = ({
                       name={`startTime-${rowIndex}`}
                       value={row.startTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -926,7 +1113,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={formattedEditDate(row.endDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -945,7 +1137,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.endTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -960,7 +1157,12 @@ export const ProcessTable = ({
                       name={`idleCode-${rowIndex}`}
                       value={row.idleCode}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "idleCode")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "idleCode",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -973,7 +1175,12 @@ export const ProcessTable = ({
                       value={formattedEditDate(row.startDate1)}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -992,7 +1199,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.startTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1008,7 +1220,12 @@ export const ProcessTable = ({
                       name={`endDate1-${rowIndex}`}
                       value={formattedEditDate(row.endDate1)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1027,7 +1244,12 @@ export const ProcessTable = ({
                       name={`endTime1-${rowIndex}`}
                       value={row.endTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1043,7 +1265,12 @@ export const ProcessTable = ({
                       value={row.userName}
                       name={`userName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "userName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "userName",
+                          containerIndex
+                        )
                       }
                     >
                       {userName.map((name) => (
@@ -1143,7 +1370,12 @@ export const ProcessTable = ({
                       name={`process-${rowIndex}`}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "process")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
@@ -1169,7 +1401,12 @@ export const ProcessTable = ({
                       name={`description-${rowIndex}`}
                       value={row.description}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "description")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "description",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.description}
                       helperText={
@@ -1188,7 +1425,12 @@ export const ProcessTable = ({
                       value={row.machineName}
                       name={`machineName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "machineName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
@@ -1213,11 +1455,16 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
-                      value={row.toolingUsed || []} // Ensure that value is an array
-                      multiple // Enable multiple selection
+                      value={row.toolingUsed} // Ensure that value is an array
+                      // Enable multiple selection
                       name={`toolingUsed-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "toolingUsed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
@@ -1244,7 +1491,12 @@ export const ProcessTable = ({
                       name={`dia-${rowIndex}`}
                       value={row.dia}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "dia")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "dia",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.dia}
                       helperText={
@@ -1262,7 +1514,12 @@ export const ProcessTable = ({
                       name={`rpm-${rowIndex}`}
                       value={row.rpm}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "rpm")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "rpm",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.rpm}
                       helperText={
@@ -1280,7 +1537,12 @@ export const ProcessTable = ({
                       name={`length-${rowIndex}`}
                       value={row.length}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "length")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "length",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.length}
                       helperText={
@@ -1298,7 +1560,12 @@ export const ProcessTable = ({
                       name={`feed-${rowIndex}`}
                       value={row.feed}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "feed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "feed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.feed}
                       helperText={
@@ -1316,7 +1583,12 @@ export const ProcessTable = ({
                       name={`noh-${rowIndex}`}
                       value={row.noh}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "noh")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "noh",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.noh}
                       helperText={
@@ -1335,7 +1607,12 @@ export const ProcessTable = ({
                       name={`estimatedHrs-${rowIndex}`}
                       value={row.estimatedHrs}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedHrs")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedHrs",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedHrs}
                       helperText={
@@ -1353,7 +1630,12 @@ export const ProcessTable = ({
                       name={`estimatedCT-${rowIndex}`}
                       value={row.estimatedCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedCT",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedCT}
                       helperText={
@@ -1371,7 +1653,12 @@ export const ProcessTable = ({
                       name={`actualCT-${rowIndex}`}
                       value={row.actualCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "actualCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "actualCT",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -1384,7 +1671,12 @@ export const ProcessTable = ({
                       name={`startDate-${rowIndex}`}
                       value={formattedEditDate(row.startDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1403,7 +1695,12 @@ export const ProcessTable = ({
                       name={`startTime-${rowIndex}`}
                       value={row.startTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1419,7 +1716,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={formattedEditDate(row.endDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1438,7 +1740,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.endTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1453,7 +1760,12 @@ export const ProcessTable = ({
                       name={`idleCode-${rowIndex}`}
                       value={row.idleCode}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "idleCode")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "idleCode",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -1466,7 +1778,12 @@ export const ProcessTable = ({
                       value={formattedEditDate(row.startDate1)}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1485,7 +1802,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.startTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1501,7 +1823,12 @@ export const ProcessTable = ({
                       name={`endDate1-${rowIndex}`}
                       value={formattedEditDate(row.endDate1)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1520,7 +1847,12 @@ export const ProcessTable = ({
                       name={`endTime1-${rowIndex}`}
                       value={row.endTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1536,7 +1868,12 @@ export const ProcessTable = ({
                       value={row.userName}
                       name={`userName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "userName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "userName",
+                          containerIndex
+                        )
                       }
                     >
                       {userName.map((name) => (
@@ -1635,7 +1972,12 @@ export const ProcessTable = ({
                       name={`process-${rowIndex}`}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "process")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
@@ -1661,7 +2003,12 @@ export const ProcessTable = ({
                       name={`description-${rowIndex}`}
                       value={row.description}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "description")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "description",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.description}
                       helperText={
@@ -1680,7 +2027,12 @@ export const ProcessTable = ({
                       value={row.machineName}
                       name={`machineName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "machineName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
@@ -1705,11 +2057,15 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
-                      value={row.toolingUsed || []} // Ensure that value is an array
-                      multiple // Enable multiple selection
+                      value={row.toolingUsed} // Ensure that value is an array
                       name={`toolingUsed-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "toolingUsed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
@@ -1736,7 +2092,12 @@ export const ProcessTable = ({
                       name={`dia-${rowIndex}`}
                       value={row.dia}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "dia")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "dia",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.dia}
                       helperText={
@@ -1754,7 +2115,12 @@ export const ProcessTable = ({
                       name={`rpm-${rowIndex}`}
                       value={row.rpm}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "rpm")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "rpm",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.rpm}
                       helperText={
@@ -1772,7 +2138,12 @@ export const ProcessTable = ({
                       name={`length-${rowIndex}`}
                       value={row.length}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "length")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "length",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.length}
                       helperText={
@@ -1790,7 +2161,12 @@ export const ProcessTable = ({
                       name={`feed-${rowIndex}`}
                       value={row.feed}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "feed")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "feed",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.feed}
                       helperText={
@@ -1808,7 +2184,12 @@ export const ProcessTable = ({
                       name={`noh-${rowIndex}`}
                       value={row.noh}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "noh")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "noh",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.noh}
                       helperText={
@@ -1827,7 +2208,12 @@ export const ProcessTable = ({
                       name={`estimatedHrs-${rowIndex}`}
                       value={row.estimatedHrs}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedHrs")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedHrs",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedHrs}
                       helperText={
@@ -1845,7 +2231,12 @@ export const ProcessTable = ({
                       name={`estimatedCT-${rowIndex}`}
                       value={row.estimatedCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "estimatedCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "estimatedCT",
+                          containerIndex
+                        )
                       }
                       error={processTableErrors[rowIndex]?.estimatedCT}
                       helperText={
@@ -1863,7 +2254,12 @@ export const ProcessTable = ({
                       name={`actualCT-${rowIndex}`}
                       value={row.actualCT}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "actualCT")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "actualCT",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -1876,7 +2272,12 @@ export const ProcessTable = ({
                       name={`startDate-${rowIndex}`}
                       value={formattedEditDate(row.startDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1895,7 +2296,12 @@ export const ProcessTable = ({
                       name={`startTime-${rowIndex}`}
                       value={row.startTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1911,7 +2317,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={formattedEditDate(row.endDate)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1930,7 +2341,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.endTime}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1945,7 +2361,12 @@ export const ProcessTable = ({
                       name={`idleCode-${rowIndex}`}
                       value={row.idleCode}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "idleCode")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "idleCode",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -1958,7 +2379,12 @@ export const ProcessTable = ({
                       value={formattedEditDate(row.startDate1)}
                       className="fixed-width-input"
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -1977,7 +2403,12 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       value={row.startTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "startTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "startTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -1993,7 +2424,12 @@ export const ProcessTable = ({
                       name={`endDate1-${rowIndex}`}
                       value={formattedEditDate(row.endDate1)}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endDate1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endDate1",
+                          containerIndex
+                        )
                       }
                       inputProps={{
                         min: new Date().toISOString().split("T")[0],
@@ -2012,7 +2448,12 @@ export const ProcessTable = ({
                       name={`endTime1-${rowIndex}`}
                       value={row.endTime1}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "endTime1")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "endTime1",
+                          containerIndex
+                        )
                       }
                       InputLabelProps={{
                         shrink: true,
@@ -2028,7 +2469,12 @@ export const ProcessTable = ({
                       value={row.userName}
                       name={`userName-${rowIndex}`}
                       onChange={(e) =>
-                        handleTextFieldChange(e, rowIndex, "userName")
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "userName",
+                          containerIndex
+                        )
                       }
                     >
                       {userName.map((name) => (

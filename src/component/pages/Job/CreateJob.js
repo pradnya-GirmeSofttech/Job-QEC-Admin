@@ -28,7 +28,12 @@ import { processList } from "./Data";
 function CreateJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [containers, setContainers] = useState([
+    {
+      processName: "", // Add any initial values you need
+      processTableData: [], // Add initial data for the process table
+    },
+  ]);
   const [formData, setFormData] = useState({
     soWo: "",
     prodOrderNo: "",
@@ -38,7 +43,7 @@ function CreateJob() {
     estimatedtotalCT: "",
     actualtotalCT: "",
     dragNo: "",
-    processTable: [],
+    processTable: containers,
   });
 
   const [errors, setErrors] = useState({
@@ -75,17 +80,17 @@ function CreateJob() {
       "dragNo",
     ];
 
-    const ProcessrequiredFields = [
-      "process",
-      "description",
-      "machineName",
-      "toolingUsed",
-      "dc",
-      "length",
-      "width",
-      "feed",
-      "estimatedCT",
-    ];
+    // const ProcessrequiredFields = [
+    //   "process",
+    //   "description",
+    //   "machineName",
+    //   "toolingUsed",
+    //   "dc",
+    //   "length",
+    //   "width",
+    //   "feed",
+    //   "estimatedCT",
+    // ];
     const newErrors = {};
 
     requiredFields.forEach((field) => {
@@ -96,27 +101,27 @@ function CreateJob() {
 
     const processTableErrors = formData.processTable.map((row, rowIndex) => {
       const rowErrors = {};
-      ProcessrequiredFields.forEach((field) => {
-        if (field === "toolingUsed" && row[field].length === 0) {
-          // Check if "toolingUsed" is an empty array
-          rowErrors[field] = true;
-        } else if (!row[field]) {
-          rowErrors[field] = true;
-        }
-      });
+      // ProcessrequiredFields.forEach((field) => {
+      //   if (field === "toolingUsed" && row[field].length === 0) {
+      //     // Check if "toolingUsed" is an empty array
+      //     rowErrors[field] = true;
+      //   } else if (!row[field]) {
+      //     rowErrors[field] = true;
+      //   }
+      // });
       return rowErrors;
     });
 
-    const hasProcessTableErrors = processTableErrors.some((rowErrors) => {
-      return Object.values(rowErrors).some((error) => error);
-    });
-    console.log("process", processTableErrors);
+    // const hasProcessTableErrors = processTableErrors.some((rowErrors) => {
+    //   return Object.values(rowErrors).some((error) => error);
+    // });
+    // console.log("process", processTableErrors);
     // If there are errors, display them and prevent submission
-    if (Object.keys(newErrors).length > 0 || hasProcessTableErrors) {
-      setErrors(newErrors);
-      setProcessTableErrors(processTableErrors);
-      return;
-    }
+    // if (Object.keys(newErrors).length > 0 || hasProcessTableErrors) {
+    //   setErrors(newErrors);
+    //   setProcessTableErrors(processTableErrors);
+    //   return;
+    // }
 
     if (formData.processTable.length === 0) {
       alert("At least one row in the process table is required.");
@@ -142,44 +147,82 @@ function CreateJob() {
     }
   };
 
-  const [containers, setContainers] = useState([
-    {
-      processName: "", // Add any initial values you need
-      processTableData: [], // Add initial data for the process table
-    },
-  ]); // Maintain an array of containers
+  // Maintain an array of containers
 
-  const handleTextFieldChange = (event, rowIndex, fieldName) => {
-    const updatedProcessTable = [...formData.processTable];
-    updatedProcessTable[rowIndex][fieldName] = event.target.value;
-
+  const handleTextFieldChange = (
+    event,
+    rowIndex,
+    fieldName,
+    containerIndex
+  ) => {
+    // Make a copy of the form data and errors
+    console.log(fieldName, containerIndex);
+    const updatedFormData = { ...formData };
     const updatedErrors = [...processTableErrors];
-    updatedErrors[rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
 
-    setProcessTableErrors(updatedErrors);
+    // Access the specific table and field
+    const updatedTable =
+      updatedFormData.processTable[containerIndex].processTableData;
+    updatedTable[rowIndex][fieldName] = event.target.value;
+
+    // Update the corresponding error for the field
+    // updatedErrors[containerIndex][rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
+
     if (
       fieldName === "startDate" ||
       fieldName === "startTime" ||
       fieldName === "endDate" ||
       fieldName === "endTime"
     ) {
-      calculateActualCycleTime(updatedProcessTable[rowIndex]);
-      const totalCT = calculateTotalCycleTime(updatedProcessTable);
+      // calculateActualCycleTime(updatedTable[rowIndex]);
+      // const totalCT = calculateTotalCycleTime(updatedTable);
 
-      // Update both the totalCT and actualtotalCT
-      setFormData((prevData) => ({
-        ...prevData,
-        processTable: updatedProcessTable,
-        actualtotalCT: totalCT,
-      }));
+      // Update both the totalCT and actualtotalCT for the specific table
+      updatedFormData.processTable[containerIndex].processTableData =
+        updatedTable;
+      // updatedFormData.actualtotalCT[containerIndex] = totalCT;
     } else {
-      // Update only the processTable and not actualtotalCT
-      setFormData((prevData) => ({
-        ...prevData,
-        processTable: updatedProcessTable,
-      }));
+      // Update only the table data and not actualTotalCT for the specific table
+      updatedFormData.processTable[containerIndex].processTableData =
+        updatedTable;
     }
+
+    // Set the updated form data and errors
+    setFormData(updatedFormData);
+    // setProcessTableErrors(updatedErrors);
   };
+
+  // const handleTextFieldChange = (event, rowIndex, fieldName,) => {
+  //   const updatedProcessTable = [...formData.processTable];
+  //   updatedProcessTable[rowIndex][fieldName] = event.target.value;
+
+  //   const updatedErrors = [...processTableErrors];
+  //   updatedErrors[rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
+
+  //   setProcessTableErrors(updatedErrors);
+  //   if (
+  //     fieldName === "startDate" ||
+  //     fieldName === "startTime" ||
+  //     fieldName === "endDate" ||
+  //     fieldName === "endTime"
+  //   ) {
+  //     calculateActualCycleTime(updatedProcessTable[rowIndex]);
+  //     const totalCT = calculateTotalCycleTime(updatedProcessTable);
+
+  //     // Update both the totalCT and actualtotalCT
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       processTable: updatedProcessTable,
+  //       actualtotalCT: totalCT,
+  //     }));
+  //   } else {
+  //     // Update only the processTable and not actualtotalCT
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       processTable: updatedProcessTable,
+  //     }));
+  //   }
+  // };
   // const handleAddRow = () => {
   //   console.log("container clicked");
   //   const newRow = {

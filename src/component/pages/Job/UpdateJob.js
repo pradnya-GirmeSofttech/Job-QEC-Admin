@@ -27,16 +27,22 @@ function UpdateJob() {
   const { id } = useParams();
   const { loading } = useSelector((state) => state.job);
   const navigate = useNavigate();
+  const [containers, setContainers] = useState([
+    {
+      processName: "", // Add any initial values you need
+      processTableData: [], // Add initial data for the process table
+    },
+  ]);
   const [formData, setFormData] = useState({
-    soWo: "", // Default to an empty string
+    soWo: "",
     prodOrderNo: "",
-    woDate: "",
+    woDate: new Date().toISOString().split("T")[0],
     jobName: "",
     poNo: "",
     estimatedtotalCT: "",
     actualtotalCT: "",
     dragNo: "",
-    processTable: [],
+    processTable: containers,
   });
   const [errors, setErrors] = useState({
     soWo: false,

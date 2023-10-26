@@ -10,15 +10,20 @@ import {
   IconButton,
   Button,
   Box,
+  Select,
+  MenuItem,
+  Typography,
 } from "@mui/material";
+import "./ProcessTable.css";
 import Dashboard from "../../dashboard/Dashboard";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
-
+import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch } from "react-redux";
 import { createJob } from "../../../actions/job";
 import { ArrowBack } from "./BackArrow";
+import { processList } from "./Data";
 
 function CreateJob() {
   const dispatch = useDispatch();
@@ -137,42 +142,12 @@ function CreateJob() {
     }
   };
 
-  function calculateActualCycleTime(row) {
-    const { startDate, startTime, endDate, endTime } = row;
-
-    if (startDate && startTime && endDate && endTime) {
-      const startDateTime = new Date(`${startDate} ${startTime}`);
-      const endDateTime = new Date(`${endDate} ${endTime}`);
-
-      // Ensure that the start and end times are valid dates
-      if (!isNaN(startDateTime) && !isNaN(endDateTime)) {
-        // Calculate the time difference in milliseconds
-        const timeDifference = endDateTime - startDateTime;
-
-        // Convert milliseconds to minutes
-        const actualCT = timeDifference / (1000 * 60);
-
-        // Update the 'actualCT' property of the row
-        row.actualCT = actualCT;
-        console.log("Actual", row.actualCT);
-      }
-    } else {
-      // Handle the case where any of the date or time fields are empty
-      row.actualCT = null; // or you can set it to 0 if you prefer
-    }
-  }
-
-  function calculateTotalCycleTime(processTable) {
-    let totalCT = 0;
-
-    for (const row of processTable) {
-      if (row.actualCT) {
-        totalCT += row.actualCT;
-      }
-    }
-
-    return totalCT;
-  }
+  const [containers, setContainers] = useState([
+    {
+      processName: "", // Add any initial values you need
+      processTableData: [], // Add initial data for the process table
+    },
+  ]); // Maintain an array of containers
 
   const handleTextFieldChange = (event, rowIndex, fieldName) => {
     const updatedProcessTable = [...formData.processTable];
@@ -205,8 +180,42 @@ function CreateJob() {
       }));
     }
   };
-  const handleAddRow = () => {
-    const newRow = {
+  // const handleAddRow = () => {
+  //   console.log("container clicked");
+  //   const newRow = {
+  //     process: "",
+  //     description: "",
+  //     machineName: "",
+  //     toolingUsed: [],
+  //     dc: "",
+  //     length: "",
+  //     width: "",
+  //     feed: "",
+  //     estimatedCT: "",
+  //     actualCT: "",
+  //     startDate: new Date().toISOString().split("T")[0],
+  //     startTime: "",
+  //     endDate: new Date().toISOString().split("T")[0],
+  //     endTime: "",
+  //     idleCode: "",
+  //     startDate1: new Date().toISOString().split("T")[0],
+  //     startTime1: "",
+  //     endDate1: new Date().toISOString().split("T")[0],
+  //     endTime1: "",
+  //     userName: "",
+  //   };
+
+  //   const updatedErrors = [...processTableErrors, {}]; // Add an error object for the new row
+  //   setProcessTableErrors(updatedErrors);
+  //   // Update the state by creating a new array with the added row
+  //   setFormData({
+  //     ...formData,
+  //     processTable: [...formData.processTable, newRow],
+  //   });
+  // };
+  const handleAddRow = (containerIndex) => {
+    const updatedContainers = [...containers];
+    updatedContainers[containerIndex].processTableData.push({
       process: "",
       description: "",
       machineName: "",
@@ -227,25 +236,47 @@ function CreateJob() {
       endDate1: new Date().toISOString().split("T")[0],
       endTime1: "",
       userName: "",
-    };
-
-    const updatedErrors = [...processTableErrors, {}]; // Add an error object for the new row
-    setProcessTableErrors(updatedErrors);
-    // Update the state by creating a new array with the added row
-    setFormData({
-      ...formData,
-      processTable: [...formData.processTable, newRow],
     });
-  };
-  console.log("error", errors);
 
-  const handleDeleteRow = (rowIndex) => {
+    setContainers(updatedContainers);
+
     setFormData((prevData) => ({
       ...prevData,
-      processTable: prevData.processTable.filter(
-        (row, index) => index !== rowIndex
-      ),
+      processTable: updatedContainers,
     }));
+  };
+
+  const handleDeleteRow = (containerIndex, rowIndex) => {
+    // Clone the containers array to avoid modifying the state directly
+    const updatedContainers = [...containers];
+
+    // Remove the row from the process table data for the specified container
+    updatedContainers[containerIndex].processTableData.splice(rowIndex, 1);
+
+    // Update the state with the modified containers array
+    setContainers(updatedContainers);
+  };
+
+  const addContainer = () => {
+    // Create a new container with initial data
+    const newContainer = {
+      dropdownValue: "",
+      processTableData: [],
+    };
+
+    // Update the containers state with the new container
+    setContainers((prevContainers) => [...prevContainers, newContainer]);
+  };
+
+  const deleteContainer = (containerIndex) => {
+    // Clone the containers array to avoid modifying the state directly
+    const updatedContainers = [...containers];
+
+    // Remove the container at the specified containerIndex
+    updatedContainers.splice(containerIndex, 1);
+
+    // Update the state with the modified containers array
+    setContainers(updatedContainers);
   };
 
   return (
@@ -368,13 +399,51 @@ function CreateJob() {
           </TableBody>
         </Table>
       </TableContainer>
-      <ProcessTable
-        formData={formData}
-        handleDeleteRow={handleDeleteRow}
-        handleTextFieldChange={handleTextFieldChange}
-        processTableErrors={processTableErrors}
-      />
-      <IconButton size="large" onClick={handleAddRow}>
+      {containers.map((container, containerIndex) => (
+        <TableContainer
+          key={containerIndex}
+          component={Paper}
+          sx={{ marginTop: 3 }}
+        >
+          <TableRow sx={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <TableCell>{containerIndex + 1}</TableCell>
+              <TableCell>
+                <Select
+                  value={container.dropdownValue}
+                  className="fixed-width-input"
+                  onChange={(e) => handleDropdownChange(e, containerIndex)}
+                >
+                  <MenuItem value="machinening">machinening</MenuItem>
+                  <MenuItem value="drilling">drilling</MenuItem>
+                  <MenuItem value="option3">Option 3</MenuItem>
+                </Select>
+              </TableCell>
+            </div>
+            <IconButton size="small">
+              <ClearIcon
+                color="error"
+                onClick={() => deleteContainer(containerIndex)}
+              />
+            </IconButton>
+          </TableRow>
+          {/* Add ProcessTable component with appropriate props */}
+          <ProcessTable
+            key={containerIndex}
+            data={container.processTableData}
+            handleTextFieldChange={handleTextFieldChange}
+            handleDeleteRow={handleDeleteRow}
+            processTableErrors={processTableErrors}
+            containerIndex={containerIndex}
+            handleAddRow={handleAddRow}
+            // ... other props you may need
+          />
+        </TableContainer>
+      ))}
+      {/* <IconButton size="large" onClick={handleAddRow}>
+        <AddCircleIcon color="primary" />
+      </IconButton> */}
+      <IconButton size="large" onClick={addContainer}>
         <AddCircleIcon color="primary" />
       </IconButton>
       <Button

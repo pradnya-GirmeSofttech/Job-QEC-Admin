@@ -12,9 +12,10 @@ import {
   MenuItem,
   IconButton,
   FormHelperText,
+  Button,
 } from "@mui/material";
 import "./ProcessTable.css";
-import Dashboard from "../../dashboard/Dashboard";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ModeStandbyOutlinedIcon from "@mui/icons-material/ModeStandbyOutlined";
 import ClearIcon from "@mui/icons-material/Clear";
 import { formattedEditDate } from "./formattedDate";
@@ -22,11 +23,13 @@ import { machineData, processList, toolList, userName } from "./Data";
 
 export const ProcessTable = ({
   handleDeleteRow,
-  formData,
+  data,
   handleTextFieldChange,
   processTableErrors,
+  containerIndex,
+  handleAddRow,
 }) => {
-  const processTableData = formData.processTable || [];
+  const processTableData = data || [];
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 4 }}>
@@ -439,13 +442,25 @@ export const ProcessTable = ({
                 <TableCell align="center">
                   <IconButton
                     size="small"
-                    onClick={() => handleDeleteRow(rowIndex)}
+                    onClick={() => handleDeleteRow(containerIndex, rowIndex)}
                   >
                     <ClearIcon color="error" />
                   </IconButton>
                 </TableCell>
               </TableRow>
             ))}
+          <Button
+            color="primary"
+            sx={{
+              backgroundColor: "#1d5393",
+              color: "#fff",
+              width: 100,
+              margin: 3,
+            }}
+            onClick={() => handleAddRow(containerIndex)}
+          >
+            Add Row
+          </Button>
         </TableBody>
       </Table>
     </TableContainer>

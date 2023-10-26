@@ -278,6 +278,13 @@ function CreateJob() {
     // Update the state with the modified containers array
     setContainers(updatedContainers);
   };
+  const handleDropdownChange = (e, containerIndex) => {
+    const updatedContainers = [...containers];
+    updatedContainers[containerIndex].processName = e.target.value;
+
+    // Update the state with the selected process name
+    setContainers(updatedContainers);
+  };
 
   return (
     <Dashboard>
@@ -411,12 +418,15 @@ function CreateJob() {
               <TableCell>
                 <Select
                   value={container.dropdownValue}
+                  label="processName"
                   className="fixed-width-input"
+                  size="small"
                   onChange={(e) => handleDropdownChange(e, containerIndex)}
                 >
-                  <MenuItem value="machinening">machinening</MenuItem>
-                  <MenuItem value="drilling">drilling</MenuItem>
-                  <MenuItem value="option3">Option 3</MenuItem>
+                  <MenuItem value="milling">MILLING</MenuItem>
+                  <MenuItem value="boring">BORING</MenuItem>
+                  <MenuItem value="drilling">DRILLING</MenuItem>
+                  <MenuItem value="tapping">TAPPING</MenuItem>
                 </Select>
               </TableCell>
             </div>
@@ -436,6 +446,7 @@ function CreateJob() {
             processTableErrors={processTableErrors}
             containerIndex={containerIndex}
             handleAddRow={handleAddRow}
+            selectedProcessName={container.processName}
             // ... other props you may need
           />
         </TableContainer>

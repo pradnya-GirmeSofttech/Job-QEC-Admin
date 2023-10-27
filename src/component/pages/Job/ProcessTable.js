@@ -2515,10 +2515,10 @@ export const ProcessTable = ({
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-      {selectedProcessName === "milling" && millingTable}
-      {selectedProcessName === "drilling" && drillingTable}
-      {selectedProcessName === "boring" && boringTable}
-      {selectedProcessName === "tapping" && tappingTable}
+      {selectedProcessName === "Milling" && millingTable}
+      {selectedProcessName === "Drilling" && drillingTable}
+      {selectedProcessName === "Boring" && boringTable}
+      {selectedProcessName === "Tapping" && tappingTable}
       {/* Add conditional rendering for other process tables as needed */}
     </TableContainer>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "../../dashboard/Dashboard";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,8 @@ import { getSingleJob } from "../../../actions/job";
 import { formattedDate } from "./formattedDate";
 import { ArrowBack } from "./BackArrow";
 import Loader from "../../loader/Loader";
+import { ProcessTable } from "./ProcessTable";
+import { ViewProcessTable } from "./ViewProcessTable";
 
 function ViewJob() {
   const { id } = useParams();
@@ -75,100 +77,31 @@ function ViewJob() {
           </TableContainer>
           <TableContainer component={Paper} sx={{ marginTop: 4 }}>
             <Table sx={{ minWidth: 3200 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">Sr.No</TableCell>
-                  <TableCell align="center">Process</TableCell>
-                  <TableCell align="center">Description</TableCell>
-                  <TableCell align="center">Machine Name</TableCell>
-                  <TableCell align="center">Tooling Used</TableCell>
-                  <TableCell align="center">DC</TableCell>
-                  <TableCell align="center">Length</TableCell>
-                  <TableCell align="center">Width</TableCell>
-                  <TableCell align="center">Feed</TableCell>
-                  <TableCell align="center">Estimated CT(min)</TableCell>
-                  <TableCell align="center">Actual CT(min)</TableCell>
-                  <TableCell align="center">Start Date</TableCell>
-                  <TableCell align="center">Start Time</TableCell>
-                  <TableCell align="center">End Date</TableCell>
-                  <TableCell align="center">End Time</TableCell>
-                  <TableCell align="center">Ideal Code</TableCell>
-                  <TableCell align="center">Start Date</TableCell>
-                  <TableCell align="center">Start Time</TableCell>
-                  <TableCell align="center">End Date</TableCell>
-                  <TableCell align="center">End Time</TableCell>
-                  <TableCell align="center">User Name</TableCell>
-                </TableRow>
-              </TableHead>
               <TableBody>
-                {jobs[0]?.processTable &&
-                  jobs[0]?.processTable.map((row, rowIndex) => (
-                    <TableRow key={rowIndex} sx={{ fontSize: 12 }}>
-                      <TableCell align="center">{rowIndex + 1}</TableCell>
-                      <TableCell align="center">{row.process}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-                      <TableCell width="200" align="center">
-                        <Tooltip
-                          title={row.machineName}
-                          sx={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          <div
-                            sx={{
-                              width: 200,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {row.machineName}
-                          </div>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          {row.toolingUsed.map((tool, index) => (
-                            <Tooltip key={index} title={tool}>
-                              <Typography component="li" sx={{ fontSize: 14 }}>
-                                {tool}
-                              </Typography>
-                            </Tooltip>
-                          ))}
-                        </Box>
-                      </TableCell>
-                      <TableCell align="center">{row.length}</TableCell>
-                      <TableCell align="center">{row.width}</TableCell>
-                      <TableCell align="center">{row.dc}</TableCell>
-                      <TableCell align="center">{row.feed}</TableCell>
-                      <TableCell align="center">{row.estimatedCT}</TableCell>
-                      <TableCell align="center">{row.actualCT}</TableCell>
-                      <TableCell align="center">
-                        {formattedDate(row.startDate)}
-                      </TableCell>
-
-                      <TableCell align="center">{row.startTime}</TableCell>
-                      <TableCell align="center">
-                        {formattedDate(row.endDate)}
-                      </TableCell>
-                      <TableCell align="center">{row.endTime}</TableCell>
-                      <TableCell align="center">{row.idleCode}</TableCell>
-                      <TableCell align="center">
-                        {formattedDate(row.startDate1)}
-                      </TableCell>
-                      <TableCell align="center">{row.startTime1}</TableCell>
-                      <TableCell align="center">
-                        {formattedDate(row.endDate1)}
-                      </TableCell>
-                      <TableCell align="center">{row.endTime1}</TableCell>
-                      <TableCell align="center">{row.userName}</TableCell>
+                {jobs[0]?.processTable?.map((container, containerIndex) => (
+                  <TableContainer
+                    key={containerIndex}
+                    component={Paper}
+                    sx={{ marginTop: 3 }}
+                  >
+                    <TableRow
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <div>
+                        <TableCell>{containerIndex + 1}</TableCell>
+                        <TableCell>{container.processName}</TableCell>
+                      </div>
                     </TableRow>
-                  ))}
+                    {/* Add ProcessTable component with appropriate props */}
+                    <ViewProcessTable
+                      key={containerIndex}
+                      data={container.processTableData}
+                      containerIndex={containerIndex}
+                      selectedProcessName={container.processName}
+                      // ... other props you may need
+                    />
+                  </TableContainer>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

@@ -31,7 +31,39 @@ function CreateJob() {
   const [containers, setContainers] = useState([
     {
       processName: "", // Add any initial values you need
-      processTableData: [], // Add initial data for the process table
+      processTableData: [
+        {
+          process: "",
+          description: "",
+          machineName: "",
+          toolingUsed: "",
+          toolingSize: "",
+          dia: "",
+          length: "",
+          width: "",
+          dc: "",
+          mr: "",
+          nop: "",
+          fpp: "",
+          feed: "",
+          rpm: "",
+          noh: "",
+          estimatedCT: "",
+          actualCT: "",
+          startDate: "",
+          startTime: "",
+          endTime: "",
+
+          endDate: "",
+          idleCode: "",
+          startDate1: "",
+          startTime1: "",
+          endTime1: "",
+
+          endDate1: "",
+          userName: "",
+        },
+      ], // Add initial data for the process table
     },
   ]);
   const [formData, setFormData] = useState({
@@ -158,38 +190,30 @@ function CreateJob() {
     // Make a copy of the form data and errors
     console.log(fieldName, containerIndex);
     const updatedFormData = { ...formData };
-    const updatedErrors = [...processTableErrors];
 
     // Access the specific table and field
     const updatedTable =
       updatedFormData.processTable[containerIndex].processTableData;
     updatedTable[rowIndex][fieldName] = event.target.value;
+    if (fieldName === "toolingSize") {
+      const newSize = event.target.value;
+      const newDia = newSize * 0.9; // Calculate the diameter based on the size
 
-    // Update the corresponding error for the field
-    // updatedErrors[containerIndex][rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
-
-    if (
-      fieldName === "startDate" ||
-      fieldName === "startTime" ||
-      fieldName === "endDate" ||
-      fieldName === "endTime"
-    ) {
-      // calculateActualCycleTime(updatedTable[rowIndex]);
-      // const totalCT = calculateTotalCycleTime(updatedTable);
-
-      // Update both the totalCT and actualtotalCT for the specific table
-      updatedFormData.processTable[containerIndex].processTableData =
-        updatedTable;
-      // updatedFormData.actualtotalCT[containerIndex] = totalCT;
-    } else {
-      // Update only the table data and not actualTotalCT for the specific table
-      updatedFormData.processTable[containerIndex].processTableData =
-        updatedTable;
+      updatedTable[rowIndex] = {
+        ...updatedTable[rowIndex],
+        toolingSize: newSize,
+        dia: newDia, // Update the diameter value
+      };
     }
+    const selectedProcessName =
+      updatedFormData.processTable[containerIndex].processName;
 
-    // Set the updated form data and errors
+    console.log("updated", updatedTable[rowIndex]);
+
+    updatedFormData.processTable[containerIndex].processTableData =
+      updatedTable;
+
     setFormData(updatedFormData);
-    // setProcessTableErrors(updatedErrors);
   };
 
   // const handleTextFieldChange = (event, rowIndex, fieldName,) => {

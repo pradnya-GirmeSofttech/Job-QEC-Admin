@@ -507,10 +507,10 @@ function UpdateJob() {
                       onChange={(e) => handleDropdownChange(e, containerIndex)}
                       selectedProcessName={container.processName}
                     >
-                      <MenuItem value="milling">MILLING</MenuItem>
-                      <MenuItem value="boring">BORING</MenuItem>
-                      <MenuItem value="drilling">DRILLING</MenuItem>
-                      <MenuItem value="tapping">TAPPING</MenuItem>
+                      <MenuItem value="Milling">MILLING</MenuItem>
+                      <MenuItem value="Boring">BORING</MenuItem>
+                      <MenuItem value="Drilling">DRILLING</MenuItem>
+                      <MenuItem value="Tapping">TAPPING</MenuItem>
                     </Select>
                   </TableCell>
                 </div>

@@ -44,17 +44,21 @@ export const ProcessTable = ({
               <TableCell align="center">Description</TableCell>
               <TableCell align="center">Machine Name</TableCell>
               <TableCell align="center">Tooling Used</TableCell>
+              <TableCell align="center">Size</TableCell>
 
               <TableCell align="center">Length</TableCell>
               <TableCell align="center">Width</TableCell>
               <TableCell align="center">DC</TableCell>
               <TableCell align="center">MR</TableCell>
               <TableCell align="center">NOP</TableCell>
-              <TableCell align="center">FPP</TableCell>
+
               <TableCell align="center">Feed</TableCell>
-              <TableCell align="center">EST.HRS</TableCell>
-              <TableCell align="center">Estimated CT(min)</TableCell>
+              <TableCell align="center">FPP</TableCell>
+
               <TableCell align="center">Actual CT(min)</TableCell>
+
+              <TableCell align="center">Estimated CT(min)</TableCell>
+              <TableCell align="center">EST.HRS</TableCell>
               <TableCell align="center">Start Date</TableCell>
               <TableCell align="center">Start Time</TableCell>
               <TableCell align="center">End Date</TableCell>
@@ -204,7 +208,29 @@ export const ProcessTable = ({
                         : ""}
                     </FormHelperText>
                   </TableCell>
-
+                  <TableCell align="center">
+                    <TextField
+                      label="toolingSize"
+                      className="fixed-width-input"
+                      size="small"
+                      name={`toolingSize-${rowIndex}`}
+                      value={row.toolingSize}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingSize",
+                          containerIndex
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.toolingSize}
+                      helperText={
+                        processTableErrors[rowIndex]?.toolingSize
+                          ? "This field is required"
+                          : ""
+                      }
+                    />
+                  </TableCell>
                   <TableCell align="center">
                     <TextField
                       label="length"
@@ -275,7 +301,7 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`mr-${rowIndex}`}
-                      value={row.dc}
+                      value={row.mr}
                       onChange={(e) =>
                         handleTextFieldChange(e, rowIndex, "mr", containerIndex)
                       }
@@ -293,7 +319,7 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`nop-${rowIndex}`}
-                      value={row.nop}
+                      value={(row.nop = row.width / row.dia)}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -305,29 +331,6 @@ export const ProcessTable = ({
                       error={processTableErrors[rowIndex]?.nop}
                       helperText={
                         processTableErrors[rowIndex]?.nop
-                          ? "This field is required"
-                          : ""
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      label="fpp"
-                      className="fixed-fpp-input"
-                      size="small"
-                      name={`fpp-${rowIndex}`}
-                      value={row.fpp}
-                      onChange={(e) =>
-                        handleTextFieldChange(
-                          e,
-                          rowIndex,
-                          "fpp",
-                          containerIndex
-                        )
-                      }
-                      error={processTableErrors[rowIndex]?.fpp}
-                      helperText={
-                        processTableErrors[rowIndex]?.fpp
                           ? "This field is required"
                           : ""
                       }
@@ -358,24 +361,44 @@ export const ProcessTable = ({
                   </TableCell>
                   <TableCell align="center">
                     <TextField
-                      label="estimatedHrs"
+                      label="fpp"
                       className="fixed-width-input"
                       size="small"
-                      name={`estimatedHrs-${rowIndex}`}
-                      value={row.estimatedHrs}
+                      name={`fpp-${rowIndex}`}
+                      value={(row.fpp = row.length / row.feed)}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
                           rowIndex,
-                          "estimatedHrs",
+                          "fpp",
                           containerIndex
                         )
                       }
-                      error={processTableErrors[rowIndex]?.estimatedHrs}
+                      error={processTableErrors[rowIndex]?.fpp}
                       helperText={
-                        processTableErrors[rowIndex]?.estimatedHrs
+                        processTableErrors[rowIndex]?.fpp
                           ? "This field is required"
                           : ""
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="actualCT"
+                      className="fixed-width-input"
+                      size="small"
+                      name={`actualCT-${rowIndex}`}
+                      value={
+                        (row.actualCT =
+                          row.nop * row.fpp * (row.mr / row.dc) * 1.25)
+                      }
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "actualCT",
+                          containerIndex
+                        )
                       }
                     />
                   </TableCell>
@@ -404,21 +427,28 @@ export const ProcessTable = ({
                   </TableCell>
                   <TableCell align="center">
                     <TextField
-                      label="actualCT"
+                      label="estimatedHrs"
                       className="fixed-width-input"
                       size="small"
-                      name={`actualCT-${rowIndex}`}
-                      value={row.actualCT}
+                      name={`estimatedHrs-${rowIndex}`}
+                      value={(row.estimatedHrs = row.actualCT / 60)}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
                           rowIndex,
-                          "actualCT",
+                          "estimatedHrs",
                           containerIndex
                         )
                       }
+                      error={processTableErrors[rowIndex]?.estimatedHrs}
+                      helperText={
+                        processTableErrors[rowIndex]?.estimatedHrs
+                          ? "This field is required"
+                          : ""
+                      }
                     />
                   </TableCell>
+
                   <TableCell align="center">
                     <TextField
                       label="startDate"
@@ -690,7 +720,6 @@ export const ProcessTable = ({
               <TableCell align="center">NOP</TableCell>
               <TableCell align="center">FPP</TableCell>
 
-              <TableCell align="center">EST.HRS</TableCell>
               <TableCell align="center">Estimated CT(min)</TableCell>
               <TableCell align="center">Actual CT(min)</TableCell>
               <TableCell align="center">Start Date</TableCell>
@@ -934,7 +963,7 @@ export const ProcessTable = ({
                   <TableCell align="center">
                     <TextField
                       label="mr"
-                      className="fixed-mr-input"
+                      className="fixed-width-input"
                       size="small"
                       name={`mr-${rowIndex}`}
                       value={row.mr}
@@ -955,7 +984,7 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`nop-${rowIndex}`}
-                      value={row.nop}
+                      value={(row.nop = row.mr / row.dc)}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -978,7 +1007,7 @@ export const ProcessTable = ({
                       className="fixed-fpp-input"
                       size="small"
                       name={`fpp-${rowIndex}`}
-                      value={row.fpp}
+                      value={(row.fpp = row.length / (row.rpm * row.feed))}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -996,29 +1025,6 @@ export const ProcessTable = ({
                     />
                   </TableCell>
 
-                  <TableCell align="center">
-                    <TextField
-                      label="estimatedHrs"
-                      className="fixed-width-input"
-                      size="small"
-                      name={`estimatedHrs-${rowIndex}`}
-                      value={row.estimatedHrs}
-                      onChange={(e) =>
-                        handleTextFieldChange(
-                          e,
-                          rowIndex,
-                          "estimatedHrs",
-                          containerIndex
-                        )
-                      }
-                      error={processTableErrors[rowIndex]?.estimatedHrs}
-                      helperText={
-                        processTableErrors[rowIndex]?.estimatedHrs
-                          ? "This field is required"
-                          : ""
-                      }
-                    />
-                  </TableCell>
                   <TableCell align="center">
                     <TextField
                       label="estimatedCT"
@@ -1048,7 +1054,7 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`actualCT-${rowIndex}`}
-                      value={row.actualCT}
+                      value={(row.actualCT = row.nop * row.fpp * 1.25)}
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -1651,7 +1657,10 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`actualCT-${rowIndex}`}
-                      value={row.actualCT}
+                      value={
+                        (row.actualCT =
+                          ((row.length * 1.05) / row.feed) * row.noh)
+                      }
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -2252,7 +2261,10 @@ export const ProcessTable = ({
                       className="fixed-width-input"
                       size="small"
                       name={`actualCT-${rowIndex}`}
-                      value={row.actualCT}
+                      value={
+                        (row.actualCT =
+                          (row.length / (row.rpm * 1.5)) * row.noh * 1.3)
+                      }
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,

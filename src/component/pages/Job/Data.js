@@ -199,4 +199,30 @@ export const processList = [
   "Setting Material Action ",
 ];
 
+export const idleCode = [
+  { no: 1, name: "No Power (Electricity)" },
+  { no: 2, name: "Drawing Issue" },
+  { no: 3, name: "Weekly Off" },
+  { no: 4, name: "Material Issue" },
+  { no: 5, name: "No Crane" },
+  { no: 6, name: "No Air" },
+  { no: 7, name: "Stores - Collection of Tools/Drags/Instruments/Gauges etc" },
+  { no: 8, name: "Minor Machine Breakdown" },
+  { no: 9, name: "Waiting for dicision" },
+  { no: 10, name: "Discountinue current load" },
+  { no: 11, name: "Availability of Co worker load" },
+  { no: 12, name: "Operator Absent/ Late mark" },
+  { no: 13, name: "No Load/ No Plan" },
+  { no: 14, name: "Rework during Operations" },
+  { no: 15, name: "Planned Maintainance" },
+  { no: 16, name: "Unskilled operator on machine" },
+  { no: 17, name: "Use of Worm out tooling/ Tooling problem" },
+  { no: 18, name: "Stores - Collection of Tools/Drags/Instruments/Gauges etc" },
+  { no: 19, name: "Searching and collecting componenet to be loaded" },
+  { no: 20, name: "Operator shifted for other work during operations" },
+  { no: 21, name: "Operator not allocated" },
+  { no: 22, name: "Process Deviation" },
+  { no: 23, name: "Mentance Team Availability" },
+  { no: 24, name: "Inspection on Machine" },
+];
 export const userName = ["Pratiksha", "Pradnya"];

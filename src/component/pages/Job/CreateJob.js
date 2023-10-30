@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -31,39 +31,7 @@ function CreateJob() {
   const [containers, setContainers] = useState([
     {
       processName: "", // Add any initial values you need
-      processTableData: [
-        {
-          process: "",
-          description: "",
-          machineName: "",
-          toolingUsed: "",
-          toolingSize: "",
-          dia: "",
-          length: "",
-          width: "",
-          dc: "",
-          mr: "",
-          nop: "",
-          fpp: "",
-          feed: "",
-          rpm: "",
-          noh: "",
-          estimatedCT: "",
-          actualCT: "",
-          startDate: "",
-          startTime: "",
-          endTime: "",
-
-          endDate: "",
-          idleCode: "",
-          startDate1: "",
-          startTime1: "",
-          endTime1: "",
-
-          endDate1: "",
-          userName: "",
-        },
-      ], // Add initial data for the process table
+      processTableData: [],
     },
   ]);
   const [formData, setFormData] = useState({
@@ -185,101 +153,95 @@ function CreateJob() {
     event,
     rowIndex,
     fieldName,
-    containerIndex
+    containerIndex,
+    processName
   ) => {
-    // Make a copy of the form data and errors
-    console.log(fieldName, containerIndex);
-    const updatedFormData = { ...formData };
+    // Make a copy of the containers state
+    console.log(fieldName);
+    let filteredData = containers.map((element, index1) => {
+      if (containerIndex === index1) {
+        console.log("hii", element.processTableData);
+        element.processTableData = element.processTableData.map(
+          (data, index) => {
+            if (processName === "Milling") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (fieldName === "toolingSize") {
+                  data.toolingSize = event.target.value;
+                  data.dia = data.toolingSize * 0.9;
+                } else if (fieldName === "dia" || fieldName === "width") {
+                  console.log(data.dia);
+                  data.width = parseInt(event.target.value);
 
-    // Access the specific table and field
-    const updatedTable =
-      updatedFormData.processTable[containerIndex].processTableData;
-    updatedTable[rowIndex][fieldName] = event.target.value;
-    if (fieldName === "toolingSize") {
-      const newSize = event.target.value;
-      const newDia = newSize * 0.9; // Calculate the diameter based on the size
+                  data.nop = data.width / data.dia;
+                } else if (fieldName === "length" || fieldName === "feed") {
+                  console.log(data.length, data.feed);
+                  data.fpp = parseInt(data.length) / parseInt(data.feed);
+                } else if (
+                  fieldName === "nop" ||
+                  fieldName === "fpp" ||
+                  fieldName === "mr" ||
+                  fieldName === "dc"
+                ) {
+                  console.log(data.nop, data.fpp, data.mr, data.dc);
+                  data.actualCT =
+                    data.nop * data.fpp * (data.mr / data.dc) * 1.25;
+                  data.estimatedHrs = parseInt(data.actualCT) / 60;
+                  console.log(data.actualCT);
+                }
+              }
+            } else if (processName === "Boring") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (fieldName === "mr" || fieldName === "dc") {
+                  data.nop = data.mr / data.dc;
+                } else if (
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "rpm"
+                ) {
+                  data.fpp = data.length / (data.rpm * data.feed);
 
-      updatedTable[rowIndex] = {
-        ...updatedTable[rowIndex],
-        toolingSize: newSize,
-        dia: newDia, // Update the diameter value
-      };
-    }
-    const selectedProcessName =
-      updatedFormData.processTable[containerIndex].processName;
-
-    console.log("updated", updatedTable[rowIndex]);
-
-    updatedFormData.processTable[containerIndex].processTableData =
-      updatedTable;
-
-    setFormData(updatedFormData);
+                  data.nop = data.width / data.dia;
+                } else if (fieldName === "nop" || fieldName === "fpp") {
+                  console.log(data.nop, data.fpp, data.mr, data.dc);
+                  data.actualCT = data.nop * data.fpp * 1.25;
+                }
+              }
+            } else if (processName === "Drilling") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "noh"
+                ) {
+                  data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
+                }
+              }
+            } else if (processName === "Tapping") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "length" ||
+                  fieldName === "rpm" ||
+                  fieldName === "noh"
+                ) {
+                  data.actualCT =
+                    (data.length / (data.rpm * 1.5)) * data.noh * 1.3;
+                }
+              }
+            }
+            return data;
+          }
+        );
+      }
+      return element;
+    });
+    console.log(filteredData);
+    setContainers(filteredData);
   };
 
-  // const handleTextFieldChange = (event, rowIndex, fieldName,) => {
-  //   const updatedProcessTable = [...formData.processTable];
-  //   updatedProcessTable[rowIndex][fieldName] = event.target.value;
-
-  //   const updatedErrors = [...processTableErrors];
-  //   updatedErrors[rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
-
-  //   setProcessTableErrors(updatedErrors);
-  //   if (
-  //     fieldName === "startDate" ||
-  //     fieldName === "startTime" ||
-  //     fieldName === "endDate" ||
-  //     fieldName === "endTime"
-  //   ) {
-  //     calculateActualCycleTime(updatedProcessTable[rowIndex]);
-  //     const totalCT = calculateTotalCycleTime(updatedProcessTable);
-
-  //     // Update both the totalCT and actualtotalCT
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       processTable: updatedProcessTable,
-  //       actualtotalCT: totalCT,
-  //     }));
-  //   } else {
-  //     // Update only the processTable and not actualtotalCT
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       processTable: updatedProcessTable,
-  //     }));
-  //   }
-  // };
-  // const handleAddRow = () => {
-  //   console.log("container clicked");
-  //   const newRow = {
-  //     process: "",
-  //     description: "",
-  //     machineName: "",
-  //     toolingUsed: [],
-  //     dc: "",
-  //     length: "",
-  //     width: "",
-  //     feed: "",
-  //     estimatedCT: "",
-  //     actualCT: "",
-  //     startDate: new Date().toISOString().split("T")[0],
-  //     startTime: "",
-  //     endDate: new Date().toISOString().split("T")[0],
-  //     endTime: "",
-  //     idleCode: "",
-  //     startDate1: new Date().toISOString().split("T")[0],
-  //     startTime1: "",
-  //     endDate1: new Date().toISOString().split("T")[0],
-  //     endTime1: "",
-  //     userName: "",
-  //   };
-
-  //   const updatedErrors = [...processTableErrors, {}]; // Add an error object for the new row
-  //   setProcessTableErrors(updatedErrors);
-  //   // Update the state by creating a new array with the added row
-  //   setFormData({
-  //     ...formData,
-  //     processTable: [...formData.processTable, newRow],
-  //   });
-  // };
   const handleAddRow = (containerIndex) => {
     const updatedContainers = [...containers];
     updatedContainers[containerIndex].processTableData.push({
@@ -287,12 +249,13 @@ function CreateJob() {
       description: "",
       machineName: "",
       toolingUsed: "",
-      dc: "",
-      length: "",
-      width: "",
-      feed: "",
-      estimatedCT: "",
-      actualCT: "",
+      dc: 0,
+      mr: 0,
+      length: 0,
+      width: 0,
+      feed: 0,
+      estimatedCT: 0,
+      actualCT: 0,
       startDate: new Date().toISOString().split("T")[0],
       startTime: "",
       endDate: new Date().toISOString().split("T")[0],
@@ -303,6 +266,10 @@ function CreateJob() {
       endDate1: new Date().toISOString().split("T")[0],
       endTime1: "",
       userName: "",
+      nop: 0,
+      fpp: 0,
+      estimatedHrs: 0,
+      toolingSize: 0,
     });
 
     setContainers(updatedContainers);

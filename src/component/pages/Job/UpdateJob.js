@@ -32,7 +32,7 @@ function UpdateJob() {
   const [containers, setContainers] = useState([
     {
       processName: "", // Add any initial values you need
-      processTableData: [], // Add initial data for the process table
+      processTableData: [],
     },
   ]);
   const [formData, setFormData] = useState({
@@ -44,7 +44,7 @@ function UpdateJob() {
     estimatedtotalCT: "",
     actualtotalCT: "",
     dragNo: "",
-    processTable: containers,
+    processTable: [...containers],
   });
   const [errors, setErrors] = useState({
     soWo: false,
@@ -97,7 +97,17 @@ function UpdateJob() {
 
     fetchData();
   }, [dispatch, id]);
-  console.log("edit", formData);
+  // ... Your existing code
+
+  useEffect(() => {
+    // Whenever 'containers' changes, update 'formData' to include the latest 'containers'
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      processTable: containers,
+    }));
+  }, [containers]);
+
+  // ... Rest of your component code
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -157,12 +167,12 @@ function UpdateJob() {
       alert("At least one row in the process table is required.");
       return;
     }
-
+    console.log("edit", formData);
     const editFormData = {
       formData,
       id,
     };
-    console.log("formDta", formData);
+
     dispatch(editJob(editFormData));
     navigate(-1);
   };
@@ -181,48 +191,6 @@ function UpdateJob() {
     }
   };
 
-  // const handleTextFieldChange = (
-  //   event,
-  //   rowIndex,
-  //   fieldName,
-  //   containerIndex
-  // ) => {
-  //   // Make a copy of the form data and errors
-  //   console.log(fieldName, containerIndex);
-  //   const updatedFormData = { ...formData };
-  //   const updatedErrors = [...processTableErrors];
-
-  //   // Access the specific table and field
-  //   const updatedTable =
-  //     updatedFormData.processTable[containerIndex].processTableData;
-  //   updatedTable[rowIndex][fieldName] = event.target.value;
-
-  //   // Update the corresponding error for the field
-  //   // updatedErrors[containerIndex][rowIndex][fieldName] = !event.target.value; // Set the error if the field is empty
-
-  //   if (
-  //     fieldName === "startDate" ||
-  //     fieldName === "startTime" ||
-  //     fieldName === "endDate" ||
-  //     fieldName === "endTime"
-  //   ) {
-  //     // calculateActualCycleTime(updatedTable[rowIndex]);
-  //     // const totalCT = calculateTotalCycleTime(updatedTable);
-
-  //     // Update both the totalCT and actualtotalCT for the specific table
-  //     updatedFormData.processTable[containerIndex].processTableData =
-  //       updatedTable;
-  //     // updatedFormData.actualtotalCT[containerIndex] = totalCT;
-  //   } else {
-  //     // Update only the table data and not actualTotalCT for the specific table
-  //     updatedFormData.processTable[containerIndex].processTableData =
-  //       updatedTable;
-  //   }
-
-  //   // Set the updated form data and errors
-  //   setFormData(updatedFormData);
-  //   // setProcessTableErrors(updatedErrors);
-  // };
   const handleAddRow = (containerIndex) => {
     setContainers((prevContainers) => {
       const updatedContainers = [...prevContainers];
@@ -234,12 +202,13 @@ function UpdateJob() {
         description: "",
         machineName: "",
         toolingUsed: "",
-        dc: "",
-        length: "",
-        width: "",
-        feed: "",
-        estimatedCT: "",
-        actualCT: "",
+        dc: 0,
+        mr: 0,
+        length: 0,
+        width: 0,
+        feed: 0,
+        estimatedCT: 0,
+        actualCT: 0,
         startDate: new Date().toISOString().split("T")[0],
         startTime: "",
         endDate: new Date().toISOString().split("T")[0],
@@ -250,6 +219,10 @@ function UpdateJob() {
         endDate1: new Date().toISOString().split("T")[0],
         endTime1: "",
         userName: "",
+        nop: 0,
+        fpp: 0,
+        estimatedHrs: 0,
+        toolingSize: 0,
       };
 
       // Create a new array with the updated processTableData
@@ -268,47 +241,157 @@ function UpdateJob() {
     });
   };
 
-  // Function to handle changes in row data
   const handleTextFieldChange = (
     event,
     rowIndex,
     fieldName,
-    containerIndex
+    containerIndex,
+    processName
   ) => {
+    // Make a copy of the containers state
     setContainers((prevContainers) => {
-      const updatedContainers = [...prevContainers];
-      const containerToUpdate = { ...updatedContainers[containerIndex] };
-      const updatedTable = containerToUpdate.processTableData.map(
-        (row, index) => {
-          if (index === rowIndex) {
-            return { ...row, [fieldName]: event.target.value };
-          }
-          return row;
+      return prevContainers.map((element, index1) => {
+        if (containerIndex === index1) {
+          return {
+            ...element,
+            processTableData: element.processTableData.map((data, index) => {
+              if (processName === "Milling" && index === rowIndex) {
+                // Create a new object to represent the updated data
+                const updatedData = { ...data };
+
+                // Store the previous value
+                const prevValue = updatedData[fieldName];
+
+                // Update the field with the new value
+                updatedData[fieldName] = event.target.value;
+
+                // Update other fields based on the previous value
+                if (fieldName === "toolingSize") {
+                  updatedData.toolingSize = event.target.value;
+                  updatedData.dia = updatedData.toolingSize * 0.9;
+                } else if (fieldName === "dia" || fieldName === "width") {
+                  updatedData.width = parseInt(event.target.value);
+                  updatedData.nop = updatedData.width / updatedData.dia;
+                } else if (fieldName === "length" || fieldName === "feed") {
+                  updatedData.fpp =
+                    parseInt(updatedData.length) / parseInt(updatedData.feed);
+                } else if (
+                  fieldName === "nop" ||
+                  fieldName === "fpp" ||
+                  fieldName === "mr" ||
+                  fieldName === "dc"
+                ) {
+                  updatedData.actualCT =
+                    updatedData.nop *
+                    updatedData.fpp *
+                    (updatedData.mr / updatedData.dc) *
+                    1.25;
+                  updatedData.estimatedHrs =
+                    parseInt(updatedData.actualCT) / 60;
+                }
+
+                // Update the state with the modified data
+                return updatedData;
+              } else if (processName === "Boring" && index === rowIndex) {
+                // Create a new object to represent the updated data
+                const updatedData = { ...data };
+
+                // Store the previous value
+                const prevValue = updatedData[fieldName];
+
+                // Update the field with the new value
+                updatedData[fieldName] = event.target.value;
+                console.log(event.target.value);
+                // Update other fields based on the previous value
+                if (
+                  fieldName === "mr" ||
+                  fieldName === "dc" ||
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "rpm"
+                ) {
+                  updatedData.nop = updatedData.mr / updatedData.dc;
+                  updatedData.fpp =
+                    updatedData.length / (updatedData.rpm * updatedData.feed);
+                  updatedData.actualCT =
+                    updatedData.nop * updatedData.fpp * 1.25;
+                }
+                // Update the state with the modified data
+                return updatedData;
+              } else if (processName === "Drilling" && index === rowIndex) {
+                // Create a new object to represent the updated data
+                const updatedData = { ...data };
+
+                // Store the previous value
+                const prevValue = updatedData[fieldName];
+
+                // Update the field with the new value
+                updatedData[fieldName] = event.target.value;
+
+                // Update other fields based on the previous value
+                if (
+                  fieldName === "noh" ||
+                  fieldName === "legnth" ||
+                  fieldName === "feed"
+                ) {
+                  updatedData.actualCT =
+                    ((updatedData.length * 1.05) / updatedData.feed) *
+                    updatedData.noh;
+                  updatedData.estimatedHrs =
+                    parseInt(updatedData.actualCT) / 60;
+                }
+
+                // Update the state with the modified data
+                return updatedData;
+              } else if (processName === "Tapping" && index === rowIndex) {
+                // Create a new object to represent the updated data
+                const updatedData = { ...data };
+
+                // Store the previous value
+                const prevValue = updatedData[fieldName];
+
+                // Update the field with the new value
+                updatedData[fieldName] = event.target.value;
+
+                // Update other fields based on the previous value
+                if (
+                  fieldName === "noh" ||
+                  fieldName === "legnth" ||
+                  fieldName === "rpm"
+                ) {
+                  updatedData.actualCT =
+                    (updatedData.length / (updatedData.rpm * 1.5)) *
+                    updatedData.noh *
+                    1.3;
+                  updatedData.estimatedHrs =
+                    parseInt(updatedData.actualCT) / 60;
+                }
+                return updatedData;
+              }
+              return data;
+            }),
+          };
         }
-      );
-
-      // Update the container's processTableData with the updated array
-      containerToUpdate.processTableData = updatedTable;
-
-      // Update the containers state with the modified container
-      updatedContainers[containerIndex] = containerToUpdate;
-
-      // Update the formData state to reflect the changes in the containers
-      setFormData((prevData) => ({
-        ...prevData,
-        processTable: updatedContainers,
-      }));
-
-      return updatedContainers;
+        return element;
+      });
     });
   };
-
+  console.log("containers", formData);
   const handleDeleteRow = (containerIndex, rowIndex) => {
     // Clone the containers array to avoid modifying the state directly
     const updatedContainers = [...containers];
 
-    // Remove the row from the process table data for the specified container
-    updatedContainers[containerIndex].processTableData.splice(rowIndex, 1);
+    if (
+      Array.isArray(updatedContainers) &&
+      containerIndex >= 0 &&
+      containerIndex < updatedContainers.length &&
+      Array.isArray(updatedContainers[containerIndex].processTableData) &&
+      rowIndex >= 0 &&
+      rowIndex < updatedContainers[containerIndex].processTableData.length
+    ) {
+      // Check if the nested arrays are valid before trying to delete
+      updatedContainers[containerIndex].processTableData.splice(rowIndex, 1);
+    }
 
     // Update the state with the modified containers array
     setContainers(updatedContainers);
@@ -323,6 +406,12 @@ function UpdateJob() {
 
     // Update the containers state with the new container
     setContainers((prevContainers) => [...prevContainers, newContainer]);
+
+    // Update the formData state to include the new containers
+    setFormData((prevData) => ({
+      ...prevData,
+      processTable: [...prevData.processTable, newContainer],
+    }));
   };
 
   const deleteContainer = (containerIndex) => {
@@ -334,6 +423,14 @@ function UpdateJob() {
 
     // Update the state with the modified containers array
     setContainers(updatedContainers);
+
+    // Update the formData state to remove the deleted container
+    setFormData((prevData) => ({
+      ...prevData,
+      processTable: prevData.processTable.filter(
+        (_, index) => index !== containerIndex
+      ),
+    }));
   };
 
   const handleDropdownChange = (e, containerIndex) => {

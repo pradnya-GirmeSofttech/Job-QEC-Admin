@@ -105,11 +105,18 @@ function Job() {
   };
 
   // Filter jobs based on job name or SO/WO number
-  const filteredJobs = jobs?.filter((job) => {
-    const jobNameMatch = job?.jobName?.toLowerCase().includes(searchQuery);
-    const soWoMatch = job?.soWo.toString().includes(searchQuery);
-    return jobNameMatch || soWoMatch;
-  });
+  const filteredJobs = jobs
+    ? jobs.filter((job) => {
+        // Check if the job object and its properties are defined
+        if (job && job.jobName && job.soWo) {
+          const jobNameMatch = job.jobName.toLowerCase().includes(searchQuery);
+          const soWoMatch = job.soWo.toString().includes(searchQuery);
+          return jobNameMatch || soWoMatch;
+        }
+        // Handle cases where job or its properties are undefined
+        return false;
+      })
+    : [];
 
   return (
     <Dashboard>

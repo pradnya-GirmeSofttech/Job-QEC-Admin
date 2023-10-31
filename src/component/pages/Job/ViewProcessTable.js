@@ -178,7 +178,7 @@ export const ViewProcessTable = ({
                   <TableCell align="center">{row.toolingUsed}</TableCell>
                   <TableCell align="center">{row.toolingSize}</TableCell>
                   <TableCell align="center">{row.rpm}</TableCell>
-                  <TableCell align="center">{row.width}</TableCell>
+
                   <TableCell align="center">{row.feed}</TableCell>
                   <TableCell align="center">{row.length}</TableCell>
                   <TableCell align="center">{row.dc}</TableCell>
@@ -206,7 +206,6 @@ export const ViewProcessTable = ({
                   </TableCell>
                   <TableCell align="center">{row.endTime1}</TableCell>
                   <TableCell align="center">{row.userName}</TableCell>
-                  <TableCell align="center"></TableCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -56,17 +56,19 @@ function CreateJob() {
     dragNo: false,
   });
   const [processTableErrors, setProcessTableErrors] = useState(
-    formData.processTable.map(() => ({
-      process: false,
-      description: false,
-      machineName: false,
-      toolingUsed: false,
-      dc: false,
-      length: false,
-      width: false,
-      feed: false,
-      estimatedCT: false,
-    }))
+    containers.map((item) => {
+      item.processTableData.map(() => ({
+        process: false,
+        description: false,
+        machineName: false,
+        toolingUsed: false,
+        dc: false,
+        length: false,
+        width: false,
+        feed: false,
+        estimatedCT: false,
+      }));
+    })
   );
 
   const handleSubmit = (e) => {
@@ -80,17 +82,16 @@ function CreateJob() {
       "dragNo",
     ];
 
-    // const ProcessrequiredFields = [
-    //   "process",
-    //   "description",
-    //   "machineName",
-    //   "toolingUsed",
-    //   "dc",
-    //   "length",
-    //   "width",
-    //   "feed",
-    //   "estimatedCT",
-    // ];
+    const ProcessrequiredFields = [
+      "process",
+      "description",
+      "machineName",
+      "toolingUsed",
+      "dc",
+      "length",
+      "width",
+      "feed",
+    ];
     const newErrors = {};
 
     requiredFields.forEach((field) => {
@@ -99,34 +100,46 @@ function CreateJob() {
       }
     });
 
-    const processTableErrors = formData.processTable.map((row, rowIndex) => {
-      const rowErrors = {};
-      // ProcessrequiredFields.forEach((field) => {
-      //   if (field === "toolingUsed" && row[field].length === 0) {
-      //     // Check if "toolingUsed" is an empty array
-      //     rowErrors[field] = true;
-      //   } else if (!row[field]) {
-      //     rowErrors[field] = true;
-      //   }
-      // });
-      return rowErrors;
-    });
+    // Check and debug containers and processTableErrors
+    console.log("containers:", containers);
+    // const processTableErrors = containers.map((item) => {
+    //   return item.processTableData.map((row, rowIndex) => {
+    //     const rowErrors = {};
+    //     ProcessrequiredFields.forEach((field) => {
+    //       if (!row[field]) {
+    //         rowErrors[field] = true;
+    //       }
+    //     });
+    //     return rowErrors;
+    //   });
+    // });
+
+    // console.log("processTableErrors:", processTableErrors);
 
     // const hasProcessTableErrors = processTableErrors.some((rowErrors) => {
     //   return Object.values(rowErrors).some((error) => error);
     // });
-    // console.log("process", processTableErrors);
-    // If there are errors, display them and prevent submission
+
     // if (Object.keys(newErrors).length > 0 || hasProcessTableErrors) {
     //   setErrors(newErrors);
     //   setProcessTableErrors(processTableErrors);
     //   return;
     // }
-
-    if (formData.processTable.length === 0) {
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      //   setProcessTableErrors(processTableErrors);
+      return;
+    }
+    if (containers.length === 0) {
       alert("At least one row in the process table is required.");
       return;
     }
+    containers.map((item) => {
+      if (item.processTableData.length === 0) {
+        alert("At least one row in the process table is required.");
+        return;
+      }
+    });
 
     dispatch(createJob(formData));
 
@@ -148,6 +161,57 @@ function CreateJob() {
   };
 
   // Maintain an array of containers
+  const calculateCT = (updatedData) => {
+    if (!updatedData.idleCode) {
+      console.log(updatedData.startTime);
+      const startDate = new Date(updatedData.startDate);
+      const endDate = new Date(updatedData.endDate);
+      const startTime = new Date(`1970-01-01T${updatedData.startTime}`);
+      const endTime = new Date(`1970-01-01T${updatedData.endTime}`);
+      const start =
+        startDate.getTime() +
+        startTime.getTime() -
+        startDate.getTimezoneOffset() * 60 * 1000;
+      const end =
+        endDate.getTime() +
+        endTime.getTime() -
+        endDate.getTimezoneOffset() * 60 * 1000;
+      const diff = (end - start) / (1000 * 60);
+      console.log("diff", diff); // difference in hours
+      return diff;
+      // updatedData.estimatedCT = diff;
+    } else {
+      const startDate = new Date(updatedData.startDate);
+      const endDate = new Date(updatedData.endDate);
+      const startTime = new Date(`1970-01-01T${updatedData.startTime}`);
+      const endTime = new Date(`1970-01-01T${updatedData.endTime}`);
+      const start =
+        startDate.getTime() +
+        startTime.getTime() -
+        startDate.getTimezoneOffset() * 60 * 1000;
+      const end =
+        endDate.getTime() +
+        endTime.getTime() -
+        endDate.getTimezoneOffset() * 60 * 1000;
+      const diff1 = (end - start) / (1000 * 60);
+      const startDate1 = new Date(updatedData.startDate1);
+      const endDate1 = new Date(updatedData.endDate1);
+      const startTime1 = new Date(`1970-01-01T${updatedData.startTime1}`);
+      const endTime1 = new Date(`1970-01-01T${updatedData.endTime1}`);
+      const start1 =
+        startDate1.getTime() +
+        startTime1.getTime() -
+        startDate1.getTimezoneOffset() * 60 * 1000;
+      const end1 =
+        endDate1.getTime() +
+        endTime1.getTime() -
+        endDate1.getTimezoneOffset() * 60 * 1000;
+      const diff2 = (end1 - start1) / (1000 * 60); // difference in hours
+      const diff = diff1 + diff2;
+      console.log(diff);
+      return diff;
+    }
+  };
 
   const handleTextFieldChange = (
     event,
@@ -157,90 +221,252 @@ function CreateJob() {
     processName
   ) => {
     // Make a copy of the containers state
-    console.log(fieldName);
-    let filteredData = containers.map((element, index1) => {
-      if (containerIndex === index1) {
-        console.log("hii", element.processTableData);
-        element.processTableData = element.processTableData.map(
-          (data, index) => {
-            if (processName === "Milling") {
-              if (index === rowIndex) {
-                data[fieldName] = event.target.value;
-                if (fieldName === "toolingSize") {
-                  data.toolingSize = event.target.value;
-                  data.dia = data.toolingSize * 0.9;
-                } else if (fieldName === "dia" || fieldName === "width") {
-                  console.log(data.dia);
-                  data.width = parseInt(event.target.value);
+    const updatedContainers = [...containers];
+    updatedContainers[containerIndex].processTableData = updatedContainers[
+      containerIndex
+    ].processTableData.map((data, index) => {
+      data[fieldName] = event.target.value;
 
-                  data.nop = data.width / data.dia;
-                } else if (fieldName === "length" || fieldName === "feed") {
-                  console.log(data.length, data.feed);
-                  data.fpp = parseInt(data.length) / parseInt(data.feed);
-                } else if (
-                  fieldName === "nop" ||
-                  fieldName === "fpp" ||
-                  fieldName === "mr" ||
-                  fieldName === "dc"
-                ) {
-                  console.log(data.nop, data.fpp, data.mr, data.dc);
-                  data.actualCT =
-                    data.nop * data.fpp * (data.mr / data.dc) * 1.25;
-                  data.estimatedHrs = parseInt(data.actualCT) / 60;
-                  console.log(data.actualCT);
-                }
-              }
-            } else if (processName === "Boring") {
-              if (index === rowIndex) {
-                data[fieldName] = event.target.value;
-                if (fieldName === "mr" || fieldName === "dc") {
-                  data.nop = data.mr / data.dc;
-                } else if (
-                  fieldName === "length" ||
-                  fieldName === "feed" ||
-                  fieldName === "rpm"
-                ) {
-                  data.fpp = data.length / (data.rpm * data.feed);
-
-                  data.nop = data.width / data.dia;
-                } else if (fieldName === "nop" || fieldName === "fpp") {
-                  console.log(data.nop, data.fpp, data.mr, data.dc);
-                  data.actualCT = data.nop * data.fpp * 1.25;
-                }
-              }
-            } else if (processName === "Drilling") {
-              if (index === rowIndex) {
-                data[fieldName] = event.target.value;
-                if (
-                  fieldName === "length" ||
-                  fieldName === "feed" ||
-                  fieldName === "noh"
-                ) {
-                  data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
-                }
-              }
-            } else if (processName === "Tapping") {
-              if (index === rowIndex) {
-                data[fieldName] = event.target.value;
-                if (
-                  fieldName === "length" ||
-                  fieldName === "rpm" ||
-                  fieldName === "noh"
-                ) {
-                  data.actualCT =
-                    (data.length / (data.rpm * 1.5)) * data.noh * 1.3;
-                }
-              }
-            }
-            return data;
+      if (processName === "Milling") {
+        // Perform calculations for Milling process
+        if (index === rowIndex) {
+          // Update data properties based on field changes
+          if (
+            fieldName === "toolingSize" ||
+            fieldName === "dia" ||
+            fieldName === "width" ||
+            fieldName === "length" ||
+            fieldName === "feed" ||
+            fieldName === "nop" ||
+            fieldName === "fpp" ||
+            fieldName === "mr" ||
+            fieldName === "dc"
+          ) {
+            data.toolingSize = event.target.value;
+            data.dia = data.toolingSize * 0.9;
+            data.nop = parseFloat((data.width / data.dia).toFixed(2));
+            data.fpp = parseFloat((data.length / data.feed).toFixed(2));
+            data.actualCT = parseFloat(
+              data.nop * data.fpp * (data.mr / data.dc) * 1.25
+            );
+            data.estimatedHrs = parseFloat(data.actualCT / 60);
           }
-        );
+        }
+      } else if (processName === "Boring") {
+        // Perform calculations for Boring process
+        if (index === rowIndex) {
+          // Update data properties based on field changes
+          if (
+            fieldName === "mr" ||
+            fieldName === "dc" ||
+            fieldName === "length" ||
+            fieldName === "feed" ||
+            fieldName === "rpm" ||
+            fieldName === "nop" ||
+            fieldName === "fpp"
+          ) {
+            data.nop = parseFloat(data.mr / data.dc);
+            data.fpp = parseFloat(
+              data.length / (data.rpm * data.feed).toFixed(2)
+            );
+            data.actualCT = parseFloat(data.nop * data.fpp * (1.25).toFixed(2));
+          }
+        }
+      } else if (processName === "Drilling") {
+        // Perform calculations for Drilling process
+        if (index === rowIndex) {
+          // Update data properties based on field changes
+          if (
+            fieldName === "length" ||
+            fieldName === "feed" ||
+            fieldName === "noh"
+          ) {
+            data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
+          }
+        }
+      } else if (processName === "Tapping") {
+        // Perform calculations for Tapping process
+        if (index === rowIndex) {
+          // Update data properties based on field changes
+          if (
+            fieldName === "length" ||
+            fieldName === "rpm" ||
+            fieldName === "noh"
+          ) {
+            data.actualCT = parseFloat(
+              (data.length / (data.rpm * 1.5)) * data.noh * (1.3).toFixed(2)
+            );
+          }
+        }
       }
-      return element;
+
+      // Check if the fields required for calculating estimatedCT have changed
+      if (
+        fieldName === "startTime" ||
+        fieldName === "endTime" ||
+        fieldName === "startTime1" ||
+        fieldName === "endTime1" ||
+        fieldName === "startDate1" ||
+        fieldName === "endDate1" ||
+        fieldName === "idleCode"
+      ) {
+        // Ensure that the data object is defined
+        if (data.startDate && data.endDate && data.startTime && data.endTime) {
+          const diff = calculateCT(data);
+          data.estimatedCT = diff;
+        }
+      }
+
+      return data;
     });
-    console.log(filteredData);
-    setContainers(filteredData);
+    // ... (previous code)
+
+    if (fieldName === "estimatedCT") {
+      // Calculate actualtotalCT based on the updated estimatedCT values
+      const totalEstimatedCT = containers.reduce((total, container) => {
+        const containerEstimatedCT = container.processTableData.reduce(
+          (containerTotal, data) => {
+            if (!isNaN(data.estimatedCT)) {
+              return containerTotal + data.estimatedCT;
+            }
+            return containerTotal;
+          },
+          0
+        );
+        return total + containerEstimatedCT;
+      }, 0);
+
+      // Update the formData with the new actualtotalCT value
+      setFormData((prevData) => ({
+        ...prevData,
+        actualtotalCT: totalEstimatedCT,
+      }));
+    }
+
+    // ... (rest of your handleTextFieldChange function)
+    console.log(formData);
+    // Make a copy of the formData state and update the processTable field
+    const updatedFormData = { ...formData };
+    updatedFormData.processTable = updatedContainers;
+
+    // Update the state with the modified containers and formData
+    setContainers(updatedContainers);
+    setFormData(updatedFormData);
   };
+
+  // const handleTextFieldChange = (
+  //   event,
+  //   rowIndex,
+  //   fieldName,
+  //   containerIndex,
+  //   processName
+  // ) => {
+  //   // Make a copy of the containers state
+  //   console.log(fieldName);
+  //   let filteredData = containers.map((element, index1) => {
+  //     if (containerIndex === index1) {
+  //       console.log("hii", element.processTableData);
+  //       element.processTableData = element.processTableData.map(
+  //         (data, index) => {
+  //           data[fieldName] = event.target.value;
+  //           if (processName === "Milling") {
+  //             if (index === rowIndex) {
+  //               data[fieldName] = event.target.value;
+  //               if (
+  //                 fieldName === "toolingSize" ||
+  //                 fieldName === "dia" ||
+  //                 fieldName === "width" ||
+  //                 fieldName === "length" ||
+  //                 fieldName === "feed" ||
+  //                 fieldName === "nop" ||
+  //                 fieldName === "fpp" ||
+  //                 fieldName === "mr" ||
+  //                 fieldName === "dc"
+  //               ) {
+  //                 data.toolingSize = event.target.value;
+  //                 data.dia = data.toolingSize * 0.9;
+
+  //                 data.nop = parseFloat((data.width / data.dia).toFixed(2)); // Round to 2 decimal places
+  //                 data.fpp = parseFloat((data.length / data.feed).toFixed(2)); // Round to 2 decimal places
+  //                 data.actualCT = parseFloat(
+  //                   data.nop * data.fpp * (data.mr / data.dc) * 1.25
+  //                 );
+  //                 data.estimatedHrs = parseFloat(data.actualCT / 60);
+  //               }
+  //             }
+  //           } else if (processName === "Boring") {
+  //             if (index === rowIndex) {
+  //               data[fieldName] = event.target.value;
+  //               if (
+  //                 fieldName === "mr" ||
+  //                 fieldName === "dc" ||
+  //                 fieldName === "length" ||
+  //                 fieldName === "feed" ||
+  //                 fieldName === "rpm" ||
+  //                 fieldName === "nop" ||
+  //                 fieldName === "fpp"
+  //               ) {
+  //                 data.nop = parseFloat(data.mr / data.dc);
+
+  //                 data.fpp = parseFloat(
+  //                   data.length / (data.rpm * data.feed).toFixed(2)
+  //                 );
+
+  //                 data.actualCT = parseFloat(
+  //                   data.nop * data.fpp * (1.25).toFixed(2)
+  //                 );
+  //               }
+  //             }
+  //           } else if (processName === "Drilling") {
+  //             if (index === rowIndex) {
+  //               data[fieldName] = event.target.value;
+  //               if (
+  //                 fieldName === "length" ||
+  //                 fieldName === "feed" ||
+  //                 fieldName === "noh"
+  //               ) {
+  //                 data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
+  //               }
+  //             }
+  //           } else if (processName === "Tapping") {
+  //             if (index === rowIndex) {
+  //               data[fieldName] = event.target.value;
+  //               if (
+  //                 fieldName === "length" ||
+  //                 fieldName === "rpm" ||
+  //                 fieldName === "noh"
+  //               ) {
+  //                 data.actualCT = parseFloat(
+  //                   (data.length / (data.rpm * 1.5)) *
+  //                     data.noh *
+  //                     (1.3).toFixed(2)
+  //                 );
+  //               }
+  //             }
+  //           }
+
+  //           if (
+  //             fieldName === "startTime" ||
+  //             fieldName === "endTime" ||
+  //             fieldName === "startTime1" ||
+  //             fieldName === "endTime1" ||
+  //             fieldName === "startDate1" ||
+  //             fieldName === "endDate1" ||
+  //             fieldName === "idleCode"
+  //           ) {
+  //             const diff = calculateCT(data);
+  //             data.estimatedCT = diff;
+  //           }
+
+  //           return data;
+  //         }
+  //       );
+  //     }
+  //     return element;
+  //   });
+  //   console.log(filteredData);
+  //   setContainers(filteredData);
+  // };
 
   const handleAddRow = (containerIndex) => {
     const updatedContainers = [...containers];

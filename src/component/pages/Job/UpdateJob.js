@@ -240,7 +240,57 @@ function UpdateJob() {
       return updatedContainers;
     });
   };
-
+  const calculateCT = (updatedData) => {
+    if (!updatedData.idleCode) {
+      console.log(updatedData.startTime);
+      const startDate = new Date(updatedData.startDate);
+      const endDate = new Date(updatedData.endDate);
+      const startTime = new Date(`1970-01-01T${updatedData.startTime}`);
+      const endTime = new Date(`1970-01-01T${updatedData.endTime}`);
+      const start =
+        startDate.getTime() +
+        startTime.getTime() -
+        startDate.getTimezoneOffset() * 60 * 1000;
+      const end =
+        endDate.getTime() +
+        endTime.getTime() -
+        endDate.getTimezoneOffset() * 60 * 1000;
+      const diff = (end - start) / (1000 * 60);
+      console.log("diff", diff); // difference in hours
+      return diff;
+      // updatedData.estimatedCT = diff;
+    } else {
+      const startDate = new Date(updatedData.startDate);
+      const endDate = new Date(updatedData.endDate);
+      const startTime = new Date(`1970-01-01T${updatedData.startTime}`);
+      const endTime = new Date(`1970-01-01T${updatedData.endTime}`);
+      const start =
+        startDate.getTime() +
+        startTime.getTime() -
+        startDate.getTimezoneOffset() * 60 * 1000;
+      const end =
+        endDate.getTime() +
+        endTime.getTime() -
+        endDate.getTimezoneOffset() * 60 * 1000;
+      const diff1 = (end - start) / (1000 * 60);
+      const startDate1 = new Date(updatedData.startDate1);
+      const endDate1 = new Date(updatedData.endDate1);
+      const startTime1 = new Date(`1970-01-01T${updatedData.startTime1}`);
+      const endTime1 = new Date(`1970-01-01T${updatedData.endTime1}`);
+      const start1 =
+        startDate1.getTime() +
+        startTime1.getTime() -
+        startDate1.getTimezoneOffset() * 60 * 1000;
+      const end1 =
+        endDate1.getTime() +
+        endTime1.getTime() -
+        endDate1.getTimezoneOffset() * 60 * 1000;
+      const diff2 = (end1 - start1) / (1000 * 60); // difference in hours
+      const diff = diff1 + diff2;
+      console.log(diff);
+      return diff;
+    }
+  };
   const handleTextFieldChange = (
     event,
     rowIndex,
@@ -255,39 +305,56 @@ function UpdateJob() {
           return {
             ...element,
             processTableData: element.processTableData.map((data, index) => {
+              const updatedData = { ...data };
+              const prevValue = updatedData[fieldName];
+              updatedData[fieldName] = event.target.value;
+
               if (processName === "Milling" && index === rowIndex) {
                 // Create a new object to represent the updated data
                 const updatedData = { ...data };
 
                 // Store the previous value
+                console.log(fieldName);
                 const prevValue = updatedData[fieldName];
 
                 // Update the field with the new value
                 updatedData[fieldName] = event.target.value;
 
                 // Update other fields based on the previous value
-                if (fieldName === "toolingSize") {
-                  updatedData.toolingSize = event.target.value;
-                  updatedData.dia = updatedData.toolingSize * 0.9;
-                } else if (fieldName === "dia" || fieldName === "width") {
-                  updatedData.width = parseInt(event.target.value);
-                  updatedData.nop = updatedData.width / updatedData.dia;
-                } else if (fieldName === "length" || fieldName === "feed") {
-                  updatedData.fpp =
-                    parseInt(updatedData.length) / parseInt(updatedData.feed);
-                } else if (
+                if (
+                  fieldName === "toolingSize" ||
+                  fieldName === "dia" ||
+                  fieldName === "width" ||
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
                   fieldName === "nop" ||
                   fieldName === "fpp" ||
                   fieldName === "mr" ||
                   fieldName === "dc"
                 ) {
-                  updatedData.actualCT =
+                  updatedData.toolingSize = event.target.value;
+                  updatedData.dia = updatedData.toolingSize * 0.9;
+
+                  updatedData.nop = updatedData.width / updatedData.dia;
+
+                  updatedData.fpp = updatedData.length / updatedData.feed;
+
+                  updatedData.actualCT = parseFloat(
                     updatedData.nop *
-                    updatedData.fpp *
-                    (updatedData.mr / updatedData.dc) *
-                    1.25;
-                  updatedData.estimatedHrs =
-                    parseInt(updatedData.actualCT) / 60;
+                      updatedData.fpp *
+                      (updatedData.mr / updatedData.dc) *
+                      (1.25).toFixed(2)
+                  );
+                  updatedData.estimatedHrs = updatedData.actualCT / 60;
+                } else if (
+                  fieldName === "startTime" ||
+                  fieldName === "endTime" ||
+                  fieldName === "startTime1" ||
+                  fieldName === "endTime1" ||
+                  fieldName === "idleCode"
+                ) {
+                  const diff = calculateCT(updatedData);
+                  updatedData.estimatedCT = diff;
                 }
 
                 // Update the state with the modified data
@@ -311,10 +378,22 @@ function UpdateJob() {
                   fieldName === "rpm"
                 ) {
                   updatedData.nop = updatedData.mr / updatedData.dc;
-                  updatedData.fpp =
-                    updatedData.length / (updatedData.rpm * updatedData.feed);
+
+                  updatedData.fpp = parseFloat(
+                    updatedData.length /
+                      (updatedData.rpm * updatedData.feed).toFixed(2)
+                  );
                   updatedData.actualCT =
                     updatedData.nop * updatedData.fpp * 1.25;
+                } else if (
+                  fieldName === "startTime" ||
+                  fieldName === "endTime" ||
+                  fieldName === "startTime1" ||
+                  fieldName === "endTime1" ||
+                  fieldName === "idleCode"
+                ) {
+                  const diff = calculateCT(updatedData);
+                  updatedData.estimatedCT = diff;
                 }
                 // Update the state with the modified data
                 return updatedData;
@@ -339,6 +418,15 @@ function UpdateJob() {
                     updatedData.noh;
                   updatedData.estimatedHrs =
                     parseInt(updatedData.actualCT) / 60;
+                } else if (
+                  fieldName === "startTime" ||
+                  fieldName === "endTime" ||
+                  fieldName === "startTime1" ||
+                  fieldName === "endTime1" ||
+                  fieldName === "idleCode"
+                ) {
+                  const diff = calculateCT(updatedData);
+                  updatedData.estimatedCT = diff;
                 }
 
                 // Update the state with the modified data
@@ -365,9 +453,19 @@ function UpdateJob() {
                     1.3;
                   updatedData.estimatedHrs =
                     parseInt(updatedData.actualCT) / 60;
+                } else if (
+                  fieldName === "startTime" ||
+                  fieldName === "endTime" ||
+                  fieldName === "startTime1" ||
+                  fieldName === "endTime1" ||
+                  fieldName === "idleCode"
+                ) {
+                  const diff = calculateCT(updatedData);
+                  updatedData.estimatedCT = diff;
                 }
                 return updatedData;
               }
+
               return data;
             }),
           };
@@ -375,8 +473,10 @@ function UpdateJob() {
         return element;
       });
     });
+
+    // ... (rest of your handleTextFieldChange function)
   };
-  console.log("containers", formData);
+
   const handleDeleteRow = (containerIndex, rowIndex) => {
     // Clone the containers array to avoid modifying the state directly
     const updatedContainers = [...containers];

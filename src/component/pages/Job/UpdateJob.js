@@ -109,73 +109,46 @@ function UpdateJob() {
 
   // ... Rest of your component code
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // const requiredFields = [
-    //   "soWo",
-    //   "prodOrderNo",
-    //   "jobName",
-    //   "poNo",
-    //   "estimatedtotalCT",
-    //   "dragNo",
-    // ];
 
-    // const ProcessrequiredFields = [
-    //   "process",
-    //   "description",
-    //   "machineName",
-    //   "toolingUsed",
-    //   "dc",
-    //   "length",
-    //   "width",
-    //   "feed",
-    //   "estimatedCT",
-    // ];
-    // const newErrors = {};
+    // Calculate the totalEstimatedCT as you did before
+    const totalEstimatedCT = containers.reduce((total, container) => {
+      const containerEstimatedCT = container.processTableData.reduce(
+        (containerTotal, data) => {
+          if (!isNaN(data.estimatedCT)) {
+            return containerTotal + data.estimatedCT;
+          }
+          return containerTotal;
+        },
+        0
+      );
+      return total + containerEstimatedCT;
+    }, 0);
 
-    // requiredFields.forEach((field) => {
-    //   if (!formData[field]) {
-    //     newErrors[field] = true;
-    //   }
-    // });
+    // Update the formData with the new totalEstimatedCT value
+    setFormData((prevData) => ({
+      ...prevData,
+      actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here
+    }));
 
-    // const processTableErrors = formData.processTable.map((row, rowIndex) => {
-    //   const rowErrors = {};
-    //   ProcessrequiredFields.forEach((field) => {
-    //     if (field === "toolingUsed" && row[field].length === 0) {
-    //       // Check if "toolingUsed" is an empty array
-    //       rowErrors[field] = true;
-    //     } else if (!row[field]) {
-    //       rowErrors[field] = true;
-    //     }
-    //   });
-    //   return rowErrors;
-    // });
-
-    // const hasProcessTableErrors = processTableErrors.some((rowErrors) => {
-    //   return Object.values(rowErrors).some((error) => error);
-    // });
-
-    // // If there are errors, display them and prevent submission
-    // if (Object.keys(newErrors).length > 0 || hasProcessTableErrors) {
-    //   setErrors(newErrors);
-    //   setProcessTableErrors(processTableErrors);
-    //   return;
-    // }
-
-    if (formData.processTable.length === 0) {
-      alert("At least one row in the process table is required.");
-      return;
-    }
-    console.log("edit", formData);
     const editFormData = {
-      formData,
+      formData: {
+        ...formData, // Make sure to include the updated formData
+        actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here as well
+      },
       id,
     };
 
-    dispatch(editJob(editFormData));
-    navigate(-1);
+    // Use the dispatch function here to send the updated data to the backend
+    try {
+      await dispatch(editJob(editFormData));
+      navigate(-1);
+    } catch (error) {
+      console.error("Error while sending data to the backend:", error);
+    }
   };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -291,6 +264,27 @@ function UpdateJob() {
       return diff;
     }
   };
+
+  // const calculateTotal = () => {
+  //   const totalEstimatedCT = containers.reduce((total, container) => {
+  //     const containerEstimatedCT = container.processTableData.reduce(
+  //       (containerTotal, data) => {
+  //         if (!isNaN(data.estimatedCT)) {
+  //           return containerTotal + data.estimatedCT;
+  //         }
+  //         return containerTotal;
+  //       },
+  //       0
+  //     );
+  //     return total + containerEstimatedCT;
+  //   }, 0);
+  //   console.log(totalEstimatedCT);
+  //   // Update the formData with the new actualtotalCT value
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     actualtotalCT: totalEstimatedCT,
+  //   }));
+  // };
   const handleTextFieldChange = (
     event,
     rowIndex,
@@ -351,10 +345,12 @@ function UpdateJob() {
                   fieldName === "endTime" ||
                   fieldName === "startTime1" ||
                   fieldName === "endTime1" ||
-                  fieldName === "idleCode"
+                  fieldName === "idleCode" ||
+                  fieldName === "estimatedCT"
                 ) {
                   const diff = calculateCT(updatedData);
                   updatedData.estimatedCT = diff;
+                  // calculateTotal();
                 }
 
                 // Update the state with the modified data
@@ -458,10 +454,12 @@ function UpdateJob() {
                   fieldName === "endTime" ||
                   fieldName === "startTime1" ||
                   fieldName === "endTime1" ||
-                  fieldName === "idleCode"
+                  fieldName === "idleCode" ||
+                  fieldName === "estimatedCT"
                 ) {
                   const diff = calculateCT(updatedData);
                   updatedData.estimatedCT = diff;
+                  // const total = calculateTotal(updatedData);
                 }
                 return updatedData;
               }

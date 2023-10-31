@@ -71,8 +71,30 @@ function CreateJob() {
     })
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const totalEstimatedCT = containers.reduce((total, container) => {
+      const containerEstimatedCT = container.processTableData.reduce(
+        (containerTotal, data) => {
+          if (!isNaN(data.estimatedCT)) {
+            return containerTotal + data.estimatedCT;
+          }
+          return containerTotal;
+        },
+        0
+      );
+      return total + containerEstimatedCT;
+    }, 0);
+
+    // Update the formData state with the new totalEstimatedCT value
+    setFormData((prevData) => ({
+      ...prevData,
+      actualtotalCT: totalEstimatedCT,
+    }));
+
+    // Rest of your code
+
     const requiredFields = [
       "soWo",
       "prodOrderNo",
@@ -100,31 +122,8 @@ function CreateJob() {
       }
     });
 
-    // Check and debug containers and processTableErrors
     console.log("containers:", containers);
-    // const processTableErrors = containers.map((item) => {
-    //   return item.processTableData.map((row, rowIndex) => {
-    //     const rowErrors = {};
-    //     ProcessrequiredFields.forEach((field) => {
-    //       if (!row[field]) {
-    //         rowErrors[field] = true;
-    //       }
-    //     });
-    //     return rowErrors;
-    //   });
-    // });
 
-    // console.log("processTableErrors:", processTableErrors);
-
-    // const hasProcessTableErrors = processTableErrors.some((rowErrors) => {
-    //   return Object.values(rowErrors).some((error) => error);
-    // });
-
-    // if (Object.keys(newErrors).length > 0 || hasProcessTableErrors) {
-    //   setErrors(newErrors);
-    //   setProcessTableErrors(processTableErrors);
-    //   return;
-    // }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       //   setProcessTableErrors(processTableErrors);
@@ -142,9 +141,9 @@ function CreateJob() {
     });
 
     dispatch(createJob(formData));
-
     navigate(-1); // This will navigate back to the previous screen
   };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -220,253 +219,107 @@ function CreateJob() {
     containerIndex,
     processName
   ) => {
-    // Make a copy of the containers state
-    const updatedContainers = [...containers];
-    updatedContainers[containerIndex].processTableData = updatedContainers[
-      containerIndex
-    ].processTableData.map((data, index) => {
-      data[fieldName] = event.target.value;
+    let filteredData = containers.map((element, index1) => {
+      if (containerIndex === index1) {
+        element.processTableData = element.processTableData.map(
+          (data, index) => {
+            if (processName === "Milling") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "toolingSize" ||
+                  fieldName === "dia" ||
+                  fieldName === "width" ||
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "nop" ||
+                  fieldName === "fpp" ||
+                  fieldName === "mr" ||
+                  fieldName === "dc"
+                ) {
+                  data.dia = data.toolingSize * 0.9;
 
-      if (processName === "Milling") {
-        // Perform calculations for Milling process
-        if (index === rowIndex) {
-          // Update data properties based on field changes
-          if (
-            fieldName === "toolingSize" ||
-            fieldName === "dia" ||
-            fieldName === "width" ||
-            fieldName === "length" ||
-            fieldName === "feed" ||
-            fieldName === "nop" ||
-            fieldName === "fpp" ||
-            fieldName === "mr" ||
-            fieldName === "dc"
-          ) {
-            data.toolingSize = event.target.value;
-            data.dia = data.toolingSize * 0.9;
-            data.nop = parseFloat((data.width / data.dia).toFixed(2));
-            data.fpp = parseFloat((data.length / data.feed).toFixed(2));
-            data.actualCT = parseFloat(
-              data.nop * data.fpp * (data.mr / data.dc) * 1.25
-            );
-            data.estimatedHrs = parseFloat(data.actualCT / 60);
-          }
-        }
-      } else if (processName === "Boring") {
-        // Perform calculations for Boring process
-        if (index === rowIndex) {
-          // Update data properties based on field changes
-          if (
-            fieldName === "mr" ||
-            fieldName === "dc" ||
-            fieldName === "length" ||
-            fieldName === "feed" ||
-            fieldName === "rpm" ||
-            fieldName === "nop" ||
-            fieldName === "fpp"
-          ) {
-            data.nop = parseFloat(data.mr / data.dc);
-            data.fpp = parseFloat(
-              data.length / (data.rpm * data.feed).toFixed(2)
-            );
-            data.actualCT = parseFloat(data.nop * data.fpp * (1.25).toFixed(2));
-          }
-        }
-      } else if (processName === "Drilling") {
-        // Perform calculations for Drilling process
-        if (index === rowIndex) {
-          // Update data properties based on field changes
-          if (
-            fieldName === "length" ||
-            fieldName === "feed" ||
-            fieldName === "noh"
-          ) {
-            data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
-          }
-        }
-      } else if (processName === "Tapping") {
-        // Perform calculations for Tapping process
-        if (index === rowIndex) {
-          // Update data properties based on field changes
-          if (
-            fieldName === "length" ||
-            fieldName === "rpm" ||
-            fieldName === "noh"
-          ) {
-            data.actualCT = parseFloat(
-              (data.length / (data.rpm * 1.5)) * data.noh * (1.3).toFixed(2)
-            );
-          }
-        }
-      }
+                  data.nop = parseFloat((data.width / data.dia).toFixed(2));
+                  data.fpp = parseFloat((data.length / data.feed).toFixed(2));
+                  data.actualCT = parseFloat(
+                    data.nop * data.fpp * (data.mr / data.dc) * 1.25
+                  );
+                  data.estimatedHrs = parseFloat(data.actualCT / 60);
+                }
+              }
+            } else if (processName === "Boring") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "mr" ||
+                  fieldName === "dc" ||
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "rpm" ||
+                  fieldName === "nop" ||
+                  fieldName === "fpp"
+                ) {
+                  data.nop = parseFloat(data.mr / data.dc);
 
-      // Check if the fields required for calculating estimatedCT have changed
-      if (
-        fieldName === "startTime" ||
-        fieldName === "endTime" ||
-        fieldName === "startTime1" ||
-        fieldName === "endTime1" ||
-        fieldName === "startDate1" ||
-        fieldName === "endDate1" ||
-        fieldName === "idleCode"
-      ) {
-        // Ensure that the data object is defined
-        if (data.startDate && data.endDate && data.startTime && data.endTime) {
-          const diff = calculateCT(data);
-          data.estimatedCT = diff;
-        }
-      }
+                  data.fpp = parseFloat(
+                    data.length / (data.rpm * data.feed).toFixed(2)
+                  );
 
-      return data;
-    });
-    // ... (previous code)
-
-    if (fieldName === "estimatedCT") {
-      // Calculate actualtotalCT based on the updated estimatedCT values
-      const totalEstimatedCT = containers.reduce((total, container) => {
-        const containerEstimatedCT = container.processTableData.reduce(
-          (containerTotal, data) => {
-            if (!isNaN(data.estimatedCT)) {
-              return containerTotal + data.estimatedCT;
+                  data.actualCT = parseFloat(
+                    data.nop * data.fpp * (1.25).toFixed(2)
+                  );
+                }
+              }
+            } else if (processName === "Drilling") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "length" ||
+                  fieldName === "feed" ||
+                  fieldName === "noh"
+                ) {
+                  data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
+                }
+              }
+            } else if (processName === "Tapping") {
+              if (index === rowIndex) {
+                data[fieldName] = event.target.value;
+                if (
+                  fieldName === "length" ||
+                  fieldName === "rpm" ||
+                  fieldName === "noh"
+                ) {
+                  data.actualCT = parseFloat(
+                    (data.length / (data.rpm * 1.5)) *
+                      data.noh *
+                      (1.3).toFixed(2)
+                  );
+                }
+              }
             }
-            return containerTotal;
-          },
-          0
+
+            if (
+              fieldName === "startTime" ||
+              fieldName === "endTime" ||
+              fieldName === "startTime1" ||
+              fieldName === "endTime1" ||
+              fieldName === "startDate1" ||
+              fieldName === "endDate1" ||
+              fieldName === "idleCode"
+            ) {
+              const diff = calculateCT(data);
+              data.estimatedCT = diff;
+            }
+
+            return data;
+          }
         );
-        return total + containerEstimatedCT;
-      }, 0);
-
-      // Update the formData with the new actualtotalCT value
-      setFormData((prevData) => ({
-        ...prevData,
-        actualtotalCT: totalEstimatedCT,
-      }));
-    }
-
-    // ... (rest of your handleTextFieldChange function)
-    console.log(formData);
-    // Make a copy of the formData state and update the processTable field
-    const updatedFormData = { ...formData };
-    updatedFormData.processTable = updatedContainers;
-
-    // Update the state with the modified containers and formData
-    setContainers(updatedContainers);
-    setFormData(updatedFormData);
+      }
+      return element;
+    });
+    console.log(filteredData);
+    setContainers(filteredData);
   };
-
-  // const handleTextFieldChange = (
-  //   event,
-  //   rowIndex,
-  //   fieldName,
-  //   containerIndex,
-  //   processName
-  // ) => {
-  //   // Make a copy of the containers state
-  //   console.log(fieldName);
-  //   let filteredData = containers.map((element, index1) => {
-  //     if (containerIndex === index1) {
-  //       console.log("hii", element.processTableData);
-  //       element.processTableData = element.processTableData.map(
-  //         (data, index) => {
-  //           data[fieldName] = event.target.value;
-  //           if (processName === "Milling") {
-  //             if (index === rowIndex) {
-  //               data[fieldName] = event.target.value;
-  //               if (
-  //                 fieldName === "toolingSize" ||
-  //                 fieldName === "dia" ||
-  //                 fieldName === "width" ||
-  //                 fieldName === "length" ||
-  //                 fieldName === "feed" ||
-  //                 fieldName === "nop" ||
-  //                 fieldName === "fpp" ||
-  //                 fieldName === "mr" ||
-  //                 fieldName === "dc"
-  //               ) {
-  //                 data.toolingSize = event.target.value;
-  //                 data.dia = data.toolingSize * 0.9;
-
-  //                 data.nop = parseFloat((data.width / data.dia).toFixed(2)); // Round to 2 decimal places
-  //                 data.fpp = parseFloat((data.length / data.feed).toFixed(2)); // Round to 2 decimal places
-  //                 data.actualCT = parseFloat(
-  //                   data.nop * data.fpp * (data.mr / data.dc) * 1.25
-  //                 );
-  //                 data.estimatedHrs = parseFloat(data.actualCT / 60);
-  //               }
-  //             }
-  //           } else if (processName === "Boring") {
-  //             if (index === rowIndex) {
-  //               data[fieldName] = event.target.value;
-  //               if (
-  //                 fieldName === "mr" ||
-  //                 fieldName === "dc" ||
-  //                 fieldName === "length" ||
-  //                 fieldName === "feed" ||
-  //                 fieldName === "rpm" ||
-  //                 fieldName === "nop" ||
-  //                 fieldName === "fpp"
-  //               ) {
-  //                 data.nop = parseFloat(data.mr / data.dc);
-
-  //                 data.fpp = parseFloat(
-  //                   data.length / (data.rpm * data.feed).toFixed(2)
-  //                 );
-
-  //                 data.actualCT = parseFloat(
-  //                   data.nop * data.fpp * (1.25).toFixed(2)
-  //                 );
-  //               }
-  //             }
-  //           } else if (processName === "Drilling") {
-  //             if (index === rowIndex) {
-  //               data[fieldName] = event.target.value;
-  //               if (
-  //                 fieldName === "length" ||
-  //                 fieldName === "feed" ||
-  //                 fieldName === "noh"
-  //               ) {
-  //                 data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
-  //               }
-  //             }
-  //           } else if (processName === "Tapping") {
-  //             if (index === rowIndex) {
-  //               data[fieldName] = event.target.value;
-  //               if (
-  //                 fieldName === "length" ||
-  //                 fieldName === "rpm" ||
-  //                 fieldName === "noh"
-  //               ) {
-  //                 data.actualCT = parseFloat(
-  //                   (data.length / (data.rpm * 1.5)) *
-  //                     data.noh *
-  //                     (1.3).toFixed(2)
-  //                 );
-  //               }
-  //             }
-  //           }
-
-  //           if (
-  //             fieldName === "startTime" ||
-  //             fieldName === "endTime" ||
-  //             fieldName === "startTime1" ||
-  //             fieldName === "endTime1" ||
-  //             fieldName === "startDate1" ||
-  //             fieldName === "endDate1" ||
-  //             fieldName === "idleCode"
-  //           ) {
-  //             const diff = calculateCT(data);
-  //             data.estimatedCT = diff;
-  //           }
-
-  //           return data;
-  //         }
-  //       );
-  //     }
-  //     return element;
-  //   });
-  //   console.log(filteredData);
-  //   setContainers(filteredData);
-  // };
 
   const handleAddRow = (containerIndex) => {
     const updatedContainers = [...containers];

@@ -37,24 +37,6 @@ const Dashboard = ({ children }) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken");
-  //   async function fetchData() {
-  //     try {
-  //       if (token && !user) {
-  //         await dispatch(userProfile(token));
-  //       }
-  //     } catch (error) {
-  //       console.error("Error while fetching user data:", error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [dispatch, user]);
-
-  // const listItemStyle = (path) => {
-  //   return location.pathname === path ? "selected-item " : "list-item ";
-  // };
 
   const listItemStyle = (path) => {
     if (location.pathname === path) {
@@ -103,7 +85,11 @@ const Dashboard = ({ children }) => {
           to="/dashboard"
           className={listItemStyle("/dashboard")}
         >
-          <ListItemIcon>
+          <ListItemIcon
+            sx={{
+              color: location.pathname === "/dashboard" ? "white" : "#1D5393",
+            }}
+          >
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Home" />
@@ -113,7 +99,13 @@ const Dashboard = ({ children }) => {
           to="/dashboard/job"
           className={listItemStyle("/dashboard/job")}
         >
-          <ListItemIcon>
+          <ListItemIcon
+            sx={{
+              color: location.pathname.startsWith("/dashboard/job")
+                ? "white"
+                : "#1D5393",
+            }}
+          >
             <WorkIcon />
           </ListItemIcon>
           <ListItemText primary="Job" />
@@ -123,7 +115,13 @@ const Dashboard = ({ children }) => {
           to="/dashboard/user"
           className={listItemStyle("/dashboard/user")}
         >
-          <ListItemIcon>
+          <ListItemIcon
+            sx={{
+              color: location.pathname.startsWith("/dashboard/user")
+                ? "white"
+                : "#1D5393",
+            }}
+          >
             <PersonIcon />
           </ListItemIcon>
           <ListItemText primary="User" />

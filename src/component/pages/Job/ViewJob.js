@@ -49,62 +49,57 @@ function ViewJob() {
             <Table aria-label="simple table">
               <TableBody>
                 <TableRow>
-                  <TableCell align="center">SO/Wo No</TableCell>
+                  <TableCell>SO/Wo No</TableCell>
                   <TableCell align="center">{jobs[0]?.soWo}</TableCell>
-                  <TableCell align="center">Prod.Order No</TableCell>
-                  <TableCell align="center">
-                    {jobs[0]?.productionOrderNo}
-                  </TableCell>
-                  <TableCell align="center">WO Date</TableCell>
+                  <TableCell>Prod.Order No</TableCell>
+                  <TableCell align="center">{jobs[0]?.prodOrderNo}</TableCell>
+                  <TableCell>WO Date</TableCell>
                   <TableCell align="center">
                     {formattedDate(jobs[0]?.woDate)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="center">Job Name</TableCell>
+                  <TableCell>Job Name</TableCell>
                   <TableCell align="center">{jobs[0]?.jobName}</TableCell>
-                  <TableCell align="center">PO No</TableCell>
+                  <TableCell>PO No</TableCell>
                   <TableCell align="center">{jobs[0]?.poNo}</TableCell>
-                  <TableCell align="center">Total CT</TableCell>
-                  <TableCell align="center">{jobs[0]?.totalCT}</TableCell>
+                  <TableCell>Total CT</TableCell>
+                  <TableCell align="center">
+                    {jobs[0]?.estimatedtotalCT}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="center">Drag No</TableCell>
+                  <TableCell>Drag No</TableCell>
                   <TableCell align="center">{jobs[0]?.dragNo}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
-          <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-            <Table sx={{ minWidth: 3200 }} aria-label="simple table">
-              <TableBody>
-                {jobs[0]?.processTable?.map((container, containerIndex) => (
-                  <TableContainer
-                    key={containerIndex}
-                    component={Paper}
-                    sx={{ marginTop: 3 }}
-                  >
-                    <TableRow
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <div>
-                        <TableCell>{containerIndex + 1}</TableCell>
-                        <TableCell>{container.processName}</TableCell>
-                      </div>
-                    </TableRow>
-                    {/* Add ProcessTable component with appropriate props */}
-                    <ViewProcessTable
-                      key={containerIndex}
-                      data={container.processTableData}
-                      containerIndex={containerIndex}
-                      selectedProcessName={container.processName}
-                      // ... other props you may need
-                    />
-                  </TableContainer>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+
+          {jobs[0]?.processTable?.map((container, containerIndex) => (
+            <TableContainer
+              key={containerIndex}
+              component={Paper}
+              sx={{ marginTop: 3 }}
+            >
+              <Typography
+                sx={{ flex: "1 1 100%", margin: 3 }}
+                variant="h6"
+                id="tableTitle"
+                component="div"
+              >
+                {containerIndex + 1} {container.processName}
+              </Typography>
+
+              <ViewProcessTable
+                key={containerIndex}
+                data={container.processTableData}
+                containerIndex={containerIndex}
+                selectedProcessName={container.processName}
+                // ... other props you may need
+              />
+            </TableContainer>
+          ))}
         </>
       )}
     </Dashboard>

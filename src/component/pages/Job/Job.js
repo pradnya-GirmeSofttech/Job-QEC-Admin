@@ -150,17 +150,28 @@ function Job() {
           <TableContainer component={Paper} sx={{ marginTop: 5 }}>
             <Table sx={{ minWidth: 650 }}>
               <TableHead>
-                <TableRow>
-                  <TableCell>SO/WO No</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Total CT</TableCell>
-                  <TableCell>Actual CT</TableCell>
-                  <TableCell>Actions</TableCell>
+                <TableRow sx={{ backgroundColor: "#1D5393" }}>
+                  <TableCell sx={{ color: "#fff" }}>SO/WO No</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Name</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Total CT</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Actual CT</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredJobs?.slice(startIndex, endIndex).map((job) => (
-                  <TableRow key={job._id}>
+                  <TableRow
+                    key={job._id}
+                    style={{
+                      color: "#fff",
+
+                      backgroundColor:
+                        job.estimatedtotalCT > job?.actualtotalCT ||
+                        job.estimatedtotalCT > job?.actualtotalCT
+                          ? "#E2F1D7"
+                          : "#E66571",
+                    }}
+                  >
                     <TableCell>{job.soWo}</TableCell>
                     <TableCell>{job.jobName}</TableCell>
                     <TableCell>{job.estimatedtotalCT}</TableCell>

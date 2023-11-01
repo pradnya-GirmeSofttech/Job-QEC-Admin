@@ -40,8 +40,8 @@ function CreateJob() {
     woDate: new Date().toISOString().split("T")[0],
     jobName: "",
     poNo: "",
-    estimatedtotalCT: "",
-    actualtotalCT: "",
+    estimatedtotalCT: 0,
+    actualtotalCT: 0,
     dragNo: "",
     processTable: containers,
   });
@@ -121,8 +121,6 @@ function CreateJob() {
         newErrors[field] = true;
       }
     });
-
-    console.log("containers:", containers);
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -242,9 +240,13 @@ function CreateJob() {
                   data.nop = parseFloat((data.width / data.dia).toFixed(2));
                   data.fpp = parseFloat((data.length / data.feed).toFixed(2));
                   data.actualCT = parseFloat(
-                    data.nop * data.fpp * (data.mr / data.dc) * 1.25
+                    (data.nop * data.fpp * (data.mr / data.dc) * 1.25).toFixed(
+                      2
+                    )
                   );
-                  data.estimatedHrs = parseFloat(data.actualCT / 60);
+                  data.estimatedHrs = parseFloat(
+                    (data.actualCT / 60).toFixed(2)
+                  );
                 }
               }
             } else if (processName === "Boring") {
@@ -278,7 +280,9 @@ function CreateJob() {
                   fieldName === "feed" ||
                   fieldName === "noh"
                 ) {
-                  data.actualCT = ((data.length * 1.05) / data.feed) * data.noh;
+                  data.actualCT = parseFloat(
+                    (((data.length * 1.05) / data.feed) * data.noh).toFixed(2)
+                  );
                 }
               }
             } else if (processName === "Tapping") {

@@ -265,26 +265,6 @@ function UpdateJob() {
     }
   };
 
-  // const calculateTotal = () => {
-  //   const totalEstimatedCT = containers.reduce((total, container) => {
-  //     const containerEstimatedCT = container.processTableData.reduce(
-  //       (containerTotal, data) => {
-  //         if (!isNaN(data.estimatedCT)) {
-  //           return containerTotal + data.estimatedCT;
-  //         }
-  //         return containerTotal;
-  //       },
-  //       0
-  //     );
-  //     return total + containerEstimatedCT;
-  //   }, 0);
-  //   console.log(totalEstimatedCT);
-  //   // Update the formData with the new actualtotalCT value
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     actualtotalCT: totalEstimatedCT,
-  //   }));
-  // };
   const handleTextFieldChange = (
     event,
     rowIndex,
@@ -329,17 +309,25 @@ function UpdateJob() {
                   updatedData.toolingSize = event.target.value;
                   updatedData.dia = updatedData.toolingSize * 0.9;
 
-                  updatedData.nop = updatedData.width / updatedData.dia;
+                  updatedData.nop = parseFloat(
+                    (updatedData.width / updatedData.dia).toFixed(2)
+                  );
 
-                  updatedData.fpp = updatedData.length / updatedData.feed;
+                  updatedData.fpp = parseFloat(
+                    (updatedData.length / updatedData.feed).toFixed(2)
+                  );
 
                   updatedData.actualCT = parseFloat(
-                    updatedData.nop *
+                    (
+                      updatedData.nop *
                       updatedData.fpp *
                       (updatedData.mr / updatedData.dc) *
-                      (1.25).toFixed(2)
+                      1.25
+                    ).toFixed(2)
                   );
-                  updatedData.estimatedHrs = updatedData.actualCT / 60;
+                  updatedData.estimatedHrs = parseFloat(
+                    (updatedData.actualCT / 60).toFixed(2)
+                  );
                 } else if (
                   fieldName === "startTime" ||
                   fieldName === "endTime" ||
@@ -364,7 +352,7 @@ function UpdateJob() {
 
                 // Update the field with the new value
                 updatedData[fieldName] = event.target.value;
-                console.log(event.target.value);
+
                 // Update other fields based on the previous value
                 if (
                   fieldName === "mr" ||
@@ -373,14 +361,17 @@ function UpdateJob() {
                   fieldName === "feed" ||
                   fieldName === "rpm"
                 ) {
-                  updatedData.nop = updatedData.mr / updatedData.dc;
+                  updatedData.nop = parseFloat(
+                    (updatedData.mr / updatedData.dc).toFixed(2)
+                  );
 
                   updatedData.fpp = parseFloat(
                     updatedData.length /
                       (updatedData.rpm * updatedData.feed).toFixed(2)
                   );
-                  updatedData.actualCT =
-                    updatedData.nop * updatedData.fpp * 1.25;
+                  updatedData.actualCT = parseFloat(
+                    updatedData.nop * updatedData.fpp * (1.25).toFixed(2)
+                  );
                 } else if (
                   fieldName === "startTime" ||
                   fieldName === "endTime" ||
@@ -409,11 +400,15 @@ function UpdateJob() {
                   fieldName === "legnth" ||
                   fieldName === "feed"
                 ) {
-                  updatedData.actualCT =
-                    ((updatedData.length * 1.05) / updatedData.feed) *
-                    updatedData.noh;
-                  updatedData.estimatedHrs =
-                    parseInt(updatedData.actualCT) / 60;
+                  updatedData.actualCT = parseFloat(
+                    (
+                      ((updatedData.length * 1.05) / updatedData.feed) *
+                      updatedData.noh
+                    ).toFixed(2)
+                  );
+                  updatedData.estimatedHrs = parseFloat(
+                    (updatedData.actualCT / 60).toFixed(2)
+                  );
                 } else if (
                   fieldName === "startTime" ||
                   fieldName === "endTime" ||
@@ -443,10 +438,11 @@ function UpdateJob() {
                   fieldName === "legnth" ||
                   fieldName === "rpm"
                 ) {
-                  updatedData.actualCT =
+                  updatedData.actualCT = parseFloat(
                     (updatedData.length / (updatedData.rpm * 1.5)) *
-                    updatedData.noh *
-                    1.3;
+                      updatedData.noh *
+                      (1.3).toFixed(2)
+                  );
                   updatedData.estimatedHrs =
                     parseInt(updatedData.actualCT) / 60;
                 } else if (

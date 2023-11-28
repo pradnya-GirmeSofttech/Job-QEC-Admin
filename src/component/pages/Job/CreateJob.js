@@ -23,11 +23,13 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch } from "react-redux";
 import { createJob } from "../../../actions/job";
 import { ArrowBack } from "./BackArrow";
-import { processList } from "./Data";
+import { handleSelection } from "../../../utils/HandleBreadcrumb";
+import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 
 function CreateJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selected, setSelected] = useState([]);
   const [containers, setContainers] = useState([
     {
       processName: "", // Add any initial values you need
@@ -48,7 +50,7 @@ function CreateJob() {
 
   const [errors, setErrors] = useState({
     soWo: false,
-    prodOrderNo: false,
+
     jobName: false,
     poNo: false,
     estimatedtotalCT: false,
@@ -97,7 +99,7 @@ function CreateJob() {
 
     const requiredFields = [
       "soWo",
-      "prodOrderNo",
+
       "jobName",
       "poNo",
       "estimatedtotalCT",
@@ -321,7 +323,7 @@ function CreateJob() {
       }
       return element;
     });
-    console.log(filteredData);
+
     setContainers(filteredData);
   };
 
@@ -403,8 +405,17 @@ function CreateJob() {
     setContainers(updatedContainers);
   };
 
+  const handleClick = (event, name) => {
+    const newSelected = handleSelection(selected, name);
+    setSelected(newSelected);
+  };
+
   return (
     <Dashboard>
+      <CustomBreadcrumb
+        items={["Job", "Job/Create-job"]}
+        onClick={handleClick}
+      />
       <Box display={"flex"}>
         <ArrowBack />
         <h2>Create Job</h2>
@@ -568,6 +579,7 @@ function CreateJob() {
           />
         </TableContainer>
       ))}
+
       {/* <IconButton size="large" onClick={handleAddRow}>
         <AddCircleIcon color="primary" />
       </IconButton> */}

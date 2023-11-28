@@ -38,7 +38,7 @@ export const ProcessTable = ({
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
-            <TableCell align="center">No</TableCell>
+
             <TableCell align="center">Process</TableCell>
             <TableCell align="center">Description</TableCell>
             <TableCell align="center">Machine Name</TableCell>
@@ -57,7 +57,7 @@ export const ProcessTable = ({
             <TableCell align="center">Actual CT(min)</TableCell>
 
             <TableCell align="center">EST.HRS</TableCell>
-            <TableCell align="center">Start Date</TableCell>
+            {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
@@ -67,15 +67,26 @@ export const ProcessTable = ({
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
             <TableCell align="center">Estimated CT(min)</TableCell>
-            <TableCell align="center">User Name</TableCell>
+            <TableCell align="center">User Name</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {processTableData &&
             processTableData.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                // style={{
+                //   color: "#fff",
+                //   backgroundColor:
+                //     row.actualCT >= row.estimatedCT
+                //       ? "#78cc9f"
+                //       : row.actualCT < row.estimatedCT
+                //       ? "#c34266"
+                //       : "inherit",
+                // }}
+              >
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <ModeStandbyOutlinedIcon
                     style={{
                       color:
@@ -86,7 +97,7 @@ export const ProcessTable = ({
                           : "inherit", // Default background color
                     }}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   <Select
                     labelId={`process-label-${rowIndex}`}
@@ -448,7 +459,7 @@ export const ProcessTable = ({
                     }
                   />
                 </TableCell>
-
+                {/* 
                 <TableCell align="center">
                   <TextField
                     label="startDate"
@@ -593,7 +604,7 @@ export const ProcessTable = ({
                       }
                     />
                   </TableCell> */}
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <TextField
                     label="startDate1"
                     size="small"
@@ -735,7 +746,7 @@ export const ProcessTable = ({
                       </MenuItem>
                     ))}
                   </Select>
-                </TableCell>
+                </TableCell>  */}
 
                 <TableCell align="center">
                   <IconButton
@@ -770,7 +781,7 @@ export const ProcessTable = ({
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
-            <TableCell align="center">No</TableCell>
+
             <TableCell align="center">Process</TableCell>
             <TableCell align="center">Description</TableCell>
             <TableCell align="center">Machine Name</TableCell>
@@ -787,7 +798,7 @@ export const ProcessTable = ({
 
             <TableCell align="center">Actual CT(min)</TableCell>
 
-            <TableCell align="center">Start Date</TableCell>
+            {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
@@ -797,7 +808,7 @@ export const ProcessTable = ({
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
             <TableCell align="center">Estimated CT(min)</TableCell>
-            <TableCell align="center">User Name</TableCell>
+            <TableCell align="center">User Name</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -805,18 +816,7 @@ export const ProcessTable = ({
             processTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
-                  <ModeStandbyOutlinedIcon
-                    style={{
-                      color:
-                        row.actualCT > row.estimatedCT
-                          ? "red" // Actual CT is more than Estimated CT + 10
-                          : row.actualCT < row.estimatedCT
-                          ? "green" // Actual CT is less than Estimated CT - 10
-                          : "inherit", // Default background color
-                    }}
-                  />
-                </TableCell>
+
                 <TableCell align="center">
                   <Select
                     labelId={`process-label-${rowIndex}`}
@@ -1152,7 +1152,7 @@ export const ProcessTable = ({
                     }
                   />
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <TextField
                     label="startDate"
                     className="fixed-width-input"
@@ -1421,7 +1421,7 @@ export const ProcessTable = ({
                       </MenuItem>
                     ))}
                   </Select>
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell align="center">
                   <IconButton
@@ -1456,7 +1456,7 @@ export const ProcessTable = ({
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
-            <TableCell align="center">No</TableCell>
+
             <TableCell align="center">Process</TableCell>
             <TableCell align="center">Description</TableCell>
             <TableCell align="center">Machine Name</TableCell>
@@ -1472,7 +1472,7 @@ export const ProcessTable = ({
             {/* <TableCell align="center">EST.HRS</TableCell> */}
 
             <TableCell align="center">Actual CT(min)</TableCell>
-            <TableCell align="center">Start Date</TableCell>
+            {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
@@ -1482,7 +1482,7 @@ export const ProcessTable = ({
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
             <TableCell align="center">Estimated CT(min)</TableCell>
-            <TableCell align="center">User Name</TableCell>
+            <TableCell align="center">User Name</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -1490,7 +1490,7 @@ export const ProcessTable = ({
             processTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <ModeStandbyOutlinedIcon
                     style={{
                       color:
@@ -1501,7 +1501,7 @@ export const ProcessTable = ({
                           : "inherit", // Default background color
                     }}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   <Select
                     labelId={`process-label-${rowIndex}`}
@@ -1766,7 +1766,7 @@ export const ProcessTable = ({
                     }
                   />
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <TextField
                     label="startDate"
                     className="fixed-width-input"
@@ -2035,7 +2035,7 @@ export const ProcessTable = ({
                       </MenuItem>
                     ))}
                   </Select>
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell align="center">
                   <IconButton
@@ -2070,7 +2070,7 @@ export const ProcessTable = ({
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
-            <TableCell align="center">No</TableCell>
+
             <TableCell align="center">Process</TableCell>
             <TableCell align="center">Description</TableCell>
             <TableCell align="center">Machine Name</TableCell>
@@ -2084,7 +2084,7 @@ export const ProcessTable = ({
             <TableCell align="center">NOH</TableCell>
 
             <TableCell align="center">Actual CT(min)</TableCell>
-            <TableCell align="center">Start Date</TableCell>
+            {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
@@ -2094,7 +2094,7 @@ export const ProcessTable = ({
             <TableCell align="center">End Date</TableCell>
             <TableCell align="center">End Time</TableCell>
             <TableCell align="center">Estimated CT(min)</TableCell>
-            <TableCell align="center">User Name</TableCell>
+            <TableCell align="center">User Name</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -2102,7 +2102,7 @@ export const ProcessTable = ({
             processTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <ModeStandbyOutlinedIcon
                     style={{
                       color:
@@ -2113,7 +2113,7 @@ export const ProcessTable = ({
                           : "inherit", // Default background color
                     }}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   <Select
                     labelId={`process-label-${rowIndex}`}
@@ -2377,7 +2377,7 @@ export const ProcessTable = ({
                     }
                   />
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <TextField
                     label="startDate"
                     className="fixed-width-input"
@@ -2646,7 +2646,7 @@ export const ProcessTable = ({
                       </MenuItem>
                     ))}
                   </Select>
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell align="center">
                   <IconButton

@@ -19,8 +19,10 @@ import {
   TablePagination,
   Modal,
   Divider,
+  InputBase,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
 import { deleteJob, generatePDF, getAllJob } from "../../../actions/job";
 import { useDispatch, useSelector } from "react-redux";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -117,6 +119,7 @@ function Job() {
         return false;
       })
     : [];
+  const noJobsAvailable = filteredJobs.length === 0;
 
   return (
     <Dashboard>
@@ -125,153 +128,195 @@ function Job() {
       ) : (
         <Box>
           <Container sx={{ display: "flex", justifyContent: "space-between" }}>
-            <h3>Jobs</h3>
-            <Box>
-              <TextField
-                label="Search"
-                id="outlined-size-small"
-                size="small"
-                onChange={handleSearch}
-              />
+            <Typography variant="h5" gutterBottom>
+              Jobs
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <Paper
+                component="form"
+                sx={{
+                  display: "flex",
+                  height: "70%",
+                }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ "aria-label": "search google maps" }}
+                  onChange={handleSearch}
+                  size="small"
+                />
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
               <Button
                 sx={{
                   backgroundColor: "#1d5393",
                   color: "#fff",
                   marginLeft: 2,
+                  size: "small",
+                  height: "70%",
                 }}
                 onClick={() => {
-                  navigation("/dashboard/job/createjob");
+                  navigation("/dashboard/job/create-job");
                 }}
               >
                 Add New Job
               </Button>
             </Box>
           </Container>
-          <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-            <Table sx={{ minWidth: 650 }}>
-              <TableHead>
-                <TableRow sx={{ backgroundColor: "#1D5393" }}>
-                  <TableCell sx={{ color: "#fff" }}>SO/WO No</TableCell>
-                  <TableCell sx={{ color: "#fff" }}>Name</TableCell>
-                  <TableCell sx={{ color: "#fff" }}>Total CT</TableCell>
-                  <TableCell sx={{ color: "#fff" }}>Actual CT</TableCell>
-                  <TableCell sx={{ color: "#fff" }}>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredJobs?.slice(startIndex, endIndex).map((job) => (
-                  <TableRow
-                    key={job._id}
-                    style={{
-                      color: "#fff",
-
-                      backgroundColor:
-                        job.estimatedtotalCT > job?.actualtotalCT ||
-                        job.estimatedtotalCT > job?.actualtotalCT
-                          ? "#E2F1D7"
-                          : "#E66571",
-                    }}
-                  >
-                    <TableCell>{job.soWo}</TableCell>
-                    <TableCell>{job.jobName}</TableCell>
-                    <TableCell>{job.estimatedtotalCT}</TableCell>
-                    <TableCell>{job?.actualtotalCT}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label="more"
-                        aria-controls={`job-options-${job._id}`}
-                        aria-haspopup="true"
-                        onClick={(event) => handleMenuOpen(event, job._id)}
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-                      <Menu
-                        id={`job-options-${job._id}`}
-                        anchorEl={anchorEl}
-                        open={openMenuId === job._id}
-                        onClose={handleMenuClose}
-                      >
-                        <MenuItem onClick={() => handleEdit(job._id)}>
-                          Edit
-                        </MenuItem>
-                        <MenuItem onClick={() => handleView(job._id)}>
-                          View
-                        </MenuItem>
-                        <MenuItem onClick={() => handleOpen(job._id)}>
-                          Delete
-                        </MenuItem>
-                        <MenuItem onClick={() => downloadPDF(job._id)}>
-                          Download PDF
-                        </MenuItem>
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box
+          {noJobsAvailable ? (
+            <Paper
               sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 500,
-                bgcolor: "background.paper",
-                borderRadius: 5,
-                boxShadow: 24,
-                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: 2, // Add padding to create a card-like appearance
+                boxShadow: 2,
+                marginTop: 20, // Add a shadow for a raised effect
               }}
             >
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Remove Job
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure you want to remove this Job?
-              </Typography>
-              <Divider sx={{ my: 2, width: "100%" }} />
-              <Box
-                sx={{
-                  width: "100%",
-                }}
+              <Typography variant="body1">No jobs available</Typography>
+            </Paper>
+          ) : (
+            <>
+              <TableContainer component={Paper} sx={{ marginTop: 5 }}>
+                <Table sx={{ minWidth: 650 }}>
+                  <TableHead>
+                    <TableRow sx={{ backgroundColor: "#1D5393" }}>
+                      <TableCell sx={{ color: "#fff" }}>SO/WO No</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>Name</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>Total CT</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>Actual CT</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredJobs?.slice(startIndex, endIndex).map((job) => (
+                      <TableRow
+                        key={job._id}
+                        style={{
+                          color: "#fff",
+
+                          backgroundColor:
+                            job.estimatedtotalCT >= job?.actualtotalCT ||
+                            job.estimatedtotalCT >= job?.actualtotalCT
+                              ? "#78cc9f"
+                              : "#c34266",
+                        }}
+                      >
+                        <TableCell>{job.soWo}</TableCell>
+                        <TableCell>{job.jobName}</TableCell>
+                        <TableCell>{job.estimatedtotalCT}</TableCell>
+                        <TableCell>{job?.actualtotalCT}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            aria-label="more"
+                            aria-controls={`job-options-${job._id}`}
+                            aria-haspopup="true"
+                            onClick={(event) => handleMenuOpen(event, job._id)}
+                          >
+                            <MoreHorizIcon />
+                          </IconButton>
+                          <Menu
+                            id={`job-options-${job._id}`}
+                            anchorEl={anchorEl}
+                            open={openMenuId === job._id}
+                            onClose={handleMenuClose}
+                          >
+                            <MenuItem onClick={() => handleEdit(job._id)}>
+                              Edit
+                            </MenuItem>
+                            <MenuItem onClick={() => handleView(job._id)}>
+                              View
+                            </MenuItem>
+                            <MenuItem onClick={() => handleOpen(job._id)}>
+                              Delete
+                            </MenuItem>
+                            <MenuItem onClick={() => downloadPDF(job._id)}>
+                              Download PDF
+                            </MenuItem>
+                          </Menu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
               >
-                <Button
+                <Box
                   sx={{
-                    backgroundColor: "#eb0e14",
-                    color: "#fff",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: 500,
+                    bgcolor: "background.paper",
+                    borderRadius: 5,
+                    boxShadow: 24,
+                    p: 4,
                   }}
-                  onClick={handleDelete}
                 >
-                  Confirm
-                </Button>
-                <Button
-                  sx={{
-                    backgroundColor: "#e5e7eb",
-                    color: "black",
-                    marginLeft: 3,
-                  }}
-                  onClick={handleClose}
-                >
-                  Cancle
-                </Button>
-              </Box>
-            </Box>
-          </Modal>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 50]}
-            component="div"
-            count={jobs.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    Remove Job
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Are you sure you want to remove this Job?
+                  </Typography>
+                  <Divider sx={{ my: 2, width: "100%" }} />
+                  <Box
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    <Button
+                      sx={{
+                        backgroundColor: "#eb0e14",
+                        color: "#fff",
+                      }}
+                      onClick={handleDelete}
+                    >
+                      Confirm
+                    </Button>
+                    <Button
+                      sx={{
+                        backgroundColor: "#e5e7eb",
+                        color: "black",
+                        marginLeft: 3,
+                      }}
+                      onClick={handleClose}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
+              </Modal>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 50]}
+                component="div"
+                count={jobs.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </>
+          )}
         </Box>
       )}
     </Dashboard>

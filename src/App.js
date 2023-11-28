@@ -32,7 +32,7 @@ function App() {
         <Route path="*" element={<Page404 />} />
         <Route path="/dashboard/user" element={<User />}></Route>
         <Route path="/dashboard/job" element={<Job />}></Route>
-        <Route path="/dashboard/job/createjob" element={<CreateJob />}></Route>
+        <Route path="/dashboard/job/create-job" element={<CreateJob />}></Route>
         <Route path="/dashboard/job/viewjob/:id" element={<ViewJob />}></Route>
         <Route
           path="/dashboard/job/updatejob/:id"

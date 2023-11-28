@@ -111,7 +111,14 @@ export const ViewProcessTable = ({
         <TableBody>
           {processTableData &&
             processTableData.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                style={{
+                  color: "#fff",
+                  backgroundColor:
+                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                }}
+              >
                 <TableCell align="center">{rowIndex + 1}</TableCell>
 
                 <TableCell align="center">{row.process}</TableCell>
@@ -161,9 +168,7 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               Sr.No
             </TableCell>
-            <TableCell align="center" sx={{ color: "#fff" }}>
-              No
-            </TableCell>
+
             <TableCell align="center" sx={{ color: "#fff" }}>
               Process
             </TableCell>
@@ -246,20 +251,16 @@ export const ViewProcessTable = ({
         <TableBody>
           {processTableData &&
             processTableData.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                style={{
+                  color: "#fff",
+                  backgroundColor:
+                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                }}
+              >
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
-                  <ModeStandbyOutlinedIcon
-                    style={{
-                      color:
-                        row.actualCT > row.estimatedCT
-                          ? "red"
-                          : row.actualCT < row.estimatedCT
-                          ? "green"
-                          : "inherit",
-                    }}
-                  />
-                </TableCell>
+
                 <TableCell align="center">{row.process}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">{row.machineName}</TableCell>
@@ -309,9 +310,7 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               Sr.No
             </TableCell>
-            <TableCell align="center" sx={{ color: "#fff" }}>
-              No
-            </TableCell>
+
             <TableCell align="center" sx={{ color: "#fff" }}>
               Process
             </TableCell>
@@ -386,20 +385,16 @@ export const ViewProcessTable = ({
         <TableBody>
           {processTableData &&
             processTableData.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                style={{
+                  color: "#fff",
+                  backgroundColor:
+                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                }}
+              >
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
-                  <ModeStandbyOutlinedIcon
-                    style={{
-                      color:
-                        row.actualCT > row.estimatedCT
-                          ? "red"
-                          : row.actualCT < row.estimatedCT
-                          ? "green"
-                          : "inherit",
-                    }}
-                  />
-                </TableCell>
+
                 <TableCell align="center">{row.process}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">{row.machineName}</TableCell>
@@ -431,7 +426,6 @@ export const ViewProcessTable = ({
                 </TableCell>
                 <TableCell align="center">{row.endTime1}</TableCell>
                 <TableCell align="center">{row.userName}</TableCell>
-                <TableCell align="center"></TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -447,9 +441,7 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               Sr.No
             </TableCell>
-            <TableCell align="center" sx={{ color: "#fff" }}>
-              No
-            </TableCell>
+
             <TableCell align="center" sx={{ color: "#fff" }}>
               Process
             </TableCell>
@@ -521,23 +513,18 @@ export const ViewProcessTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {" "}
           {processTableData &&
             processTableData.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                style={{
+                  color: "#fff",
+                  backgroundColor:
+                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                }}
+              >
                 <TableCell align="center">{rowIndex + 1}</TableCell>
-                <TableCell align="center">
-                  <ModeStandbyOutlinedIcon
-                    style={{
-                      color:
-                        row.actualCT > row.estimatedCT
-                          ? "red"
-                          : row.actualCT < row.estimatedCT
-                          ? "green"
-                          : "inherit",
-                    }}
-                  />
-                </TableCell>
+
                 <TableCell align="center">{row.process}</TableCell>
                 <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">{row.machineName}</TableCell>

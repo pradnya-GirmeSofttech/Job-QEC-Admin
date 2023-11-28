@@ -113,29 +113,29 @@ function UpdateJob() {
     e.preventDefault();
 
     // Calculate the totalEstimatedCT as you did before
-    const totalEstimatedCT = containers.reduce((total, container) => {
-      const containerEstimatedCT = container.processTableData.reduce(
-        (containerTotal, data) => {
-          if (!isNaN(data.estimatedCT)) {
-            return containerTotal + data.estimatedCT;
-          }
-          return containerTotal;
-        },
-        0
-      );
-      return total + containerEstimatedCT;
-    }, 0);
+    // const totalEstimatedCT = containers.reduce((total, container) => {
+    //   const containerEstimatedCT = container.processTableData.reduce(
+    //     (containerTotal, data) => {
+    //       if (!isNaN(data.estimatedCT)) {
+    //         return containerTotal + data.estimatedCT;
+    //       }
+    //       return containerTotal;
+    //     },
+    //     0
+    //   );
+    //   return total + containerEstimatedCT;
+    // }, 0);
 
     // Update the formData with the new totalEstimatedCT value
-    setFormData((prevData) => ({
-      ...prevData,
-      actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here
-    }));
+    // setFormData((prevData) => ({
+    //   ...prevData,
+    //   actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here
+    // }));
 
     const editFormData = {
       formData: {
         ...formData, // Make sure to include the updated formData
-        actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here as well
+        // Update the actualtotalCT here as well
       },
       id,
     };
@@ -265,6 +265,28 @@ function UpdateJob() {
     }
   };
 
+  const calculateTotalCT = () => {
+    // Calculate the totalEstimatedCT as you did before
+    const totalEstimatedCT = containers.reduce((total, container) => {
+      const containerEstimatedCT = container.processTableData.reduce(
+        (containerTotal, data) => {
+          if (!isNaN(data.estimatedCT)) {
+            return containerTotal + data.estimatedCT;
+          }
+          return containerTotal;
+        },
+        0
+      );
+      return total + containerEstimatedCT;
+    }, 0);
+    console.log("totalEstimatedCT", totalEstimatedCT);
+    // Update the formData with the new totalEstimatedCT value
+    setFormData((prevData) => ({
+      ...prevData,
+      actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here
+    }));
+  };
+
   const handleTextFieldChange = (
     event,
     rowIndex,
@@ -273,6 +295,7 @@ function UpdateJob() {
     processName
   ) => {
     // Make a copy of the containers state
+    console.log("fieldsName", fieldName);
     setContainers((prevContainers) => {
       return prevContainers.map((element, index1) => {
         if (containerIndex === index1) {
@@ -280,7 +303,7 @@ function UpdateJob() {
             ...element,
             processTableData: element.processTableData.map((data, index) => {
               const updatedData = { ...data };
-              const prevValue = updatedData[fieldName];
+              // const prevValue = updatedData[fieldName];
               updatedData[fieldName] = event.target.value;
 
               if (processName === "Milling" && index === rowIndex) {
@@ -306,7 +329,7 @@ function UpdateJob() {
                   fieldName === "mr" ||
                   fieldName === "dc"
                 ) {
-                  updatedData.toolingSize = event.target.value;
+                  // updatedData.toolingSize = event.target.value;
                   updatedData.dia = updatedData.toolingSize * 0.9;
 
                   updatedData.nop = parseFloat(
@@ -727,19 +750,48 @@ function UpdateJob() {
             </TableContainer>
           ))}
 
-          <IconButton size="large" onClick={addContainer}>
-            <AddCircleIcon color="primary" />
-          </IconButton>
-          <Button
-            color="primary"
-            sx={{
-              backgroundColor: "#1d5393",
-              color: "#fff",
-            }}
-            onClick={handleSubmit}
-          >
-            Update
-          </Button>
+          <Box display={"flex"} marginTop={5}>
+            <div>
+              <IconButton size="large" onClick={addContainer}>
+                <AddCircleIcon color="primary" />
+              </IconButton>
+              <Button
+                color="primary"
+                sx={{
+                  backgroundColor: "#1d5393",
+                  color: "#fff",
+                  marginRight: "10px",
+                }}
+                onClick={handleSubmit}
+              >
+                Update
+              </Button>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <Button
+                color="primary"
+                sx={{
+                  backgroundColor: "#1d5393",
+                  color: "#fff",
+                  marginRight: 2,
+                }}
+                onClick={calculateTotalCT}
+              >
+                CalculateTotal CT
+              </Button>
+              <TextField
+                label="Actual Total CT"
+                id="outlined-size-small"
+                size="small"
+                name="actualtotalCT"
+                value={formData?.actualtotalCT}
+                onChange={handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+          </Box>
         </>
       )}
     </Dashboard>

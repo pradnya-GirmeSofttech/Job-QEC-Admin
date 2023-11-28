@@ -15,6 +15,7 @@ import {
   MenuItem,
   TablePagination,
   InputBase,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link as RouterLink } from "react-router-dom";
@@ -117,7 +118,9 @@ function User() {
             m={2}
           >
             <Grid item>
-              <div>User</div>
+              <Typography variant="h5" gutterBottom>
+                User
+              </Typography>
             </Grid>
             <Grid item>
               <Button
@@ -153,11 +156,11 @@ function User() {
           <TableContainer component={Paper} m={2}>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
+                <TableRow sx={{ backgroundColor: "#1D5393" }}>
+                  <TableCell sx={{ color: "#fff" }}>Name</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Email</TableCell>
 
-                  <TableCell>Actions</TableCell>
+                  <TableCell sx={{ color: "#fff" }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

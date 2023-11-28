@@ -18,6 +18,15 @@ function Home() {
     dispatch(getAllJob());
     dispatch(fetchUsersWithUserRole());
   }, [dispatch]);
+  const jobsWithLessActualTime = jobs.filter(
+    (job) => job.estimatedtotalCT >= job?.actualtotalCT
+  );
+  const countOfJobsWithLessActualTime = jobsWithLessActualTime.length;
+
+  const jobsWithMoreActualTime = jobs.filter(
+    (job) => job.estimatedtotalCT <= job?.actualtotalCT
+  );
+  const countOfJobsWithMoreActualTime = jobsWithMoreActualTime.length;
 
   return (
     <Dashboard>
@@ -63,7 +72,8 @@ function Home() {
             padding: "10px",
           }}
         >
-          Total number of Jobs take exceed time : {jobs.length}
+          Total number of Jobs take exceed time :{" "}
+          {countOfJobsWithMoreActualTime}
         </Typography>
         <Typography
           variant="subtitle2"
@@ -72,7 +82,8 @@ function Home() {
             padding: "10px",
           }}
         >
-          Total number of Jobs take accurate time : {jobs.length}
+          Total number of Jobs take accurate time :{" "}
+          {countOfJobsWithLessActualTime}
         </Typography>
       </Card>
 

@@ -108,7 +108,7 @@ function Job() {
 
   // Filter jobs based on job name or SO/WO number
   const filteredJobs = jobs
-    ? jobs.filter((job) => {
+    ? jobs?.filter((job) => {
         // Check if the job object and its properties are defined
         if (job && job.jobName && job.soWo) {
           const jobNameMatch = job.jobName.toLowerCase().includes(searchQuery);

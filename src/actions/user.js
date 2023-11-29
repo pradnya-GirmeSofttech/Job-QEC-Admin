@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../utils/api";
-import { url } from "../utils/api";
+import { api } from "../utils/api";
 
 // Registration of new user
 export const loginNewUser = createAsyncThunk(
@@ -8,8 +7,8 @@ export const loginNewUser = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
-      const response = await axios.post(
-        `${url}/login`,
+      const response = await api.post(
+        `/login`,
         {
           email,
           password,
@@ -33,7 +32,7 @@ export const addNewUser = createAsyncThunk(
   "user/addNewUser",
   async ({ name, email, role }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/adduser`, {
+      const response = await api.post(`/adduser`, {
         name,
         email,
         role,
@@ -53,7 +52,7 @@ export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (userId, { rejectWithValue }) => {
     try {
-      await axios.delete(`${url}/deleteuser/${userId}`);
+      await api.delete(`/deleteuser/${userId}`);
       return userId;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -66,7 +65,7 @@ export const fetchUsersWithUserRole = createAsyncThunk(
   "user/fetchUsersWithUserRole",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}/users`);
+      const response = await api.get(`/users`);
 
       const data = await response.data;
 
@@ -82,8 +81,8 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (editFormData) => {
     try {
-      const response = await axios.put(
-        `${url}/edituser/${editFormData.id}`,
+      const response = await api.put(
+        `/edituser/${editFormData.id}`,
         editFormData.formData
       );
       console.log("res", response);

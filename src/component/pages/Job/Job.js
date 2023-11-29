@@ -91,11 +91,8 @@ function Job() {
   };
   const token = localStorage.getItem("authToken");
   useEffect(() => {
-    if (token && isAuthenticated) {
-      // Only dispatch getAllJob if jobs data is not already in the Redux store
-      dispatch(getAllJob(token));
-    }
-  }, [dispatch, token, isAuthenticated]);
+    dispatch(getAllJob(token));
+  }, [dispatch]);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value); // Update the search query state

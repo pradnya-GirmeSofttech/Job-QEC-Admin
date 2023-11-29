@@ -26,10 +26,27 @@ const Login = () => {
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // const login = async () => {
+  //   try {
+  //     const res = await axios.post(
+  //       "https://job-qec.onrender.com/api/v1/login",
+  //       {
+  //         email: "pratiksha.d@girmesofttech.com",
+  //         password: "1234567890",
+  //       }
+  //     );
+
+  //     console.log(res.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
+    // login();
   }, [isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState({

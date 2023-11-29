@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { url } from "../utils/api";
-import axios from "../utils/api";
+import { api } from "../utils/api";
 
 // Register
 export const registerUser = createAsyncThunk(
@@ -8,8 +7,8 @@ export const registerUser = createAsyncThunk(
   async ({ name, email, password, role }, { rejectWithValue }) => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
-      const response = await axios.post(
-        `${url}/register`,
+      const response = await api.post(
+        `/register`,
         {
           name,
           email,
@@ -35,23 +34,28 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const config = { headers: { "Content-Type": "application/json" } };
-      const response = await axios.post(
-        `${url}/login`,
-        {
-          email,
-          password,
-        },
-        config
+      const response = await api.post("/login", {
+        email: email,
+        password: password,
+      });
+
+      // Assuming your API returns a token on successful login
+      const token = response.data.token;
+      const userData = response.data.user;
+      // Save the token to local storage
+      localStorage.setItem("token", token);
+
+      return { success: true, token: token, user: userData };
+    } catch (error) {
+      // Handle login failure
+      console.error(
+        "Login failed:",
+        error.response ? error.response.data : error.message
       );
-
-      const user = response.data;
-      localStorage.setItem("authToken", user.token);
-
-      return user;
-    } catch (err) {
-      console.error("Error", err.response.data);
-      return rejectWithValue(err.response.data);
+      return {
+        success: false,
+        error: error.response ? error.response.data : error.message,
+      };
     }
   }
 );
@@ -61,7 +65,7 @@ export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.get(`${url}/logout`);
+      await api.get(`/logout`);
       localStorage.removeItem("authToken");
 
       // Assuming a successful logout, dispatch the logoutUser action
@@ -102,7 +106,7 @@ export const logout = createAsyncThunk(
 //  User profile
 export const userProfile = createAsyncThunk("auth/userProfile", async () => {
   try {
-    const response = await axios.get(`${url}/me`);
+    const response = await api.get(`/me`);
     const user = response.data;
 
     // You can also log the user here to verify the data

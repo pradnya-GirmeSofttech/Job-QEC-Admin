@@ -119,13 +119,13 @@ export const generatePDF = createAsyncThunk("jobs/generatePDF", async (id) => {
     });
 
     const blob = new Blob([response.data], { type: "application/pdf" });
-    saveAs(blob, "job.pdf");
-    // const url = window.URL.createObjectURL(blob);
-    // const a = document.createElement("a");
-    // a.href = url;
-    // a.download = "job.pdf";
-    // a.click();
-    // window.URL.revokeObjectURL(url);
+    // saveAs(blob, "job.pdf");
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "job.pdf";
+    a.click();
+    window.URL.revokeObjectURL(url);
 
     return { success: true };
   } catch (error) {

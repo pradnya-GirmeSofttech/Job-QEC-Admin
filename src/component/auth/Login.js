@@ -119,6 +119,7 @@ const Login = () => {
             <Typography variant="h6">Login</Typography>
             <form onSubmit={handleSubmit} autoComplete="off">
               <TextField
+                id="outlined-basic"
                 label="Email address"
                 type="email"
                 variant="outlined"
@@ -141,6 +142,7 @@ const Login = () => {
                 }
               />
               <TextField
+                id="outlined-basic"
                 label="Password"
                 variant="outlined"
                 fullWidth

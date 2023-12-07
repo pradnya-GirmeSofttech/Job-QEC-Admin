@@ -137,8 +137,6 @@ const Login = () => {
                   formData.email && !isEmailValid()
                     ? "Invalid email format"
                     : error?.message === "Invalid Email or Password"
-                    ? "Email does not exist"
-                    : ""
                 }
               />
               <TextField
@@ -159,8 +157,6 @@ const Login = () => {
                   formData.password && formData.password.length < 8
                     ? "Password must be at least 8 characters"
                     : error?.message === "Invalid Email or Password"
-                    ? "Incorrect password"
-                    : ""
                 }
                 InputProps={{
                   endAdornment: (
@@ -179,15 +175,12 @@ const Login = () => {
                   ),
                 }}
               />
-              {formData.showAlert ||
-              error?.message === "User already exists" ? (
+              {formData.showAlert || error?.message ? (
                 <Alert severity="error" sx={{ marginTop: 2 }}>
                   <AlertTitle>Error</AlertTitle>
                   {formData.showAlert
                     ? "Please enter all fields."
-                    : error?.message === "Invalid Email or Password"
-                    ? "Invalid Email or Password"
-                    : ""}
+                    : error?.message}
                 </Alert>
               ) : null}
               <Button

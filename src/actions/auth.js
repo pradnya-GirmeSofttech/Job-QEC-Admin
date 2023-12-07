@@ -52,10 +52,9 @@ export const loginUser = createAsyncThunk(
         "Login failed:",
         error.response ? error.response.data : error.message
       );
-      return {
-        success: false,
+      return rejectWithValue({
         error: error.response ? error.response.data : error.message,
-      };
+      });
     }
   }
 );

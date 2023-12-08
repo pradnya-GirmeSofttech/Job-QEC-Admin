@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from "../../dashboard/Dashboard";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
@@ -18,7 +18,7 @@ import {
 import { addNewUser } from "../../../actions/user";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
+import { clearUserError } from "../../../slice/authSlice";
 function CreateUser() {
   const [selected, setSelected] = useState([]);
   const navigate = useNavigate();
@@ -73,38 +73,44 @@ function CreateUser() {
 
       return;
     }
-
-    // if (error?.message === "User already exists") {
-    //   setShowUserExistsError(true);
-    // } else {
-    //   setShowUserExistsError(false);
-    // }
-    // if (!formData.email || !formData.name) {
-    //   setFormData({
-    //     ...formData,
-    //     showAlert: true,
-    //   });
-    //   return;
-    // }
-    // if (error?.message === "User already exists") {
-    //   newErrors.email = true;
-    // }
-    dispatch(addNewUser(formData));
-
-    if (!error && !error?.message) {
+    //  if (!error && !error?.message) {
+    //    setSuccessMessage(true);
+    //    setOpen(true);
+    //  } else {
+    //    setOpen(false);
+    //    setSuccessMessage(false);
+    //  }
+    if (error?.message === "User already exists") {
       setSuccessMessage(true);
       setOpen(true);
     } else {
-      setOpen(false);
       setSuccessMessage(false);
+      setOpen(false);
     }
-  };
 
+    if (error?.message === "User already exists") {
+      newErrors.email = true;
+    }
+    dispatch(addNewUser(formData));
+  };
+  useEffect(() => {
+    if (error) {
+      // If there is an error, setOpen(false) to close the modal
+      setOpen(false);
+    } else {
+      // If there is no error, setOpen(true) to open the modal
+      setOpen(true);
+    }
+  }, [error]);
   const handleClick = (event, name) => {
     const newSelected = handleSelection(selected, name);
     setSelected(newSelected);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    // Dispatch the clearUserError action when closing the modal or as needed
+    dispatch(clearUserError());
+  };
   return (
     <Dashboard>
       <CustomBreadcrumb

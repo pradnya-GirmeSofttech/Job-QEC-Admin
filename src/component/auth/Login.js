@@ -130,9 +130,9 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 error={formData.email && !isEmailValid()}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                // InputLabelProps={{
+                //   shrink: true,
+                // }}
                 helperText={
                   formData.email && !isEmailValid()
                     ? "Invalid email format"
@@ -149,9 +149,9 @@ const Login = () => {
                 type={formData.showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                // InputLabelProps={{
+                //   shrink: true,
+                // }}
                 error={formData.password && formData.password.length < 8}
                 helperText={
                   formData.password && formData.password.length < 8

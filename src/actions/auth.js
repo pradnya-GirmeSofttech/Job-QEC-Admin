@@ -34,10 +34,14 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await api.post("/login", {
-        email: email,
-        password: password,
-      });
+      const response = await api.post(
+        "/login",
+        {
+          email: email,
+          password: password,
+        },
+        { headers: { "X-Admin-Side": "true" } }
+      );
 
       // Assuming your API returns a token on successful login
       const token = response.data.token;

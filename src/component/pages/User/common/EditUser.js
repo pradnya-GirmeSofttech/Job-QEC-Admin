@@ -7,7 +7,9 @@ import {
   Typography,
   TextField,
   Button as MuiButton,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 function EditUser({ user, isOpen, onClose, handleEdit }) {
   const dispatch = useDispatch();
@@ -61,6 +63,20 @@ function EditUser({ user, isOpen, onClose, handleEdit }) {
           p: 4,
         }}
       >
+        <IconButton
+          aria-label="close"
+          color="inherit"
+          edge="end"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 10,
+            zIndex: 1,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Typography id="edit-modal-title" variant="h6">
           Edit User
         </Typography>

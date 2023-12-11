@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Typography, Button, Box } from "@mui/material";
+import { Modal, Typography, Button, Box, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 function ViewUserDetails({ user, onClose, isOpen }) {
   return (
@@ -16,6 +17,20 @@ function ViewUserDetails({ user, onClose, isOpen }) {
           p: 4,
         }}
       >
+        <IconButton
+          aria-label="close"
+          color="inherit"
+          edge="end"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 10,
+            zIndex: 1,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Typography id="modal-modal-title" variant="h6" component="h2">
           User Details
         </Typography>

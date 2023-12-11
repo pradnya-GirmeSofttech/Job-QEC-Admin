@@ -42,7 +42,7 @@ const MyModal = ({
           sx={{
             position: "absolute",
             top: 0,
-            right: 5,
+            right: 10,
             zIndex: 1,
           }}
         >

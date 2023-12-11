@@ -13,7 +13,11 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUserError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state, action) => {
@@ -65,14 +69,15 @@ const authSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        console.log(action.payload); // Log the payload for debugging
         state.loading = false;
         state.user = null;
-        state.error = action.payload;
+        state.error = action.payload.error; // Ensure the error property is used
         state.isAuthenticated = false;
       });
   },
 });
 
 // export const {logoutUser } = authSlice.actions;
-
+export const { clearUserError } = authSlice.actions;
 export default authSlice.reducer;

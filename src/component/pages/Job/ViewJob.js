@@ -49,7 +49,7 @@ function ViewJob() {
             <Table aria-label="simple table">
               <TableBody>
                 <TableRow>
-                  <TableCell>SO/Wo No</TableCell>
+                  <TableCell>SO/WO No</TableCell>
                   <TableCell align="center">{jobs[0]?.soWo}</TableCell>
                   <TableCell>Prod.Order No</TableCell>
                   <TableCell align="center">{jobs[0]?.prodOrderNo}</TableCell>

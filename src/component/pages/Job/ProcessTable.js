@@ -13,13 +13,14 @@ import {
   IconButton,
   FormHelperText,
   Button,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import "./ProcessTable.css";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import ModeStandbyOutlinedIcon from "@mui/icons-material/ModeStandbyOutlined";
+
 import ClearIcon from "@mui/icons-material/Clear";
-import { formattedEditDate } from "./formattedDate";
-import { idleCode, machineData, processList, toolList, userName } from "./Data";
+
+import { machineData, processList, toolList } from "./Data";
 
 export const ProcessTable = ({
   handleDeleteRow,
@@ -29,8 +30,10 @@ export const ProcessTable = ({
   containerIndex,
   handleAddRow,
   selectedProcessName,
+  handleValidation,
 }) => {
   const processTableData = data || [];
+  console.log("processTable", processTableErrors);
 
   const millingTable = (
     <>
@@ -99,35 +102,50 @@ export const ProcessTable = ({
                   />
                 </TableCell> */}
                 <TableCell align="center">
-                  <Select
-                    labelId={`process-label-${rowIndex}`}
-                    size="small"
-                    id={`process-${rowIndex}`}
-                    value={row.process}
-                    name={`process-${rowIndex}`}
-                    className="fixed-width-input"
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "process",
-                        containerIndex,
-                        "Milling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.process}
-                  >
-                    {processList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText error={processTableErrors[rowIndex]?.process}>
-                    {processTableErrors[rowIndex]?.process
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{
+                        color: "#1D5393",
+                      }}
+                    >
+                      ProcessName
+                    </InputLabel>
+
+                    <Select
+                      labelId={`process-label-${rowIndex}`}
+                      size="small"
+                      id={`process-${rowIndex}`}
+                      value={row.process}
+                      name={`process-${rowIndex}`}
+                      className="fixed-width-input"
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex,
+                          "Milling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {console.log(processTableErrors[rowIndex]?.process)}
+                      {processList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processTableErrors[rowIndex]?.process
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
                 <TableCell align="center">
                   <TextField
@@ -154,71 +172,87 @@ export const ProcessTable = ({
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Select
-                    labelId={`machineName-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`machineName-${rowIndex}`}
-                    value={row.machineName}
-                    name={`machineName-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "machineName",
-                        containerIndex,
-                        "Milling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {machineData.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {processTableErrors[rowIndex]?.machineName
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      Machine Name
+                    </InputLabel>
+                    <Select
+                      labelId={`machineName-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`machineName-${rowIndex}`}
+                      value={row.machineName}
+                      name={`machineName-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex,
+                          "Milling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {machineData.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {processTableErrors[rowIndex]?.machineName
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
-                  <Select
-                    labelId={`toolingUsed-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`toolingUsed-${rowIndex}`}
-                    value={row.toolingUsed} // Ensure that value is an array
-                    name={`toolingUsed-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "toolingUsed",
-                        containerIndex,
-                        "Milling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {toolList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {processTableErrors[rowIndex]?.toolingUsed
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      ToolingUsed
+                    </InputLabel>
+                    <Select
+                      labelId={`toolingUsed-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`toolingUsed-${rowIndex}`}
+                      value={row.toolingUsed} // Ensure that value is an array
+                      name={`toolingUsed-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex,
+                          "Milling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {toolList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {processTableErrors[rowIndex]?.toolingUsed
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
                 <TableCell align="center">
                   <TextField
@@ -236,12 +270,17 @@ export const ProcessTable = ({
                         "Milling"
                       )
                     }
+                    onBlur={(e) => handleValidation(e, rowIndex)}
                     error={processTableErrors[rowIndex]?.toolingSize}
                     helperText={
                       processTableErrors[rowIndex]?.toolingSize
                         ? "This field is required"
                         : ""
                     }
+                    inputProps={{
+                      inputMode: "numeric",
+                      pattern: "[0-9]*", // Regex pattern to allow only numbers
+                    }}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -284,12 +323,12 @@ export const ProcessTable = ({
                         "Milling"
                       )
                     }
-                    error={processTableErrors[rowIndex]?.length}
-                    helperText={
-                      processTableErrors[rowIndex]?.length
-                        ? "This field is required"
-                        : ""
-                    }
+                    // error={processTableErrors[rowIndex]?.length}
+                    // helperText={
+                    //   processTableErrors[rowIndex]?.length
+                    //     ? "This field is required"
+                    //     : ""
+                    // }
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -818,35 +857,46 @@ export const ProcessTable = ({
                 <TableCell align="center">{rowIndex + 1}</TableCell>
 
                 <TableCell align="center">
-                  <Select
-                    labelId={`process-label-${rowIndex}`}
-                    size="small"
-                    id={`process-${rowIndex}`}
-                    value={row.process}
-                    name={`process-${rowIndex}`}
-                    className="fixed-width-input"
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "process",
-                        containerIndex,
-                        "Boring"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.process}
-                  >
-                    {processList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText error={processTableErrors[rowIndex]?.process}>
-                    {processTableErrors[rowIndex]?.process
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      ProcessName
+                    </InputLabel>
+                    <Select
+                      labelId={`process-label-${rowIndex}`}
+                      size="small"
+                      id={`process-${rowIndex}`}
+                      value={row.process}
+                      name={`process-${rowIndex}`}
+                      className="fixed-width-input"
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex,
+                          "Boring"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {console.log(processTableErrors[rowIndex]?.process)}
+                      {processList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processTableErrors[rowIndex]?.process
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
                 <TableCell align="center">
                   <TextField
@@ -873,72 +923,88 @@ export const ProcessTable = ({
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Select
-                    labelId={`machineName-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`machineName-${rowIndex}`}
-                    value={row.machineName}
-                    name={`machineName-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "machineName",
-                        containerIndex,
-                        "Boring"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {machineData.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {processTableErrors[rowIndex]?.machineName
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      Machine Name
+                    </InputLabel>
+                    <Select
+                      labelId={`machineName-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`machineName-${rowIndex}`}
+                      value={row.machineName}
+                      name={`machineName-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex,
+                          "Boring"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {machineData.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {processTableErrors[rowIndex]?.machineName
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
-                  <Select
-                    labelId={`toolingUsed-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`toolingUsed-${rowIndex}`}
-                    value={row.toolingUsed} // Ensure that value is an array
-                    // Enable multiple selection
-                    name={`toolingUsed-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "toolingUsed",
-                        containerIndex,
-                        "Boring"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {toolList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {processTableErrors[rowIndex]?.toolingUsed
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      ToolingUsed
+                    </InputLabel>
+                    <Select
+                      labelId={`toolingUsed-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`toolingUsed-${rowIndex}`}
+                      value={row.toolingUsed} // Ensure that value is an array
+                      // Enable multiple selection
+                      name={`toolingUsed-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex,
+                          "Boring"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {toolList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {processTableErrors[rowIndex]?.toolingUsed
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
@@ -1029,12 +1095,12 @@ export const ProcessTable = ({
                         "Boring"
                       )
                     }
-                    error={processTableErrors[rowIndex]?.length}
-                    helperText={
-                      processTableErrors[rowIndex]?.length
-                        ? "This field is required"
-                        : ""
-                    }
+                    // error={processTableErrors[rowIndex]?.length}
+                    // helperText={
+                    //   processTableErrors[rowIndex]?.length
+                    //     ? "This field is required"
+                    //     : ""
+                    // }
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -1503,35 +1569,45 @@ export const ProcessTable = ({
                   />
                 </TableCell> */}
                 <TableCell align="center">
-                  <Select
-                    labelId={`process-label-${rowIndex}`}
-                    size="small"
-                    id={`process-${rowIndex}`}
-                    value={row.process}
-                    name={`process-${rowIndex}`}
-                    className="fixed-width-input"
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "process",
-                        containerIndex,
-                        "Drilling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.process}
-                  >
-                    {processList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText error={processTableErrors[rowIndex]?.process}>
-                    {processTableErrors[rowIndex]?.process
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      ProcessName
+                    </InputLabel>
+                    <Select
+                      labelId={`process-label-${rowIndex}`}
+                      size="small"
+                      id={`process-${rowIndex}`}
+                      value={row.process}
+                      name={`process-${rowIndex}`}
+                      className="fixed-width-input"
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex,
+                          "Drilling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processTableErrors[rowIndex]?.process
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
                 <TableCell align="center">
                   <TextField
@@ -1558,72 +1634,88 @@ export const ProcessTable = ({
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Select
-                    labelId={`machineName-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`machineName-${rowIndex}`}
-                    value={row.machineName}
-                    name={`machineName-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "machineName",
-                        containerIndex,
-                        "Drilling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {machineData.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {processTableErrors[rowIndex]?.machineName
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      Machine Name
+                    </InputLabel>
+                    <Select
+                      labelId={`machineName-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`machineName-${rowIndex}`}
+                      value={row.machineName}
+                      name={`machineName-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex,
+                          "Drilling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {machineData.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {processTableErrors[rowIndex]?.machineName
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
-                  <Select
-                    labelId={`toolingUsed-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`toolingUsed-${rowIndex}`}
-                    value={row.toolingUsed} // Ensure that value is an array
-                    // Enable multiple selection
-                    name={`toolingUsed-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "toolingUsed",
-                        containerIndex,
-                        "Drilling"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {toolList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {processTableErrors[rowIndex]?.toolingUsed
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel
+                      id="demo-multiple-name-label"
+                      style={{ color: "#1D5393" }}
+                    >
+                      ToolingUsed
+                    </InputLabel>
+                    <Select
+                      labelId={`toolingUsed-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`toolingUsed-${rowIndex}`}
+                      value={row.toolingUsed} // Ensure that value is an array
+                      // Enable multiple selection
+                      name={`toolingUsed-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex,
+                          "Drilling"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {toolList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {processTableErrors[rowIndex]?.toolingUsed
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
@@ -1715,12 +1807,12 @@ export const ProcessTable = ({
                         "Drilling"
                       )
                     }
-                    error={processTableErrors[rowIndex]?.length}
-                    helperText={
-                      processTableErrors[rowIndex]?.length
-                        ? "This field is required"
-                        : ""
-                    }
+                    // error={processTableErrors[rowIndex]?.length}
+                    // helperText={
+                    //   processTableErrors[rowIndex]?.length
+                    //     ? "This field is required"
+                    //     : ""
+                    // }
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -2115,35 +2207,42 @@ export const ProcessTable = ({
                   />
                 </TableCell> */}
                 <TableCell align="center">
-                  <Select
-                    labelId={`process-label-${rowIndex}`}
-                    size="small"
-                    id={`process-${rowIndex}`}
-                    value={row.process}
-                    name={`process-${rowIndex}`}
-                    className="fixed-width-input"
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "process",
-                        containerIndex,
-                        "Tapping"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.process}
-                  >
-                    {processList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText error={processTableErrors[rowIndex]?.process}>
-                    {processTableErrors[rowIndex]?.process
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel id="demo-multiple-name-label">
+                      ProcessName
+                    </InputLabel>
+                    <Select
+                      labelId={`process-label-${rowIndex}`}
+                      size="small"
+                      id={`process-${rowIndex}`}
+                      value={row.process}
+                      name={`process-${rowIndex}`}
+                      className="fixed-width-input"
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "process",
+                          containerIndex,
+                          "Tapping"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.process}
+                    >
+                      {processTableErrors[rowIndex]?.process
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
                 <TableCell align="center">
                   <TextField
@@ -2170,71 +2269,81 @@ export const ProcessTable = ({
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Select
-                    labelId={`machineName-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`machineName-${rowIndex}`}
-                    value={row.machineName}
-                    name={`machineName-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "machineName",
-                        containerIndex,
-                        "Tapping"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {machineData.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.machineName}
-                  >
-                    {processTableErrors[rowIndex]?.machineName
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel id="demo-multiple-name-label">
+                      Machine Name
+                    </InputLabel>
+                    <Select
+                      labelId={`machineName-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`machineName-${rowIndex}`}
+                      value={row.machineName}
+                      name={`machineName-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "machineName",
+                          containerIndex,
+                          "Tapping"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {machineData.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.machineName}
+                    >
+                      {processTableErrors[rowIndex]?.machineName
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
-                  <Select
-                    labelId={`toolingUsed-label-${rowIndex}`}
-                    className="fixed-width-input"
-                    size="small"
-                    id={`toolingUsed-${rowIndex}`}
-                    value={row.toolingUsed} // Ensure that value is an array
-                    name={`toolingUsed-${rowIndex}`}
-                    onChange={(e) =>
-                      handleTextFieldChange(
-                        e,
-                        rowIndex,
-                        "toolingUsed",
-                        containerIndex,
-                        "Tapping"
-                      )
-                    }
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {toolList.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText
-                    error={processTableErrors[rowIndex]?.toolingUsed}
-                  >
-                    {processTableErrors[rowIndex]?.toolingUsed
-                      ? "This field is required"
-                      : ""}
-                  </FormHelperText>
+                  <FormControl>
+                    <InputLabel id="demo-multiple-name-label">
+                      ToolingUsed
+                    </InputLabel>
+                    <Select
+                      labelId={`toolingUsed-label-${rowIndex}`}
+                      className="fixed-width-input"
+                      size="small"
+                      id={`toolingUsed-${rowIndex}`}
+                      value={row.toolingUsed} // Ensure that value is an array
+                      name={`toolingUsed-${rowIndex}`}
+                      onChange={(e) =>
+                        handleTextFieldChange(
+                          e,
+                          rowIndex,
+                          "toolingUsed",
+                          containerIndex,
+                          "Tapping"
+                        )
+                      }
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {toolList.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText
+                      error={processTableErrors[rowIndex]?.toolingUsed}
+                    >
+                      {processTableErrors[rowIndex]?.toolingUsed
+                        ? "This field is required"
+                        : ""}
+                    </FormHelperText>
+                  </FormControl>
                 </TableCell>
 
                 <TableCell align="center">
@@ -2325,12 +2434,12 @@ export const ProcessTable = ({
                         "Tapping"
                       )
                     }
-                    error={processTableErrors[rowIndex]?.length}
-                    helperText={
-                      processTableErrors[rowIndex]?.length
-                        ? "This field is required"
-                        : ""
-                    }
+                    // error={processTableErrors[rowIndex]?.length}
+                    // helperText={
+                    //   processTableErrors[rowIndex]?.length
+                    //     ? "This field is required"
+                    //     : ""
+                    // }
                   />
                 </TableCell>
 

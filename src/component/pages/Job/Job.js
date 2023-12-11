@@ -22,7 +22,7 @@ import {
   InputBase,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import { deleteJob, generatePDF, getAllJob } from "../../../actions/job";
 import { useDispatch, useSelector } from "react-redux";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -32,7 +32,7 @@ function Job() {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const { jobs, loading } = useSelector((state) => state.job);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for the menu
   const [openMenuId, setOpenMenuId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,7 +81,10 @@ function Job() {
     setSelectedId(null);
     setOpen(false);
   };
-
+  useEffect(() => {
+    // Reset the page to 0 when searchQuery changes
+    setPage(0);
+  }, [searchQuery]);
   const handleDelete = () => {
     if (selectedId) {
       // Check if a job ID is selected
@@ -102,13 +105,18 @@ function Job() {
     dispatch(generatePDF(id));
     console.log("id", id);
   };
+  const handleClearSearch = () => {
+    setSearchQuery(""); // Clear the searchQuery state
+  };
 
   // Filter jobs based on job name or SO/WO number
   const filteredJobs = jobs
     ? jobs?.filter((job) => {
         // Check if the job object and its properties are defined
         if (job && job.jobName && job.soWo) {
-          const jobNameMatch = job.jobName.toLowerCase().includes(searchQuery);
+          const jobNameMatch = job.jobName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase());
           const soWoMatch = job.soWo.toString().includes(searchQuery);
           return jobNameMatch || soWoMatch;
         }
@@ -138,17 +146,19 @@ function Job() {
               >
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search"
+                  placeholder="Search SO/WO NO or Job Name"
                   inputProps={{ "aria-label": "search google maps" }}
                   onChange={handleSearch}
+                  value={searchQuery}
                   size="small"
                 />
                 <IconButton
                   type="button"
                   sx={{ p: "10px" }}
                   aria-label="search"
+                  onClick={handleClearSearch}
                 >
-                  <SearchIcon />
+                  <ClearIcon />
                 </IconButton>
               </Paper>
               <Button
@@ -303,15 +313,17 @@ function Job() {
                   </Box>
                 </Box>
               </Modal>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50]}
-                component="div"
-                count={jobs.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
+              {!searchQuery && (
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  component="div"
+                  count={jobs.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              )}
             </>
           )}
         </Box>

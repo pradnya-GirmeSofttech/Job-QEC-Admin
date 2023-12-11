@@ -13,6 +13,8 @@ import {
   Select,
   MenuItem,
   Typography,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import "./ProcessTable.css";
 import Dashboard from "../../dashboard/Dashboard";
@@ -25,6 +27,7 @@ import { createJob } from "../../../actions/job";
 import { ArrowBack } from "./BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
+import MyModal from "../../../utils/Modal";
 
 function CreateJob() {
   const dispatch = useDispatch();
@@ -47,6 +50,8 @@ function CreateJob() {
     dragNo: "",
     processTable: containers,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const [errors, setErrors] = useState({
     soWo: false,
@@ -57,21 +62,61 @@ function CreateJob() {
 
     dragNo: false,
   });
-  const [processTableErrors, setProcessTableErrors] = useState(
-    containers.map((item) => {
-      item.processTableData.map(() => ({
-        process: false,
-        description: false,
-        machineName: false,
-        toolingUsed: false,
-        dc: false,
-        length: false,
-        width: false,
-        feed: false,
-        estimatedCT: false,
+  const [processTableErrors, setProcessTableErrors] = useState(() => {
+    return containers.map((item) => {
+      const dataLength = item.processTableData.length || 1; // Use 1 if the array is empty
+      return Array(dataLength)
+        .fill(null)
+        .map(() => ({
+          process: false,
+          description: false,
+          machineName: false,
+          toolingUsed: false,
+          dc: false,
+          length: false,
+          width: false,
+          feed: false,
+          estimatedCT: false,
+        }));
+    });
+  });
+
+  console.log(processTableErrors);
+
+  const handleValidation = (event, rowIndex) => {
+    const enteredValue = event.target.value;
+    console.log("validation", enteredValue);
+    if (!/^[0-9]*$/.test(enteredValue)) {
+      // If the entered value is not a number, update the error state
+
+      setProcessTableErrors((prevErrors) => ({
+        ...prevErrors,
+        [rowIndex]: {
+          ...prevErrors[rowIndex],
+          toolingSize: "Only numbers are allowed",
+        },
       }));
-    })
-  );
+    } else {
+      // If the entered value is a number, clear the error state
+      setProcessTableErrors((prevErrors) => ({
+        ...prevErrors,
+        [rowIndex]: {
+          ...prevErrors[rowIndex],
+          toolingSize: "",
+        },
+      }));
+    }
+  };
+
+  const handleOpenModal = (message) => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalMessage("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,13 +174,50 @@ function CreateJob() {
       //   setProcessTableErrors(processTableErrors);
       return;
     }
+
+    const newProcessTableErrors = containers.map((container) => {
+      return container.processTableData.map((data) => {
+        const rowErrors = {};
+
+        ProcessrequiredFields.forEach((field) => {
+          if (!data[field]) {
+            rowErrors[field] = true;
+          }
+        });
+
+        return rowErrors;
+      });
+    });
+    setProcessTableErrors(newProcessTableErrors);
+
+    // Check for processTableErrors
+    const hasProcessTableErrors = newProcessTableErrors.some(
+      (containerErrors) =>
+        containerErrors.some((rowErrors) =>
+          Object.values(rowErrors).some((error) => error)
+        )
+    );
+    console.log(hasProcessTableErrors);
+    if (hasProcessTableErrors) {
+      handleOpenModal("Fill all Process Table Data.");
+      return;
+    }
+    const hasEmptyRow = containers.some(
+      (item) => item.processTableData.length === 0
+    );
+
+    if (hasEmptyRow) {
+      handleOpenModal("At least one row in the process table is required.");
+      return;
+    }
+
     if (containers.length === 0) {
-      alert("At least one row in the process table is required.");
+      handleOpenModal("At least one row in the process table is required.");
       return;
     }
     containers.map((item) => {
       if (item.processTableData.length === 0) {
-        alert("At least one row in the process table is required.");
+        handleOpenModal("At least one row in the process table is required.");
         return;
       }
     });
@@ -143,6 +225,7 @@ function CreateJob() {
     dispatch(createJob(formData));
     navigate(-1); // This will navigate back to the previous screen
   };
+  console.log(processTableErrors);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -544,18 +627,26 @@ function CreateJob() {
             <div>
               <TableCell>{containerIndex + 1}</TableCell>
               <TableCell>
-                <Select
-                  value={container.processName}
-                  label="processName"
-                  className="fixed-width-input"
-                  size="small"
-                  onChange={(e) => handleDropdownChange(e, containerIndex)}
-                >
-                  <MenuItem value="Milling">MILLING</MenuItem>
-                  <MenuItem value="Boring">BORING</MenuItem>
-                  <MenuItem value="Drilling">DRILLING</MenuItem>
-                  <MenuItem value="Tapping">TAPPING</MenuItem>
-                </Select>
+                <FormControl>
+                  <InputLabel
+                    id="demo-multiple-name-label"
+                    style={{ color: "#1D5393" }}
+                  >
+                    ProcessName
+                  </InputLabel>
+                  <Select
+                    value={container.processName}
+                    label="processName"
+                    className="fixed-width-input"
+                    size="large"
+                    onChange={(e) => handleDropdownChange(e, containerIndex)}
+                  >
+                    <MenuItem value="Milling">MILLING</MenuItem>
+                    <MenuItem value="Boring">BORING</MenuItem>
+                    <MenuItem value="Drilling">DRILLING</MenuItem>
+                    <MenuItem value="Tapping">TAPPING</MenuItem>
+                  </Select>
+                </FormControl>
               </TableCell>
             </div>
             <IconButton size="small">
@@ -575,6 +666,7 @@ function CreateJob() {
             containerIndex={containerIndex}
             handleAddRow={handleAddRow}
             selectedProcessName={container.processName}
+            handleValidation={handleValidation}
             // ... other props you may need
           />
         </TableContainer>
@@ -586,6 +678,15 @@ function CreateJob() {
       <IconButton size="large" onClick={addContainer}>
         <AddCircleIcon color="primary" />
       </IconButton>
+      <MyModal
+        open={isModalOpen} // Use 'open' instead of 'isOpen'
+        onClose={handleCloseModal}
+        title="Error Message" // Set the title you want to display
+        description={modalMessage} // Use 'description' instead of 'message'
+        buttonText="OK" // Set the button text you want to display
+        onButtonClick={handleCloseModal} // Set the button click handler
+      />
+
       <Button
         color="primary"
         sx={{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Dashboard from "../../dashboard/Dashboard";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
@@ -13,20 +13,25 @@ import {
   Alert,
   Box,
   Modal,
+  Fade,
+  Backdrop,
   IconButton,
 } from "@mui/material";
 import { addNewUser } from "../../../actions/user";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { clearUserError } from "../../../slice/authSlice";
+
 function CreateUser() {
   const [selected, setSelected] = useState([]);
   const navigate = useNavigate();
   const error = useSelector((state) => state.user.error);
+  console.log(error);
+  const role = useSelector((state) => state.auth.user.role);
+  // const navigate = useNavigate();
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [openModal, setOpenModal] = useState(false);
   const [formDataError, setFormDataError] = useState({
     name: false,
     email: false,
@@ -34,7 +39,6 @@ function CreateUser() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    // showAlert: false,
   });
   const dispatch = useDispatch();
   const isEmailValid = () => {
@@ -63,106 +67,56 @@ function CreateUser() {
     e.preventDefault();
     const newErrors = {};
     const requiredFields = ["name", "email"];
+
     requiredFields.forEach((field) => {
       if (!formData[field]) {
         newErrors[field] = true;
       }
     });
+
+    if (!isEmailValid()) {
+      newErrors["email"] = true;
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setFormDataError(newErrors);
-
       return;
     }
-    //  if (!error && !error?.message) {
-    //    setSuccessMessage(true);
-    //    setOpen(true);
-    //  } else {
-    //    setOpen(false);
-    //    setSuccessMessage(false);
-    //  }
-    if (error?.message === "User already exists") {
-      setSuccessMessage(true);
-      setOpen(true);
-    } else {
-      setSuccessMessage(false);
-      setOpen(false);
-    }
 
-    if (error?.message === "User already exists") {
-      newErrors.email = true;
-    }
-    dispatch(addNewUser(formData));
+    dispatch(addNewUser(formData))
+      .then(() => {
+        setSuccessMessage(true);
+        setOpenModal(true);
+        setFormData({
+          name: "",
+          email: "",
+        });
+      })
+      .catch((err) => {
+        setError(err);
+        setOpenModal(true);
+        setSuccessMessage(false);
+      });
   };
-  useEffect(() => {
-    if (error) {
-      // If there is an error, setOpen(false) to close the modal
-      setOpen(false);
-    } else {
-      // If there is no error, setOpen(true) to open the modal
-      setOpen(true);
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+    if (successMessage) {
+      navigate(-1);
     }
-  }, [error]);
+  };
   const handleClick = (event, name) => {
     const newSelected = handleSelection(selected, name);
     setSelected(newSelected);
   };
-  const handleClose = () => {
-    setOpen(false);
-    // Dispatch the clearUserError action when closing the modal or as needed
-    dispatch(clearUserError());
-  };
+
   return (
     <Dashboard>
       <CustomBreadcrumb
         items={["User", "User/Create-user"]}
         onClick={handleClick}
       />
-      {successMessage && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 400,
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              edge="end"
-              onClick={handleClose}
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 5,
-                zIndex: 1,
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              User
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              User added successfully
-            </Typography>
-            <Button onClick={() => navigate(-1)} variant="contained">
-              Ok
-            </Button>
-          </Box>
-        </Modal>
-      )}
+
       <Container
         maxWidth="sm"
         sx={{
@@ -188,7 +142,7 @@ function CreateUser() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              error={formDataError.name} // Set error prop based on the error state
+              error={formDataError.name}
               helperText={formDataError.name ? "This field is required" : ""}
             />
             <TextField
@@ -200,7 +154,7 @@ function CreateUser() {
               value={formData.email}
               onBlur={handleChange}
               onChange={handleChange}
-              error={formDataError.email} // Set error prop based on the error state
+              error={formDataError.email}
               helperText={
                 formDataError.email && !isEmailValid()
                   ? "Invalid email format"
@@ -208,26 +162,63 @@ function CreateUser() {
                   ? "Email does not exist"
                   : ""
               }
-              // helperText={
-              //   !formData.email && !isEmailValid()
-              //     ? "Invalid email format"
-              //     : error?.message === "Invalid Email or Password"
-              //     ? "Email does not exist"
-              //     : ""
-              // }
             />
 
-            {error?.message === "User already exists" ? (
-              <Alert severity="error" sx={{ marginTop: 2 }}>
-                <AlertTitle>Error</AlertTitle>
-                User already exists
-              </Alert>
-            ) : null}
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              // disabled={/* Add a condition to disable the button during submission */}
+            >
               Register User
             </Button>
           </form>
         </Card>
+        <Modal
+          open={openModal}
+          onClose={handleModalClose}
+          closeAfterTransition
+          // BackdropComponent={Backdrop}
+          // BackdropProps={{
+          //   timeout: 500,
+          // }}
+        >
+          <Fade in={openModal}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 300,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography variant="h6">
+                {error ? "Error" : successMessage ? "Success" : ""}
+              </Typography>
+              <Typography>
+                {error
+                  ? formData.showAlert
+                    ? "Please enter all fields."
+                    : error?.message
+                  : successMessage
+                  ? "User added successfully"
+                  : ""}
+              </Typography>
+              <Button
+                onClick={handleModalClose}
+                color="primary"
+                variant="contained"
+              >
+                OK
+              </Button>
+            </Box>
+          </Fade>
+        </Modal>
       </Container>
     </Dashboard>
   );

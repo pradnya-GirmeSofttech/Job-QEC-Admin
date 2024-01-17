@@ -15,13 +15,14 @@ import {
   Typography,
   FormControl,
   InputLabel,
+  Tooltip,
 } from "@mui/material";
 import "./ProcessTable.css";
 import Dashboard from "../../dashboard/Dashboard";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
-import ClearIcon from "@mui/icons-material/Clear";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch } from "react-redux";
 import { createJob } from "../../../actions/job";
 import { ArrowBack } from "./BackArrow";
@@ -45,7 +46,7 @@ function CreateJob() {
     woDate: new Date().toISOString().split("T")[0],
     jobName: "",
     poNo: "",
-    estimatedtotalCT: 0,
+    estimatedtotalCT: null,
     actualtotalCT: 0,
     dragNo: "",
     processTable: containers,
@@ -197,7 +198,7 @@ function CreateJob() {
           Object.values(rowErrors).some((error) => error)
         )
     );
-    console.log(hasProcessTableErrors);
+    console.log("errror", newProcessTableErrors);
     if (hasProcessTableErrors) {
       handleOpenModal("Fill all Process Table Data.");
       return;
@@ -417,27 +418,27 @@ function CreateJob() {
       description: "",
       machineName: "",
       toolingUsed: "",
-      dc: 0,
-      mr: 0,
-      length: 0,
-      width: 0,
-      feed: 0,
-      estimatedCT: 0,
-      actualCT: 0,
+      // dc: 0,
+      // mr: 0,
+      // length: 0,
+      // width: 0,
+      // feed: 0,
+      // estimatedCT: 0,
+      // actualCT: 0,
       startDate: new Date().toISOString().split("T")[0],
       startTime: "",
       endDate: new Date().toISOString().split("T")[0],
       endTime: "",
-      idleCode: "",
+      // idleCode: "",
       startDate1: new Date().toISOString().split("T")[0],
       startTime1: "",
       endDate1: new Date().toISOString().split("T")[0],
       endTime1: "",
       userName: "",
-      nop: 0,
-      fpp: 0,
-      estimatedHrs: 0,
-      toolingSize: 0,
+      // nop: 0,
+      // fpp: 0,
+      // estimatedHrs: 0,
+      // toolingSize: 0,
     });
 
     setContainers(updatedContainers);
@@ -600,10 +601,10 @@ function CreateJob() {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align="center">Drag No</TableCell>
+              <TableCell align="center">Drawing No</TableCell>
               <TableCell align="center">
                 <TextField
-                  label="Drag No"
+                  label="Drawing No"
                   id="outlined-size-small"
                   size="small"
                   name="dragNo"
@@ -637,7 +638,7 @@ function CreateJob() {
                   <Select
                     value={container.processName}
                     label="processName"
-                    className="fixed-width-input"
+                    className="input"
                     size="large"
                     onChange={(e) => handleDropdownChange(e, containerIndex)}
                   >
@@ -649,12 +650,14 @@ function CreateJob() {
                 </FormControl>
               </TableCell>
             </div>
-            <IconButton size="small">
-              <ClearIcon
-                color="error"
-                onClick={() => deleteContainer(containerIndex)}
-              />
-            </IconButton>
+            <Tooltip title="Delete Container" arrow placement="top">
+              <IconButton size="small" sx={{ marginRight: 3 }}>
+                <DeleteOutlineIcon
+                  color="error"
+                  onClick={() => deleteContainer(containerIndex)}
+                />
+              </IconButton>
+            </Tooltip>
           </TableRow>
           {/* Add ProcessTable component with appropriate props */}
           <ProcessTable

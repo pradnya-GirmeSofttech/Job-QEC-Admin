@@ -12,9 +12,11 @@ import {
   Box,
   Select,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import Dashboard from "../../dashboard/Dashboard";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -175,27 +177,27 @@ function UpdateJob() {
         description: "",
         machineName: "",
         toolingUsed: "",
-        dc: 0,
-        mr: 0,
-        length: 0,
-        width: 0,
-        feed: 0,
-        estimatedCT: 0,
-        actualCT: 0,
+        // dc: 0,
+        // mr: 0,
+        // length: 0,
+        // width: 0,
+        // feed: 0,
+        // estimatedCT: 0,
+        // actualCT: 0,
         startDate: new Date().toISOString().split("T")[0],
         startTime: "",
         endDate: new Date().toISOString().split("T")[0],
         endTime: "",
-        idleCode: "",
+        // idleCode: "",
         startDate1: new Date().toISOString().split("T")[0],
         startTime1: "",
         endDate1: new Date().toISOString().split("T")[0],
         endTime1: "",
         userName: "",
-        nop: 0,
-        fpp: 0,
-        estimatedHrs: 0,
-        toolingSize: 0,
+        // nop: 0,
+        // fpp: 0,
+        // estimatedHrs: 0,
+        // toolingSize: 0,
       };
 
       // Create a new array with the updated processTableData
@@ -716,7 +718,7 @@ function UpdateJob() {
                     <Select
                       value={container.processName}
                       label="processName"
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       onChange={(e) => handleDropdownChange(e, containerIndex)}
                       selectedProcessName={container.processName}
@@ -728,12 +730,14 @@ function UpdateJob() {
                     </Select>
                   </TableCell>
                 </div>
-                <IconButton size="small">
-                  <ClearIcon
-                    color="error"
-                    onClick={() => deleteContainer(containerIndex)}
-                  />
-                </IconButton>
+                <Tooltip title="Delete Container" arrow placement="top">
+                  <IconButton size="small" sx={{ marginRight: 3 }}>
+                    <DeleteOutlineIcon
+                      color="error"
+                      onClick={() => deleteContainer(containerIndex)}
+                    />
+                  </IconButton>
+                </Tooltip>
               </TableRow>
               {/* Add ProcessTable component with appropriate props */}
               <ProcessTable

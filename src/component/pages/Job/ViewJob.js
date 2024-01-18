@@ -69,7 +69,7 @@ function ViewJob() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Drag No</TableCell>
+                  <TableCell>Drawing No</TableCell>
                   <TableCell align="center">{jobs[0]?.dragNo}</TableCell>
                   <TableCell>Actual Total CT</TableCell>
                   <TableCell align="center">{jobs[0]?.actualtotalCT}</TableCell>

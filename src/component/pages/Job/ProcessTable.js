@@ -17,6 +17,8 @@ import {
   FormControl,
   InputLabel,
   InputAdornment,
+  Toolbar,
+  Tooltip,
 } from "@mui/material";
 import "./ProcessTable.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -60,7 +62,7 @@ export const ProcessTable = ({
 
   const millingTable = (
     <>
-      <Table sx={{ minWidth: 2800 }} aria-label="simple table">
+      <Table sx={{ minWidth: 1500 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
@@ -80,7 +82,7 @@ export const ProcessTable = ({
 
             <TableCell align="center">FPP</TableCell>
 
-            <TableCell align="center">Actual CT(min)</TableCell>
+            <TableCell align="center">Estimated CT(min)</TableCell>
 
             <TableCell align="center">EST.HRS</TableCell>
             {/* <TableCell align="center">Start Date</TableCell>
@@ -141,7 +143,7 @@ export const ProcessTable = ({
                       id={`process-${rowIndex}`}
                       value={row.process}
                       name={`process-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -196,7 +198,7 @@ export const ProcessTable = ({
                 <TableCell align="center">
                   <TextField
                     label="Description"
-                    className="fixed-width-input"
+                    className="input"
                     size="small"
                     name={`description-${rowIndex}`}
                     value={row.description}
@@ -227,7 +229,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`machineName-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`machineName-${rowIndex}`}
                       value={row.machineName}
@@ -293,7 +295,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`toolingUsed-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
                       value={row.toolingUsed} // Ensure that value is an array
@@ -506,7 +508,7 @@ export const ProcessTable = ({
                     size="small"
                     name={`nop-${rowIndex}`}
                     value={row.nop}
-                    disable
+                    disabled
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -516,6 +518,9 @@ export const ProcessTable = ({
                         "Milling"
                       )
                     }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     error={processTableErrors[rowIndex]?.nop}
                     helperText={
                       processTableErrors[rowIndex]?.nop
@@ -532,6 +537,10 @@ export const ProcessTable = ({
                     size="small"
                     name={`fpp-${rowIndex}`}
                     value={row.fpp}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -551,11 +560,15 @@ export const ProcessTable = ({
                 </TableCell>
                 <TableCell align="center">
                   <TextField
-                    label="actualCT"
+                    label="EstimatedCT"
                     className="fixed-width-input"
                     size="small"
                     name={`actualCT-${rowIndex}`}
                     value={row.actualCT}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -575,6 +588,10 @@ export const ProcessTable = ({
                     size="small"
                     name={`estimatedHrs-${rowIndex}`}
                     value={row.estimatedHrs}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -882,12 +899,14 @@ export const ProcessTable = ({
                 </TableCell>  */}
 
                 <TableCell align="center">
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDeleteRow(containerIndex, rowIndex)}
-                  >
-                    <ClearIcon color="error" />
-                  </IconButton>
+                  <Tooltip title="Delete Row" arrow placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDeleteRow(containerIndex, rowIndex)}
+                    >
+                      <ClearIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -910,7 +929,7 @@ export const ProcessTable = ({
 
   const boringTable = (
     <>
-      <Table sx={{ minWidth: 2800 }} aria-label="simple table">
+      <Table sx={{ minWidth: 1500 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
@@ -929,7 +948,7 @@ export const ProcessTable = ({
             <TableCell align="center">NOP</TableCell>
             <TableCell align="center">FPP</TableCell>
 
-            <TableCell align="center">Actual CT(min)</TableCell>
+            <TableCell align="center">Estimated CT(min)</TableCell>
 
             {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
@@ -964,7 +983,7 @@ export const ProcessTable = ({
                       id={`process-${rowIndex}`}
                       value={row.process}
                       name={`process-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -1018,7 +1037,7 @@ export const ProcessTable = ({
                 <TableCell align="center">
                   <TextField
                     label="Description"
-                    className="fixed-width-input"
+                    className="input"
                     size="small"
                     name={`description-${rowIndex}`}
                     value={row.description}
@@ -1049,7 +1068,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`machineName-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`machineName-${rowIndex}`}
                       value={row.machineName}
@@ -1115,7 +1134,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`toolingUsed-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
                       value={row.toolingUsed} // Ensure that value is an array
@@ -1323,6 +1342,10 @@ export const ProcessTable = ({
                     size="small"
                     name={`nop-${rowIndex}`}
                     value={row.nop}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -1347,6 +1370,10 @@ export const ProcessTable = ({
                     size="small"
                     name={`fpp-${rowIndex}`}
                     value={row.fpp}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -1367,11 +1394,15 @@ export const ProcessTable = ({
 
                 <TableCell align="center">
                   <TextField
-                    label="actualCT"
+                    label="EstimatedCT"
                     className="fixed-width-input"
                     size="small"
                     name={`actualCT-${rowIndex}`}
                     value={row.actualCT}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -1655,12 +1686,14 @@ export const ProcessTable = ({
                 </TableCell> */}
 
                 <TableCell align="center">
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDeleteRow(containerIndex, rowIndex)}
-                  >
-                    <ClearIcon color="error" />
-                  </IconButton>
+                  <Tooltip title="Delete Row" arrow placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDeleteRow(containerIndex, rowIndex)}
+                    >
+                      <ClearIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -1683,7 +1716,7 @@ export const ProcessTable = ({
 
   const drillingTable = (
     <>
-      <Table sx={{ minWidth: 2800 }} aria-label="simple table">
+      <Table sx={{ minWidth: 1500 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
@@ -1702,7 +1735,7 @@ export const ProcessTable = ({
 
             {/* <TableCell align="center">EST.HRS</TableCell> */}
 
-            <TableCell align="center">Actual CT(min)</TableCell>
+            <TableCell align="center">Estimated CT(min)</TableCell>
             {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
@@ -1747,7 +1780,7 @@ export const ProcessTable = ({
                       id={`process-${rowIndex}`}
                       value={row.process}
                       name={`process-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -1801,7 +1834,7 @@ export const ProcessTable = ({
                 <TableCell align="center">
                   <TextField
                     label="Description"
-                    className="fixed-width-input"
+                    className="input"
                     size="small"
                     name={`description-${rowIndex}`}
                     value={row.description}
@@ -1832,7 +1865,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`machineName-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`machineName-${rowIndex}`}
                       value={row.machineName}
@@ -1898,7 +1931,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`toolingUsed-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
                       value={row.toolingUsed} // Ensure that value is an array
@@ -2079,11 +2112,15 @@ export const ProcessTable = ({
 
                 <TableCell align="center">
                   <TextField
-                    label="actualCT"
+                    label="EstimatedCT"
                     className="fixed-width-input"
                     size="small"
                     name={`actualCT-${rowIndex}`}
                     value={row.actualCT}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -2367,12 +2404,14 @@ export const ProcessTable = ({
                 </TableCell> */}
 
                 <TableCell align="center">
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDeleteRow(containerIndex, rowIndex)}
-                  >
-                    <ClearIcon color="error" />
-                  </IconButton>
+                  <Tooltip title="Delete Row" arrow placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDeleteRow(containerIndex, rowIndex)}
+                    >
+                      <ClearIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -2395,7 +2434,7 @@ export const ProcessTable = ({
 
   const tappingTable = (
     <>
-      <Table sx={{ minWidth: 2800 }} aria-label="simple table">
+      <Table sx={{ minWidth: 1500 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center">Sr.No</TableCell>
@@ -2412,7 +2451,7 @@ export const ProcessTable = ({
 
             <TableCell align="center">NOH</TableCell>
 
-            <TableCell align="center">Actual CT(min)</TableCell>
+            <TableCell align="center">Estimated CT(min)</TableCell>
             {/* <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Start Time</TableCell>
             <TableCell align="center">End Date</TableCell>
@@ -2454,7 +2493,7 @@ export const ProcessTable = ({
                       id={`process-${rowIndex}`}
                       value={row.process}
                       name={`process-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       onChange={(e) =>
                         handleTextFieldChange(
                           e,
@@ -2508,7 +2547,7 @@ export const ProcessTable = ({
                 <TableCell align="center">
                   <TextField
                     label="Description"
-                    className="fixed-width-input"
+                    className="input"
                     size="small"
                     name={`description-${rowIndex}`}
                     value={row.description}
@@ -2536,7 +2575,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`machineName-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`machineName-${rowIndex}`}
                       value={row.machineName}
@@ -2599,7 +2638,7 @@ export const ProcessTable = ({
                     </InputLabel>
                     <Select
                       labelId={`toolingUsed-label-${rowIndex}`}
-                      className="fixed-width-input"
+                      className="input"
                       size="small"
                       id={`toolingUsed-${rowIndex}`}
                       value={row.toolingUsed} // Ensure that value is an array
@@ -2779,11 +2818,15 @@ export const ProcessTable = ({
 
                 <TableCell align="center">
                   <TextField
-                    label="actualCT"
+                    label="EstimatedCT"
                     className="fixed-width-input"
                     size="small"
                     name={`actualCT-${rowIndex}`}
                     value={row.actualCT}
+                    disabled
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     onChange={(e) =>
                       handleTextFieldChange(
                         e,
@@ -3067,12 +3110,14 @@ export const ProcessTable = ({
                 </TableCell> */}
 
                 <TableCell align="center">
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDeleteRow(containerIndex, rowIndex)}
-                  >
-                    <ClearIcon color="error" />
-                  </IconButton>
+                  <Tooltip title="Delete Row" arrow placement="top">
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDeleteRow(containerIndex, rowIndex)}
+                    >
+                      <ClearIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}

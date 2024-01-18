@@ -106,6 +106,9 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               User Name
             </TableCell>
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Remark
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -138,21 +141,36 @@ export const ViewProcessTable = ({
                 <TableCell align="center">
                   {formattedDate(row.startDate)}
                 </TableCell>
-                <TableCell align="center">{row.startTime}</TableCell>
+                <TableCell align="center">
+                  {row.startTime ? row.startTime : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate)}
                 </TableCell>
-                <TableCell align="center">{row.endTime}</TableCell>
-                <TableCell align="center">{row.idleCode}</TableCell>
+                <TableCell align="center">
+                  {row.endTime ? row.endTime : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.idleCode ? row.idleCode : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.startDate1)}
                 </TableCell>
-                <TableCell align="center">{row.startTime1}</TableCell>
+                <TableCell align="center">
+                  {row.startTime1 ? row.startTime1 : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate1)}
                 </TableCell>
-                <TableCell align="center">{row.endTime1}</TableCell>
-                <TableCell align="center">{row.userName}</TableCell>
+                <TableCell align="center">
+                  {row.endTime1 ? row.endTime1 : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.userName ? row.userName : "-"}
+                </TableCell>
+                <TableCell align="center" className="cell-width">
+                  {row.remark ? row.remark : "-"}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -246,6 +264,9 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               User Name
             </TableCell>
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Remark
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -280,21 +301,36 @@ export const ViewProcessTable = ({
                 <TableCell align="center">
                   {formattedDate(row.startDate)}
                 </TableCell>
-                <TableCell align="center">{row.startTime}</TableCell>
+                <TableCell align="center">
+                  {row.startTime ? row.startTime : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate)}
                 </TableCell>
-                <TableCell align="center">{row.endTime}</TableCell>
-                <TableCell align="center">{row.idleCode}</TableCell>
+                <TableCell align="center">
+                  {row.endTime ? row.endTime : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.idleCode ? row.idleCode : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.startDate1)}
                 </TableCell>
-                <TableCell align="center">{row.startTime1}</TableCell>
+                <TableCell align="center">
+                  {row.startTime1 ? row.startTime1 : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate1)}
                 </TableCell>
-                <TableCell align="center">{row.endTime1}</TableCell>
-                <TableCell align="center">{row.userName}</TableCell>
+                <TableCell align="center">
+                  {row.endTime1 ? row.endTime1 : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.userName ? row.userName : "-"}
+                </TableCell>
+                <TableCell align="center" className="cell-width">
+                  {row.remark ? row.remark : "-"}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -380,6 +416,9 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               User Name
             </TableCell>
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Remark
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -411,21 +450,36 @@ export const ViewProcessTable = ({
                 <TableCell align="center">
                   {formattedDate(row.startDate)}
                 </TableCell>
-                <TableCell align="center">{row.startTime}</TableCell>
+                <TableCell align="center">
+                  {row.startTime ? row.startTime : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate)}
                 </TableCell>
-                <TableCell align="center">{row.endTime}</TableCell>
-                <TableCell align="center">{row.idleCode}</TableCell>
+                <TableCell align="center">
+                  {row.endTime ? row.endTime : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.idleCode ? row.idleCode : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.startDate1)}
                 </TableCell>
-                <TableCell align="center">{row.startTime1}</TableCell>
+                <TableCell align="center">
+                  {row.startTime1 ? row.startTime1 : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate1)}
                 </TableCell>
-                <TableCell align="center">{row.endTime1}</TableCell>
-                <TableCell align="center">{row.userName}</TableCell>
+                <TableCell align="center">
+                  {row.endTime1 ? row.endTime1 : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.userName ? row.userName : "-"}
+                </TableCell>
+                <TableCell align="center" className="cell-width">
+                  {row.remark ? row.remark : "-"}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -510,6 +564,9 @@ export const ViewProcessTable = ({
             <TableCell align="center" sx={{ color: "#fff" }}>
               User Name
             </TableCell>
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Remark
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -541,21 +598,36 @@ export const ViewProcessTable = ({
                 <TableCell align="center">
                   {formattedDate(row.startDate)}
                 </TableCell>
-                <TableCell align="center">{row.startTime}</TableCell>
+                <TableCell align="center">
+                  {row.startTime ? row.startTime : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate)}
                 </TableCell>
-                <TableCell align="center">{row.endTime}</TableCell>
-                <TableCell align="center">{row.idleCode}</TableCell>
+                <TableCell align="center">
+                  {row.endTime ? row.endTime : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.idleCode ? row.idleCode : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.startDate1)}
                 </TableCell>
-                <TableCell align="center">{row.startTime1}</TableCell>
+                <TableCell align="center">
+                  {row.startTime1 ? row.startTime1 : "-"}
+                </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.endDate1)}
                 </TableCell>
-                <TableCell align="center">{row.endTime1}</TableCell>
-                <TableCell align="center">{row.userName}</TableCell>
+                <TableCell align="center">
+                  {row.endTime1 ? row.endTime1 : "-"}
+                </TableCell>
+                <TableCell align="center">
+                  {row.userName ? row.userName : "-"}
+                </TableCell>
+                <TableCell align="center" className="cell-width">
+                  {row.remark ? row.remark : "-"}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

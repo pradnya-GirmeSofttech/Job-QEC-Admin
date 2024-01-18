@@ -29,7 +29,7 @@ import { ArrowBack } from "../../../common/BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import MyModal from "../../../utils/Modal";
-import { machineData, processList, toolList } from "./Data";
+import { machineData, processList, toolList } from "../../../common/Data";
 const containsText = (text, searchText) =>
   text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 function CreateJob() {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Dashboard from "../../dashboard/Dashboard";
+import { machineData, processList, toolList } from "../../../common/Data";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,7 +26,8 @@ import { editJob, getSingleJob } from "../../../actions/job";
 import { ArrowBack } from "../../../common/BackArrow";
 import { formattedEditDate } from "../../../common/formattedDate";
 import Loader from "../../loader/Loader";
-
+const containsText = (text, searchText) =>
+  text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 function UpdateJob() {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -70,6 +72,25 @@ function UpdateJob() {
       feed: false,
       estimatedCT: false,
     })) || []
+  );
+  const [machineNameSearch, setMachineNameSearch] = useState("");
+  const [processSearch, setProcessSearch] = useState("");
+  const [toolingSearch, setToolingSearch] = useState("");
+
+  const displayMachineName = useMemo(
+    () =>
+      machineData.filter((option) => containsText(option, machineNameSearch)),
+    [machineNameSearch]
+  );
+
+  const displayedProcess = useMemo(
+    () => processList.filter((option) => containsText(option, processSearch)),
+    [processSearch]
+  );
+
+  const displayTooling = useMemo(
+    () => toolList.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
   );
 
   useEffect(() => {
@@ -200,6 +221,9 @@ function UpdateJob() {
         // toolingSize: 0,
       };
 
+      setMachineNameSearch("");
+      setToolingSearch("");
+      setProcessSearch("");
       // Create a new array with the updated processTableData
       const updatedProcessTableData = [
         ...containerToUpdate.processTableData,
@@ -749,6 +773,15 @@ function UpdateJob() {
                 containerIndex={containerIndex}
                 handleAddRow={handleAddRow}
                 selectedProcessName={container.processName}
+                machineNameSearch={machineNameSearch}
+                setMachineNameSearch={setMachineNameSearch}
+                processSearch={processSearch}
+                setProcessSearch={setProcessSearch}
+                toolingSearch={toolingSearch}
+                setToolingSearch={setToolingSearch}
+                displayMachineName={displayMachineName}
+                displayedProcess={displayedProcess}
+                displayTooling={displayTooling}
                 // ... other props you may need
               />
             </TableContainer>

@@ -771,7 +771,7 @@ function UpdateJob() {
                 Update
               </Button>
             </div>
-            <div style={{ marginLeft: "auto" }}>
+            {/* <div style={{ marginLeft: "auto" }}>
               <Button
                 color="primary"
                 sx={{
@@ -794,7 +794,7 @@ function UpdateJob() {
                   shrink: true,
                 }}
               />
-            </div>
+            </div> */}
           </Box>
         </>
       )}

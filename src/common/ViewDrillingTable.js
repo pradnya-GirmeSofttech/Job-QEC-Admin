@@ -101,7 +101,11 @@ function ViewDrillingTable({ processTableData }) {
                 style={{
                   color: "#fff",
                   backgroundColor:
-                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                    !isNaN(row.estimatedCT) && row.estimatedCT !== 0
+                      ? row.actualCT >= row.estimatedCT
+                        ? "#78cc9f"
+                        : "#c34266"
+                      : "inherit",
                 }}
               >
                 <TableCell align="center">{rowIndex + 1}</TableCell>

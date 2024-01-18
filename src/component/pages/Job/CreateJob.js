@@ -157,10 +157,10 @@ function CreateJob() {
       "description",
       "machineName",
       "toolingUsed",
-      "dc",
-      "length",
-      "width",
-      "feed",
+      // "dc",
+      // "length",
+      // "width",
+      // "feed",
     ];
     const newErrors = {};
 

@@ -124,7 +124,12 @@ function Job() {
         return false;
       })
     : [];
+
   const noJobsAvailable = filteredJobs.length === 0;
+
+  const sortedJobs = [...filteredJobs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   return (
     <Dashboard>
@@ -204,7 +209,7 @@ function Job() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredJobs?.slice(startIndex, endIndex).map((job) => (
+                    {sortedJobs?.slice(startIndex, endIndex).map((job) => (
                       <TableRow
                         key={job._id}
                         style={{

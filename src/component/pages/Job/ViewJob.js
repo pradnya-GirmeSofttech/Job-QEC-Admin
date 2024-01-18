@@ -19,8 +19,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { getSingleJob } from "../../../actions/job";
-import { formattedDate } from "./formattedDate";
-import { ArrowBack } from "./BackArrow";
+import { formattedDate } from "../../../common/formattedDate";
+import { ArrowBack } from "../../../common/BackArrow";
 import Loader from "../../loader/Loader";
 import { ProcessTable } from "./ProcessTable";
 import { ViewProcessTable } from "./ViewProcessTable";

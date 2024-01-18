@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import "../component/pages/Job/ProcessTable.css";
-import { formattedDate } from "../component/pages/Job/formattedDate";
+import { formattedDate } from "./formattedDate";
 function ViewDrillingTable({ processTableData }) {
   return (
     <>
@@ -101,7 +101,11 @@ function ViewDrillingTable({ processTableData }) {
                 style={{
                   color: "#fff",
                   backgroundColor:
-                    row.actualCT >= row.estimatedCT ? "#78cc9f" : "#c34266",
+                    !isNaN(row.estimatedCT) && row.estimatedCT !== 0
+                      ? row.actualCT >= row.estimatedCT
+                        ? "#78cc9f"
+                        : "#c34266"
+                      : "inherit",
                 }}
               >
                 <TableCell align="center">{rowIndex + 1}</TableCell>

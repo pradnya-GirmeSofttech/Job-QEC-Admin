@@ -22,8 +22,8 @@ import { ProcessTable } from "./ProcessTable";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch, useSelector } from "react-redux";
 import { editJob, getSingleJob } from "../../../actions/job";
-import { ArrowBack } from "./BackArrow";
-import { formattedEditDate } from "./formattedDate";
+import { ArrowBack } from "../../../common/BackArrow";
+import { formattedEditDate } from "../../../common/formattedDate";
 import Loader from "../../loader/Loader";
 
 function UpdateJob() {
@@ -771,7 +771,7 @@ function UpdateJob() {
                 Update
               </Button>
             </div>
-            <div style={{ marginLeft: "auto" }}>
+            {/* <div style={{ marginLeft: "auto" }}>
               <Button
                 color="primary"
                 sx={{
@@ -794,7 +794,7 @@ function UpdateJob() {
                   shrink: true,
                 }}
               />
-            </div>
+            </div> */}
           </Box>
         </>
       )}

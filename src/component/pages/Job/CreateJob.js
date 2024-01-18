@@ -25,7 +25,7 @@ import { ProcessTable } from "./ProcessTable";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch } from "react-redux";
 import { createJob } from "../../../actions/job";
-import { ArrowBack } from "./BackArrow";
+import { ArrowBack } from "../../../common/BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import MyModal from "../../../utils/Modal";

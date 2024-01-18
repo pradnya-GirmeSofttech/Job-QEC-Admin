@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { TableContainer } from "@mui/material";
 import "./ProcessTable.css";
 
-import { machineData, processList, toolList } from "./Data";
+import { machineData, processList, toolList } from "../../../common/Data";
 import MillingTable from "../../../common/MillingTable";
 import BoringTable from "../../../common/BoringTable";
 import DrillingTable from "../../../common/DrillingTable";

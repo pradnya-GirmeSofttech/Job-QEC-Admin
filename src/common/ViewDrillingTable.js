@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import "../component/pages/Job/ProcessTable.css";
-import { formattedDate } from "../component/pages/Job/formattedDate";
+import { formattedDate } from "./formattedDate";
 function ViewDrillingTable({ processTableData }) {
   return (
     <>

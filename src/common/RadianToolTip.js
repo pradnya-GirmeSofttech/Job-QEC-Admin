@@ -69,7 +69,8 @@ const RadianTooltip = (props) => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(${value} = ${percent * 100}%)`}
+        {`(${value})`}
+        {/* {`(${value} = ${(percent * 100).toFixed(2)}%)`} */}
       </text>
     </g>
   );

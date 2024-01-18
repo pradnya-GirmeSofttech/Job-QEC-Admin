@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import {
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
+  ListSubheader,
   TableRow,
   Paper,
   TextField,
@@ -15,13 +16,16 @@ import {
   Button,
   FormControl,
   InputLabel,
+  InputAdornment,
 } from "@mui/material";
 import "./ProcessTable.css";
+import SearchIcon from "@mui/icons-material/Search";
 
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { machineData, processList, toolList } from "./Data";
-
+const containsText = (text, searchText) =>
+  text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 export const ProcessTable = ({
   handleDeleteRow,
   data,
@@ -34,6 +38,25 @@ export const ProcessTable = ({
 }) => {
   const processTableData = data || [];
   console.log("processTable", processTableErrors);
+  const [machineNameSearch, setMachineNameSearch] = useState("");
+  const [processSearch, setProcessSearch] = useState("");
+  const [toolingSearch, setToolingSearch] = useState("");
+
+  const displayMachineName = useMemo(
+    () =>
+      machineData.filter((option) => containsText(option, machineNameSearch)),
+    [machineNameSearch]
+  );
+
+  const displayedProcess = useMemo(
+    () => machineData.filter((option) => containsText(option, processSearch)),
+    [processSearch]
+  );
+
+  const displayTooling = useMemo(
+    () => machineData.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
 
   const millingTable = (
     <>
@@ -130,8 +153,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
-                      {console.log(processTableErrors[rowIndex]?.process)}
-                      {processList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setProcessSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayedProcess.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -197,7 +243,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
-                      {machineData.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setMachineNameSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayMachineName.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -239,7 +309,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
-                      {toolList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setToolingSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayTooling.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -882,8 +976,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
-                      {console.log(processTableErrors[rowIndex]?.process)}
-                      {processList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setProcessSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayedProcess.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -948,7 +1065,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
-                      {machineData.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setMachineNameSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayMachineName.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -991,7 +1132,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
-                      {toolList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setToolingSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayTooling.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -1594,7 +1759,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
-                      {processList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setProcessSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayedProcess.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -1659,7 +1848,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
-                      {machineData.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setMachineNameSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayMachineName.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -1702,7 +1915,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
-                      {toolList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setToolingSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayTooling.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -2229,7 +2466,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.process}
                     >
-                      {processList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setProcessSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayedProcess.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -2291,7 +2552,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.machineName}
                     >
-                      {machineData.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setMachineNameSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayMachineName.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>
@@ -2330,7 +2615,31 @@ export const ProcessTable = ({
                       }
                       error={processTableErrors[rowIndex]?.toolingUsed}
                     >
-                      {toolList.map((name) => (
+                      <ListSubheader>
+                        <TextField
+                          size="small"
+                          // Autofocus on textfield
+                          autoFocus
+                          placeholder="Type to search..."
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                          onChange={(e) => setToolingSearch(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key !== "Escape") {
+                              // Prevents autoselecting item while typing (default Select behaviour)
+                              e.stopPropagation();
+                            }
+                          }}
+                        />
+                      </ListSubheader>
+
+                      {displayTooling.map((name) => (
                         <MenuItem key={name} value={name}>
                           {name}
                         </MenuItem>

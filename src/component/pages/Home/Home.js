@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import JobComparisonChart from "./JobComparisonChart";
 import { getAllJob } from "../../../actions/job";
 import { fetchUsersWithUserRole } from "../../../actions/user";
+import JobAnalysisCard from "./JobAnalysisCard";
 
 function Home() {
   // const [reports, setReports] = useState([]);
@@ -34,19 +35,18 @@ function Home() {
         Welcome , {user ? user.name : ""}
       </Typography>
       <Divider />
-      <Card sx={{ margin: 2, width: 500 }}>
+      <Card sx={{ margin: 2, width: 600, padding: 3 }}>
         <Typography
-          variant="subtitle2"
+          variant="subtitle3"
           gutterBottom
           style={{
             padding: "10px",
           }}
         >
-          {" "}
-          Total number of users : {users.length}
+          Total number of current users : {users.length}
         </Typography>
       </Card>
-      <Card sx={{ margin: 2, width: 500 }}>
+      {/* <Card sx={{ margin: 2, width: 500 }}>
         <Typography
           variant="h6"
           style={{
@@ -85,8 +85,12 @@ function Home() {
           Total number of Jobs take accurate time :{" "}
           {countOfJobsWithLessActualTime}
         </Typography>
-      </Card>
-
+      </Card> */}
+      <JobAnalysisCard
+        jobs={jobs}
+        countOfJobsWithMoreActualTime={countOfJobsWithMoreActualTime}
+        countOfJobsWithLessActualTime={countOfJobsWithLessActualTime}
+      />
       <Typography variant="h6">Job Comparison Chart</Typography>
       <Card sx={{ margin: 2, padding: 2, paddingTop: 5 }}>
         <JobComparisonChart jobs={jobs} />

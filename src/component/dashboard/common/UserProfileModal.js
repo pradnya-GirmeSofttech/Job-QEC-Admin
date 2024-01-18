@@ -44,7 +44,7 @@ const UserProfileModal = ({ isOpen, onClose, user }) => {
           mb={2}
           sx={{ color: "#1d5393" }}
         >
-          Quality Engineering CO.
+          Girme Technologies PVT LTD.
         </Typography>
         <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
           User Details

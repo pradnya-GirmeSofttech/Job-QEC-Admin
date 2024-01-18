@@ -110,7 +110,7 @@ const Login = () => {
               justifyContent: "center",
             }}
           >
-            QUALITY ENGINEERING CO.
+            Girme Technologies PVT LTD.
           </Typography>
           <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
           <Typography variant="h6">Login</Typography>

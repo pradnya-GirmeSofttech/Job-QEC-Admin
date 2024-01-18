@@ -80,7 +80,7 @@ const Register = () => {
         justifyContent: "center",
       }}
     >
-      <Typography variant="h4">QUALITY ENGINEERING CO.</Typography>
+      <Typography variant="h4">Girme Technologies PVT LTD.</Typography>
       <Card
         sx={{
           padding: 6,

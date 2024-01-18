@@ -148,7 +148,7 @@ const Dashboard = ({ children }) => {
             component="div"
             sx={{ flexGrow: 1, color: "#1d5393" }}
           >
-            Quality Engineering CO.
+            Girme Technologies PVT LTD.
           </Typography>
 
           <div>

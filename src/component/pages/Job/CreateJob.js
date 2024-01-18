@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -29,7 +29,9 @@ import { ArrowBack } from "./BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import MyModal from "../../../utils/Modal";
-
+import { machineData, processList, toolList } from "./Data";
+const containsText = (text, searchText) =>
+  text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 function CreateJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,6 +83,26 @@ function CreateJob() {
         }));
     });
   });
+
+  const [machineNameSearch, setMachineNameSearch] = useState("");
+  const [processSearch, setProcessSearch] = useState("");
+  const [toolingSearch, setToolingSearch] = useState("");
+
+  const displayMachineName = useMemo(
+    () =>
+      machineData.filter((option) => containsText(option, machineNameSearch)),
+    [machineNameSearch]
+  );
+
+  const displayedProcess = useMemo(
+    () => processList.filter((option) => containsText(option, processSearch)),
+    [processSearch]
+  );
+
+  const displayTooling = useMemo(
+    () => toolList.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
 
   console.log(processTableErrors);
 
@@ -441,6 +463,9 @@ function CreateJob() {
       // toolingSize: 0,
     });
 
+    setMachineNameSearch("");
+    setToolingSearch("");
+    setProcessSearch("");
     setContainers(updatedContainers);
 
     setFormData((prevData) => ({
@@ -670,7 +695,15 @@ function CreateJob() {
             handleAddRow={handleAddRow}
             selectedProcessName={container.processName}
             handleValidation={handleValidation}
-            // ... other props you may need
+            machineNameSearch={machineNameSearch}
+            setMachineNameSearch={setMachineNameSearch}
+            processSearch={processSearch}
+            setProcessSearch={setProcessSearch}
+            toolingSearch={toolingSearch}
+            setToolingSearch={setToolingSearch}
+            displayMachineName={displayMachineName}
+            displayedProcess={displayedProcess}
+            displayTooling={displayTooling}
           />
         </TableContainer>
       ))}

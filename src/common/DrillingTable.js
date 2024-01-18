@@ -146,12 +146,15 @@ function DrillingTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayedProcess.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayedProcess.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayedProcess.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.process}
@@ -236,11 +239,15 @@ function DrillingTable({
                         />
                       </ListSubheader>
 
-                      {displayMachineName.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayMachineName.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayMachineName.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.machineName}
@@ -302,12 +309,15 @@ function DrillingTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayTooling.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayTooling.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayTooling.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.toolingUsed}

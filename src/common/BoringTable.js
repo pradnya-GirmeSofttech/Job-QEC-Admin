@@ -69,16 +69,16 @@ function BoringTable({
             <TableCell align="center">Estimated CT(min)</TableCell>
 
             {/* <TableCell align="center">Start Date</TableCell>
-          <TableCell align="center">Start Time</TableCell>
-          <TableCell align="center">End Date</TableCell>
-          <TableCell align="center">End Time</TableCell>
-          <TableCell align="center">Ideal Code</TableCell>
-          <TableCell align="center">Start Date</TableCell>
-          <TableCell align="center">Start Time</TableCell>
-          <TableCell align="center">End Date</TableCell>
-          <TableCell align="center">End Time</TableCell>
-          <TableCell align="center">Estimated CT(min)</TableCell>
-          <TableCell align="center">User Name</TableCell> */}
+            <TableCell align="center">Start Time</TableCell>
+            <TableCell align="center">End Date</TableCell>
+            <TableCell align="center">End Time</TableCell>
+            <TableCell align="center">Ideal Code</TableCell>
+            <TableCell align="center">Start Date</TableCell>
+            <TableCell align="center">Start Time</TableCell>
+            <TableCell align="center">End Date</TableCell>
+            <TableCell align="center">End Time</TableCell>
+            <TableCell align="center">Estimated CT(min)</TableCell>
+            <TableCell align="center">User Name</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -136,12 +136,15 @@ function BoringTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayedProcess.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayedProcess.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayedProcess.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.process}
@@ -226,11 +229,15 @@ function BoringTable({
                         />
                       </ListSubheader>
 
-                      {displayMachineName.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayMachineName.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayMachineName.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.machineName}
@@ -292,12 +299,16 @@ function BoringTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayTooling.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {/* <MenuItem disabled>No items found</MenuItem> */}
+                      {displayTooling.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayTooling.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.toolingUsed}
@@ -533,275 +544,275 @@ function BoringTable({
                   />
                 </TableCell>
                 {/* <TableCell align="center">
-                <TextField
-                  label="startDate"
-                  className="fixed-width-input"
-                  size="small"
-                  type="date"
-                  name={`startDate-${rowIndex}`}
-                  value={formattedEditDate(row.startDate)}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "startDate",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  inputProps={{
-                    min: new Date().toISOString().split("T")[0],
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="startTime"
-                  size="small"
-                  className="fixed-width-input"
-                  type="time"
-                  name={`startTime-${rowIndex}`}
-                  value={row.startTime}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "startTime",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="endDate"
-                  size="small"
-                  type="date"
-                  name={`endDate-${rowIndex}`}
-                  className="fixed-width-input"
-                  value={formattedEditDate(row.endDate)}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "endDate",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  inputProps={{
-                    min: new Date().toISOString().split("T")[0],
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="endTime"
-                  size="small"
-                  type="time"
-                  name={`endTime-${rowIndex}`}
-                  className="fixed-width-input"
-                  value={row.endTime}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "endTime",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <Select
-                  labelId={`idleCode-label-${rowIndex}`}
-                  size="small"
-                  id={`idleCode-${rowIndex}`}
-                  value={row.idleCode}
-                  name={`idleCode-${rowIndex}`}
-                  className="fixed-width-input"
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "idleCode",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  error={processTableErrors[rowIndex]?.idleCode}
-                >
-                  {idleCode.map((name) => (
-                    <MenuItem key={name.no} value={name.no}>
-                      {name.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText
-                  error={processTableErrors[rowIndex]?.idleCode}
-                >
-                  {processTableErrors[rowIndex]?.idleCode
-                    ? "This field is required"
-                    : ""}
-                </FormHelperText>
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="startDate1"
-                  size="small"
-                  type="date"
-                  name={`startDate1-${rowIndex}`}
-                  value={formattedEditDate(row.startDate1)}
-                  className="fixed-width-input"
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "startDate1",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  inputProps={{
-                    min: new Date().toISOString().split("T")[0],
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="startTime1"
-                  size="small"
-                  type="time"
-                  name={`startTime1-${rowIndex}`}
-                  className="fixed-width-input"
-                  value={row.startTime1}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "startTime1",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="endDate1"
-                  className="fixed-width-input"
-                  size="small"
-                  type="date"
-                  name={`endDate1-${rowIndex}`}
-                  value={formattedEditDate(row.endDate1)}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "endDate1",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  inputProps={{
-                    min: new Date().toISOString().split("T")[0],
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="endTime1"
-                  className="fixed-width-input"
-                  size="small"
-                  type="time"
-                  name={`endTime1-${rowIndex}`}
-                  value={row.endTime1}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "endTime1",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TextField
-                  label="estimatedCT"
-                  className="fixed-width-input"
-                  size="small"
-                  name={`estimatedCT-${rowIndex}`}
-                  value={row.estimatedCT}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "estimatedCT",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                  error={processTableErrors[rowIndex]?.estimatedCT}
-                  helperText={
-                    processTableErrors[rowIndex]?.estimatedCT
+                  <TextField
+                    label="startDate"
+                    className="fixed-width-input"
+                    size="small"
+                    type="date"
+                    name={`startDate-${rowIndex}`}
+                    value={formattedEditDate(row.startDate)}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "startDate",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="startTime"
+                    size="small"
+                    className="fixed-width-input"
+                    type="time"
+                    name={`startTime-${rowIndex}`}
+                    value={row.startTime}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "startTime",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="endDate"
+                    size="small"
+                    type="date"
+                    name={`endDate-${rowIndex}`}
+                    className="fixed-width-input"
+                    value={formattedEditDate(row.endDate)}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "endDate",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="endTime"
+                    size="small"
+                    type="time"
+                    name={`endTime-${rowIndex}`}
+                    className="fixed-width-input"
+                    value={row.endTime}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "endTime",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Select
+                    labelId={`idleCode-label-${rowIndex}`}
+                    size="small"
+                    id={`idleCode-${rowIndex}`}
+                    value={row.idleCode}
+                    name={`idleCode-${rowIndex}`}
+                    className="fixed-width-input"
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "idleCode",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    error={processTableErrors[rowIndex]?.idleCode}
+                  >
+                    {idleCode.map((name) => (
+                      <MenuItem key={name.no} value={name.no}>
+                        {name.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText
+                    error={processTableErrors[rowIndex]?.idleCode}
+                  >
+                    {processTableErrors[rowIndex]?.idleCode
                       ? "This field is required"
-                      : ""
-                  }
-                />
-              </TableCell>
-              <TableCell align="center">
-                <Select
-                  labelId={`userName-label-${rowIndex}`}
-                  className="fixed-width-input"
-                  size="small"
-                  id={`userName-${rowIndex}`}
-                  value={row.userName}
-                  name={`userName-${rowIndex}`}
-                  onChange={(e) =>
-                    handleTextFieldChange(
-                      e,
-                      rowIndex,
-                      "userName",
-                      containerIndex,
-                      "Boring"
-                    )
-                  }
-                >
-                  {userName.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </TableCell> */}
+                      : ""}
+                  </FormHelperText>
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="startDate1"
+                    size="small"
+                    type="date"
+                    name={`startDate1-${rowIndex}`}
+                    value={formattedEditDate(row.startDate1)}
+                    className="fixed-width-input"
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "startDate1",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="startTime1"
+                    size="small"
+                    type="time"
+                    name={`startTime1-${rowIndex}`}
+                    className="fixed-width-input"
+                    value={row.startTime1}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "startTime1",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="endDate1"
+                    className="fixed-width-input"
+                    size="small"
+                    type="date"
+                    name={`endDate1-${rowIndex}`}
+                    value={formattedEditDate(row.endDate1)}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "endDate1",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    inputProps={{
+                      min: new Date().toISOString().split("T")[0],
+                    }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="endTime1"
+                    className="fixed-width-input"
+                    size="small"
+                    type="time"
+                    name={`endTime1-${rowIndex}`}
+                    value={row.endTime1}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "endTime1",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <TextField
+                    label="estimatedCT"
+                    className="fixed-width-input"
+                    size="small"
+                    name={`estimatedCT-${rowIndex}`}
+                    value={row.estimatedCT}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "estimatedCT",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                    error={processTableErrors[rowIndex]?.estimatedCT}
+                    helperText={
+                      processTableErrors[rowIndex]?.estimatedCT
+                        ? "This field is required"
+                        : ""
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Select
+                    labelId={`userName-label-${rowIndex}`}
+                    className="fixed-width-input"
+                    size="small"
+                    id={`userName-${rowIndex}`}
+                    value={row.userName}
+                    name={`userName-${rowIndex}`}
+                    onChange={(e) =>
+                      handleTextFieldChange(
+                        e,
+                        rowIndex,
+                        "userName",
+                        containerIndex,
+                        "Boring"
+                      )
+                    }
+                  >
+                    {userName.map((name) => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </TableCell> */}
 
                 <TableCell align="center">
                   <Tooltip title="Delete Row" arrow placement="top">

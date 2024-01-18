@@ -1,14 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { TableContainer } from "@mui/material";
 import "./ProcessTable.css";
-
-import { machineData, processList, toolList } from "./Data";
 import MillingTable from "../../../common/MillingTable";
 import BoringTable from "../../../common/BoringTable";
 import DrillingTable from "../../../common/DrillingTable";
 import TappingTable from "../../../common/TappingTable";
-const containsText = (text, searchText) =>
-  text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+
 export const ProcessTable = ({
   handleDeleteRow,
   data,
@@ -18,29 +15,17 @@ export const ProcessTable = ({
   handleAddRow,
   selectedProcessName,
   handleValidation,
+  machineNameSearch,
+  setMachineNameSearch,
+  processSearch,
+  setProcessSearch,
+  toolingSearch,
+  setToolingSearch,
+  displayMachineName,
+  displayedProcess,
+  displayTooling,
 }) => {
   const processTableData = data || [];
-  console.log("processTable", processTableErrors);
-  const [machineNameSearch, setMachineNameSearch] = useState("");
-  const [processSearch, setProcessSearch] = useState("");
-  const [toolingSearch, setToolingSearch] = useState("");
-
-  const displayMachineName = useMemo(
-    () =>
-      machineData.filter((option) => containsText(option, machineNameSearch)),
-    [machineNameSearch]
-  );
-
-  const displayedProcess = useMemo(
-    () => processList.filter((option) => containsText(option, processSearch)),
-    [processSearch]
-  );
-
-  const displayTooling = useMemo(
-    () => toolList.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
   return (
     <TableContainer>
       {selectedProcessName === "Milling" && (

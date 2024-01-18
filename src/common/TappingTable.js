@@ -141,12 +141,15 @@ function TappingTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayedProcess.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayedProcess.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayedProcess.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.process}
@@ -228,11 +231,15 @@ function TappingTable({
                         />
                       </ListSubheader>
 
-                      {displayMachineName.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayMachineName.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayMachineName.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.machineName}
@@ -290,12 +297,15 @@ function TappingTable({
                           }}
                         />
                       </ListSubheader>
-
-                      {displayTooling.map((name) => (
-                        <MenuItem key={name} value={name}>
-                          {name}
-                        </MenuItem>
-                      ))}
+                      {displayTooling.length === 0 ? (
+                        <MenuItem disabled>No items found</MenuItem>
+                      ) : (
+                        displayTooling.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      )}
                     </Select>
                     <FormHelperText
                       error={processTableErrors[rowIndex]?.toolingUsed}

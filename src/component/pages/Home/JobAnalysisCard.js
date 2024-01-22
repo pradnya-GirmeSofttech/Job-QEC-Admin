@@ -50,12 +50,12 @@ const JobAnalysisCard = ({
     {
       name: "Exceeded Time",
       value: countOfJobsWithMoreActualTime,
-      color: "#eb0e14",
+      color: "#ff5630",
     },
     {
       name: "Accurate Time",
       value: countOfJobsWithLessActualTime,
-      color: "#1D5393",
+      color: "#00a76f",
     },
   ];
 
@@ -67,14 +67,19 @@ const JobAnalysisCard = ({
   const colors = chartData.map((entry) => entry.color);
 
   return (
-    <Card sx={{ margin: 2, width: 600 }}>
+    <Card
+      sx={{
+        margin: 2,
+        borderRadius: 3,
+        width: 600,
+        boxShadow:
+          "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px",
+      }}
+    >
       <Typography variant="h6" m="3" style={{ padding: "20px" }}>
         Jobs Analysis
       </Typography>
       <Divider />
-      <Typography variant="subtitle1" style={{ padding: "20px" }}>
-        Total Jobs Done : {totalJobs}
-      </Typography>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie

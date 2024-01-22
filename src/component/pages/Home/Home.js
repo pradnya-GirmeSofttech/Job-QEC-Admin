@@ -1,12 +1,20 @@
-import { Typography, Divider, Card } from "@mui/material";
+import {
+  Typography,
+  Divider,
+  Card,
+  SvgIcon,
+  CardContent,
+  Box,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Dashboard from "../../dashboard/Dashboard";
-
 import { useDispatch, useSelector } from "react-redux";
 import JobComparisonChart from "./JobComparisonChart";
 import { getAllJob } from "../../../actions/job";
 import { fetchUsersWithUserRole } from "../../../actions/user";
 import JobAnalysisCard from "./JobAnalysisCard";
+import PersonIcon from "@mui/icons-material/Person";
+import WorkIcon from "@mui/icons-material/Work";
 
 function Home() {
   // const [reports, setReports] = useState([]);
@@ -31,68 +39,112 @@ function Home() {
 
   return (
     <Dashboard>
-      <Typography variant="button" display="block" gutterBottom fontSize={20}>
+      <Typography
+        variant="button"
+        display="block"
+        gutterBottom
+        fontSize={20}
+        sx={{ color: "rgb(0, 55, 104)" }}
+      >
         Welcome , {user ? user.name : ""}
       </Typography>
       <Divider />
-      <Card sx={{ margin: 2, width: 600, padding: 3 }}>
-        <Typography
-          variant="subtitle3"
-          gutterBottom
-          style={{
-            padding: "10px",
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Card
+          sx={{
+            display: "flex",
+            borderRadius: 3,
+            flexDirection: "column",
+            alignItems: "center",
+            maxWidth: 300,
+            background:
+              "linear-gradient(135deg, rgba(97, 243, 243, 0.2), rgba(0, 184, 217, 0.2), rgb(255, 255, 255))",
+            margin: 2,
+            boxShadow:
+              "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px",
           }}
         >
-          Total number of current users : {users.length}
-        </Typography>
-      </Card>
-      {/* <Card sx={{ margin: 2, width: 500 }}>
-        <Typography
-          variant="h6"
-          style={{
-            padding: "20px",
+          <SvgIcon
+            component={PersonIcon}
+            sx={{ fontSize: 70, color: "rgb(0, 55, 104)", marginBottom: 2 }}
+          />
+          <CardContent>
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="div"
+              sx={{ color: "rgb(0, 55, 104)" }}
+            >
+              Total Number Of Users
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="div"
+              alignItems="center"
+              sx={{ color: "rgb(0, 55, 104)", textAlign: "center" }}
+            >
+              {users.length}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            maxWidth: 300,
+            borderRadius: 3,
+            background:
+              "linear-gradient(135deg, rgba(91, 228, 155, 0.2), rgba(0, 167, 111, 0.2), rgb(255, 255, 255))",
+            margin: 2,
+            boxShadow:
+              "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px",
           }}
         >
-          Jobs Analysis
-        </Typography>
-        <Divider />
-        <Typography
-          variant="subtitle2"
-          gutterBottom
-          style={{
-            padding: "10px",
-          }}
-        >
-          Total number of Jobs done : {jobs.length}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          gutterBottom
-          style={{
-            padding: "10px",
-          }}
-        >
-          Total number of Jobs take exceed time :{" "}
-          {countOfJobsWithMoreActualTime}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          gutterBottom
-          style={{
-            padding: "10px",
-          }}
-        >
-          Total number of Jobs take accurate time :{" "}
-          {countOfJobsWithLessActualTime}
-        </Typography>
-      </Card> */}
+          <SvgIcon
+            component={WorkIcon}
+            sx={{ fontSize: 70, color: "rgb(0, 55, 104)", marginBottom: 2 }}
+          />
+          <CardContent>
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="div"
+              sx={{ color: "rgb(0, 55, 104)", textAlign: "center" }}
+            >
+              Total Number Of Jobs
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="subtitle1"
+              component="div"
+              alignItems="center"
+              sx={{ color: "rgb(0, 55, 104)", textAlign: "center" }}
+            >
+              {jobs.length}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
+
       <JobAnalysisCard
         jobs={jobs}
         countOfJobsWithMoreActualTime={countOfJobsWithMoreActualTime}
         countOfJobsWithLessActualTime={countOfJobsWithLessActualTime}
       />
       <Typography variant="h6">Job Comparison Chart</Typography>
-      <Card sx={{ margin: 2, padding: 2, paddingTop: 5 }}>
+      <Card
+        sx={{
+          margin: 2,
+          padding: 2,
+          paddingTop: 5,
+          borderRadius: 3,
+          // width: 600,
+          boxShadow:
+            "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px",
+        }}
+      >
         <JobComparisonChart jobs={jobs} />
       </Card>
     </Dashboard>

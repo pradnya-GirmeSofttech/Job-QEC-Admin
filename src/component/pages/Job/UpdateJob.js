@@ -15,12 +15,19 @@ import {
   Tooltip,
 } from "@mui/material";
 import Dashboard from "../../dashboard/Dashboard";
-import { machineData, processList, toolList } from "../../../common/Data";
+import {
+  machineData,
+  processList,
+  toolListDrilling,
+  toolListBoring,
+  toolListMilling,
+  toolListTapping,
+} from "../../../common/Data";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
-import ClearIcon from "@mui/icons-material/Clear";
+
 import { useDispatch, useSelector } from "react-redux";
 import { editJob, getSingleJob } from "../../../actions/job";
 import { ArrowBack } from "../../../common/BackArrow";
@@ -88,11 +95,29 @@ function UpdateJob() {
     [processSearch]
   );
 
-  const displayTooling = useMemo(
-    () => toolList.filter((option) => containsText(option, toolingSearch)),
+  const displayToolingBoring = useMemo(
+    () =>
+      toolListBoring.filter((option) => containsText(option, toolingSearch)),
     [toolingSearch]
   );
 
+  const displayToolingMilling = useMemo(
+    () =>
+      toolListMilling.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
+
+  const displayToolingDrilling = useMemo(
+    () =>
+      toolListDrilling.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
+
+  const displayToolingTapping = useMemo(
+    () =>
+      toolListTapping.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -781,7 +806,10 @@ function UpdateJob() {
                 setToolingSearch={setToolingSearch}
                 displayMachineName={displayMachineName}
                 displayedProcess={displayedProcess}
-                displayTooling={displayTooling}
+                displayToolingMilling={displayToolingMilling}
+                displayToolingDrilling={displayToolingDrilling}
+                displayToolingBoring={displayToolingBoring}
+                displayToolingTapping={displayToolingTapping}
                 // ... other props you may need
               />
             </TableContainer>

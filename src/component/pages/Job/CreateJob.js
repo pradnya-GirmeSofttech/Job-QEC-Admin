@@ -29,9 +29,15 @@ import { ArrowBack } from "../../../common/BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import MyModal from "../../../utils/Modal";
-import { machineData, processList, toolList } from "../../../common/Data";
-const containsText = (text, searchText) =>
-  text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+import {
+  machineData,
+  processList,
+  toolListDrilling,
+  toolListBoring,
+  toolListMilling,
+  toolListTapping,
+} from "../../../common/Data";
+
 function CreateJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,6 +93,13 @@ function CreateJob() {
   const [machineNameSearch, setMachineNameSearch] = useState("");
   const [processSearch, setProcessSearch] = useState("");
   const [toolingSearch, setToolingSearch] = useState("");
+  const [displayToolingMilling, setDisplayToolingMilling] = useState([]);
+
+  const containsText = (text, searchText) => {
+    const contains = text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+
+    return contains;
+  };
 
   const displayMachineName = useMemo(
     () =>
@@ -99,12 +112,31 @@ function CreateJob() {
     [processSearch]
   );
 
-  const displayTooling = useMemo(
-    () => toolList.filter((option) => containsText(option, toolingSearch)),
+  const displayToolingBoring = useMemo(
+    () =>
+      toolListBoring.filter((option) => containsText(option, toolingSearch)),
     [toolingSearch]
   );
 
-  console.log(processTableErrors);
+  useEffect(() => {
+    const filteredTooling = toolListMilling.filter((tool) =>
+      tool.toLowerCase().includes(toolingSearch.toLowerCase())
+    );
+    setDisplayToolingMilling(filteredTooling);
+    setRerenderFlag((prev) => !prev);
+  }, [toolListMilling, toolingSearch]);
+
+  const displayToolingDrilling = useMemo(
+    () =>
+      toolListDrilling.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
+
+  const displayToolingTapping = useMemo(
+    () =>
+      toolListTapping.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
 
   const handleValidation = (event, rowIndex) => {
     const enteredValue = event.target.value;
@@ -703,7 +735,10 @@ function CreateJob() {
             setToolingSearch={setToolingSearch}
             displayMachineName={displayMachineName}
             displayedProcess={displayedProcess}
-            displayTooling={displayTooling}
+            displayToolingMilling={displayToolingMilling}
+            displayToolingDrilling={displayToolingDrilling}
+            displayToolingBoring={displayToolingBoring}
+            displayToolingTapping={displayToolingTapping}
           />
         </TableContainer>
       ))}

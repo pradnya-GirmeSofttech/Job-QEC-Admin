@@ -42,7 +42,7 @@ function BoringTable({
   setToolingSearch,
   displayMachineName,
   displayedProcess,
-  displayTooling,
+  displayToolingBoring,
   handleValidation,
 }) {
   return (
@@ -300,10 +300,10 @@ function BoringTable({
                         />
                       </ListSubheader>
                       {/* <MenuItem disabled>No items found</MenuItem> */}
-                      {displayTooling.length === 0 ? (
+                      {displayToolingBoring.length === 0 ? (
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
-                        displayTooling.map((name) => (
+                        displayToolingBoring.map((name) => (
                           <MenuItem key={name} value={name}>
                             {name}
                           </MenuItem>

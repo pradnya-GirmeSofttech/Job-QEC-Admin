@@ -27,6 +27,7 @@ import { deleteJob, generatePDF, getAllJob } from "../../../actions/job";
 import { useDispatch, useSelector } from "react-redux";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Loader from "../../loader/Loader";
+import { formattedDate } from "../../../common/formattedDate";
 
 function Job() {
   const navigation = useNavigate();
@@ -205,6 +206,7 @@ function Job() {
                       <TableCell sx={{ color: "#fff" }}>Name</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Total CT</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Actual CT</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>CreatedAt</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -215,17 +217,18 @@ function Job() {
                         style={{
                           color: "#fff",
 
-                          backgroundColor:
+                          background:
                             job.estimatedtotalCT >= job?.actualtotalCT ||
                             job.estimatedtotalCT >= job?.actualtotalCT
-                              ? "#78cc9f"
-                              : "#c34266",
+                              ? "#a7f3d0"
+                              : "#FE8A96",
                         }}
                       >
                         <TableCell>{job.soWo}</TableCell>
                         <TableCell>{job.jobName}</TableCell>
                         <TableCell>{job.estimatedtotalCT}</TableCell>
                         <TableCell>{job?.actualtotalCT}</TableCell>
+                        <TableCell>{formattedDate(job?.createdAt)}</TableCell>
                         <TableCell>
                           <IconButton
                             aria-label="more"

@@ -42,7 +42,7 @@ function DrillingTable({
   setToolingSearch,
   displayMachineName,
   displayedProcess,
-  displayTooling,
+  displayToolingDrilling,
   handleValidation,
 }) {
   return (
@@ -309,10 +309,10 @@ function DrillingTable({
                           }}
                         />
                       </ListSubheader>
-                      {displayTooling.length === 0 ? (
+                      {displayToolingDrilling.length === 0 ? (
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
-                        displayTooling.map((name) => (
+                        displayToolingDrilling.map((name) => (
                           <MenuItem key={name} value={name}>
                             {name}
                           </MenuItem>

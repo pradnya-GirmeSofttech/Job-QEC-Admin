@@ -23,7 +23,10 @@ export const ProcessTable = ({
   setToolingSearch,
   displayMachineName,
   displayedProcess,
-  displayTooling,
+  displayToolingMilling,
+  displayToolingDrilling,
+  displayToolingBoring,
+  displayToolingTapping,
 }) => {
   const processTableData = data || [];
   return (
@@ -44,7 +47,7 @@ export const ProcessTable = ({
           setToolingSearch={setToolingSearch}
           displayMachineName={displayMachineName}
           displayedProcess={displayedProcess}
-          displayTooling={displayTooling}
+          displayToolingMilling={displayToolingMilling}
           handleValidation={handleValidation}
         />
       )}
@@ -64,7 +67,7 @@ export const ProcessTable = ({
           setToolingSearch={setToolingSearch}
           displayMachineName={displayMachineName}
           displayedProcess={displayedProcess}
-          displayTooling={displayTooling}
+          displayToolingDrilling={displayToolingDrilling}
           handleValidation={handleValidation}
         />
       )}
@@ -84,7 +87,7 @@ export const ProcessTable = ({
           setToolingSearch={setToolingSearch}
           displayMachineName={displayMachineName}
           displayedProcess={displayedProcess}
-          displayTooling={displayTooling}
+          displayToolingBoring={displayToolingBoring}
           handleValidation={handleValidation}
         />
       )}
@@ -104,7 +107,7 @@ export const ProcessTable = ({
           setToolingSearch={setToolingSearch}
           displayMachineName={displayMachineName}
           displayedProcess={displayedProcess}
-          displayTooling={displayTooling}
+          displayToolingTapping={displayToolingTapping}
           handleValidation={handleValidation}
         />
       )}

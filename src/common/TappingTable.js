@@ -42,7 +42,7 @@ function TappingTable({
   setToolingSearch,
   displayMachineName,
   displayedProcess,
-  displayTooling,
+  displayToolingTapping,
   handleValidation,
 }) {
   return (
@@ -297,10 +297,10 @@ function TappingTable({
                           }}
                         />
                       </ListSubheader>
-                      {displayTooling.length === 0 ? (
+                      {displayToolingTapping.length === 0 ? (
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
-                        displayTooling.map((name) => (
+                        displayToolingTapping.map((name) => (
                           <MenuItem key={name} value={name}>
                             {name}
                           </MenuItem>

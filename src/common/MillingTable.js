@@ -42,9 +42,10 @@ function MillingTable({
   setToolingSearch,
   displayMachineName,
   displayedProcess,
-  displayTooling,
+  displayToolingMilling,
   handleValidation,
 }) {
+  console.log("displayToolingMilling", displayToolingMilling);
   return (
     <>
       <Table sx={{ minWidth: 1500 }} aria-label="simple table">
@@ -326,10 +327,10 @@ function MillingTable({
                           }}
                         />
                       </ListSubheader>
-                      {displayTooling.length === 0 ? (
+                      {displayToolingMilling.length === 0 ? (
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
-                        displayTooling.map((name) => (
+                        displayToolingMilling.map((name) => (
                           <MenuItem key={name} value={name}>
                             {name}
                           </MenuItem>

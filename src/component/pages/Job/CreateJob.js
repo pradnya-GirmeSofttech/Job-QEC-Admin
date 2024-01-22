@@ -123,7 +123,6 @@ function CreateJob() {
       tool.toLowerCase().includes(toolingSearch.toLowerCase())
     );
     setDisplayToolingMilling(filteredTooling);
-    setRerenderFlag((prev) => !prev);
   }, [toolListMilling, toolingSearch]);
 
   const displayToolingDrilling = useMemo(

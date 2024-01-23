@@ -642,20 +642,25 @@ function UpdateJob() {
     // Clone the containers array to avoid modifying the state directly
     const updatedContainers = [...containers];
 
-    if (
-      Array.isArray(updatedContainers) &&
-      containerIndex >= 0 &&
-      containerIndex < updatedContainers.length &&
-      Array.isArray(updatedContainers[containerIndex].processTableData) &&
-      rowIndex >= 0 &&
-      rowIndex < updatedContainers[containerIndex].processTableData.length
-    ) {
-      // Check if the nested arrays are valid before trying to delete
-      updatedContainers[containerIndex].processTableData.splice(rowIndex, 1);
-    }
+    // Clone the processTableData array for the specified container
+    const updatedProcessTableData = [
+      ...updatedContainers[containerIndex].processTableData,
+    ];
 
-    // Update the state with the modified containers array
-    setContainers(updatedContainers);
+    // Check if the processTableData array is not empty before trying to delete
+    if (updatedProcessTableData.length > 0) {
+      // Remove the row from the process table data for the specified container
+      updatedProcessTableData.splice(rowIndex, 1);
+
+      // Update the container with the modified processTableData array
+      updatedContainers[containerIndex] = {
+        ...updatedContainers[containerIndex],
+        processTableData: updatedProcessTableData,
+      };
+
+      // Update the state with the modified containers array
+      setContainers(updatedContainers);
+    }
   };
 
   const addContainer = () => {

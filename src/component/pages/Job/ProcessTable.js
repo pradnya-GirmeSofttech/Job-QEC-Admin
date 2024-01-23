@@ -29,6 +29,7 @@ export const ProcessTable = ({
   displayToolingTapping,
 }) => {
   const processTableData = data || [];
+
   return (
     <TableContainer>
       {selectedProcessName === "Milling" && (

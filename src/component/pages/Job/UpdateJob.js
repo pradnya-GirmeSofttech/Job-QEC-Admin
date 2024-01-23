@@ -13,6 +13,8 @@ import {
   Select,
   MenuItem,
   Tooltip,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import Dashboard from "../../dashboard/Dashboard";
 import {
@@ -33,6 +35,7 @@ import { editJob, getSingleJob } from "../../../actions/job";
 import { ArrowBack } from "../../../common/BackArrow";
 import { formattedEditDate } from "../../../common/formattedDate";
 import Loader from "../../loader/Loader";
+import MyModal from "../../../utils/Modal";
 const containsText = (text, searchText) =>
   text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 function UpdateJob() {
@@ -40,6 +43,8 @@ function UpdateJob() {
   const { id } = useParams();
   const { loading } = useSelector((state) => state.job);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [containers, setContainers] = useState([
     {
       processName: "", // Add any initial values you need
@@ -155,6 +160,15 @@ function UpdateJob() {
     }));
   }, [containers]);
 
+  const handleOpenModal = (message) => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalMessage("");
+  };
   // ... Rest of your component code
 
   const handleSubmit = async (e) => {
@@ -190,6 +204,85 @@ function UpdateJob() {
 
     // Use the dispatch function here to send the updated data to the backend
     try {
+      const requiredFields = [
+        "soWo",
+
+        "jobName",
+        "poNo",
+        "estimatedtotalCT",
+        "dragNo",
+      ];
+
+      const ProcessrequiredFields = [
+        "process",
+        "description",
+        "machineName",
+        "toolingUsed",
+        // "dc",
+        // "length",
+        // "width",
+        // "feed",
+      ];
+      const newErrors = {};
+
+      requiredFields.forEach((field) => {
+        if (!formData[field]) {
+          newErrors[field] = true;
+        }
+      });
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        //   setProcessTableErrors(processTableErrors);
+        return;
+      }
+
+      const newProcessTableErrors = containers.map((container) => {
+        return container.processTableData.map((data) => {
+          const rowErrors = {};
+
+          ProcessrequiredFields.forEach((field) => {
+            if (!data[field]) {
+              rowErrors[field] = true;
+            }
+          });
+
+          return rowErrors;
+        });
+      });
+      setProcessTableErrors(newProcessTableErrors);
+
+      // Check for processTableErrors
+      const hasProcessTableErrors = newProcessTableErrors.some(
+        (containerErrors) =>
+          containerErrors.some((rowErrors) =>
+            Object.values(rowErrors).some((error) => error)
+          )
+      );
+      console.log("errror", newProcessTableErrors);
+      if (hasProcessTableErrors) {
+        handleOpenModal("Fill all Process Table Data.");
+        return;
+      }
+      const hasEmptyRow = containers.some(
+        (item) => item.processTableData.length === 0
+      );
+
+      if (hasEmptyRow) {
+        handleOpenModal("At least one row in the process table is required.");
+        return;
+      }
+
+      if (containers.length === 0) {
+        handleOpenModal("At least one row in the process table is required.");
+        return;
+      }
+      containers.map((item) => {
+        if (item.processTableData.length === 0) {
+          handleOpenModal("At least one row in the process table is required.");
+          return;
+        }
+      });
       await dispatch(editJob(editFormData));
       navigate(-1);
     } catch (error) {
@@ -712,7 +805,7 @@ function UpdateJob() {
                       }}
                     />
                   </TableCell>
-                  <TableCell align="center">Total CT</TableCell>
+                  <TableCell align="center">Estimated CT</TableCell>
                   <TableCell align="center">
                     <TextField
                       label="Total CT"
@@ -764,6 +857,30 @@ function UpdateJob() {
                 <div>
                   <TableCell>{containerIndex + 1}</TableCell>
                   <TableCell>
+                    <FormControl>
+                      <InputLabel
+                        id="demo-multiple-name-label"
+                        style={{ color: "#1D5393" }}
+                      >
+                        MainProcessName
+                      </InputLabel>
+                      <Select
+                        value={container.processName}
+                        label="processName"
+                        className="input"
+                        size="large"
+                        onChange={(e) =>
+                          handleDropdownChange(e, containerIndex)
+                        }
+                      >
+                        <MenuItem value="Milling">MILLING</MenuItem>
+                        <MenuItem value="Boring">BORING</MenuItem>
+                        <MenuItem value="Drilling">DRILLING</MenuItem>
+                        <MenuItem value="Tapping">TAPPING</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                  {/* <TableCell>
                     <Select
                       value={container.processName}
                       label="processName"
@@ -777,7 +894,7 @@ function UpdateJob() {
                       <MenuItem value="Drilling">DRILLING</MenuItem>
                       <MenuItem value="Tapping">TAPPING</MenuItem>
                     </Select>
-                  </TableCell>
+                  </TableCell> */}
                 </div>
                 <Tooltip title="Delete Container" arrow placement="top">
                   <IconButton size="small" sx={{ marginRight: 3 }}>
@@ -817,9 +934,20 @@ function UpdateJob() {
 
           <Box display={"flex"} marginTop={5}>
             <div>
-              <IconButton size="large" onClick={addContainer}>
+              {/* <IconButton size="large" onClick={addContainer}>
                 <AddCircleIcon color="primary" />
-              </IconButton>
+              </IconButton> */}
+              <Button
+                color="primary"
+                sx={{
+                  backgroundColor: "#1d5393",
+                  color: "#fff",
+                  marginRight: "10px",
+                }}
+                onClick={addContainer}
+              >
+                Add Main Process
+              </Button>
               <Button
                 color="primary"
                 sx={{
@@ -832,6 +960,15 @@ function UpdateJob() {
                 Update
               </Button>
             </div>
+            <MyModal
+              open={isModalOpen} // Use 'open' instead of 'isOpen'
+              onClose={handleCloseModal}
+              title="Error Message" // Set the title you want to display
+              description={modalMessage} // Use 'description' instead of 'message'
+              buttonText="OK" // Set the button text you want to display
+              onButtonClick={handleCloseModal} // Set the button click handler
+            />
+
             {/* <div style={{ marginLeft: "auto" }}>
               <Button
                 color="primary"

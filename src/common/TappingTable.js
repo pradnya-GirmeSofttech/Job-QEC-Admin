@@ -301,9 +301,7 @@ function TappingTable({
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
                         displayToolingTapping.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            {name}
-                          </MenuItem>
+                          <MenuItem value={name}>{name}</MenuItem>
                         ))
                       )}
                     </Select>

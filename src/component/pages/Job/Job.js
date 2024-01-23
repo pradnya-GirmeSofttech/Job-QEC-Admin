@@ -204,7 +204,7 @@ function Job() {
                     <TableRow sx={{ backgroundColor: "#1D5393" }}>
                       <TableCell sx={{ color: "#fff" }}>SO/WO No</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Name</TableCell>
-                      <TableCell sx={{ color: "#fff" }}>Total CT</TableCell>
+                      <TableCell sx={{ color: "#fff" }}>Estimated CT</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Actual CT</TableCell>
                       <TableCell sx={{ color: "#fff" }}>CreatedAt</TableCell>
                       <TableCell sx={{ color: "#fff" }}>Actions</TableCell>

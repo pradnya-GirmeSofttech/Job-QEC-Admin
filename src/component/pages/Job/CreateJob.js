@@ -93,7 +93,6 @@ function CreateJob() {
   const [machineNameSearch, setMachineNameSearch] = useState("");
   const [processSearch, setProcessSearch] = useState("");
   const [toolingSearch, setToolingSearch] = useState("");
-  const [displayToolingMilling, setDisplayToolingMilling] = useState([]);
 
   const containsText = (text, searchText) => {
     const contains = text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
@@ -111,19 +110,17 @@ function CreateJob() {
     () => processList.filter((option) => containsText(option, processSearch)),
     [processSearch]
   );
+  const displayToolingMilling = useMemo(
+    () =>
+      toolListMilling.filter((option) => containsText(option, toolingSearch)),
+    [toolingSearch]
+  );
 
   const displayToolingBoring = useMemo(
     () =>
       toolListBoring.filter((option) => containsText(option, toolingSearch)),
     [toolingSearch]
   );
-
-  useEffect(() => {
-    const filteredTooling = toolListMilling.filter((tool) =>
-      tool.toLowerCase().includes(toolingSearch.toLowerCase())
-    );
-    setDisplayToolingMilling(filteredTooling);
-  }, [toolListMilling, toolingSearch]);
 
   const displayToolingDrilling = useMemo(
     () =>
@@ -640,7 +637,7 @@ function CreateJob() {
                   helperText={errors.poNo ? "This field is required" : ""}
                 />
               </TableCell>
-              <TableCell align="center">Total CT</TableCell>
+              <TableCell align="center">Estimated CT</TableCell>
               <TableCell align="center">
                 <TextField
                   label="Total CT"
@@ -689,7 +686,7 @@ function CreateJob() {
                     id="demo-multiple-name-label"
                     style={{ color: "#1D5393" }}
                   >
-                    ProcessName
+                    MainProcessName
                   </InputLabel>
                   <Select
                     value={container.processName}
@@ -742,12 +739,20 @@ function CreateJob() {
         </TableContainer>
       ))}
 
-      {/* <IconButton size="large" onClick={handleAddRow}>
+      {/* <IconButton size="large" onClick={addContainer}>
         <AddCircleIcon color="primary" />
       </IconButton> */}
-      <IconButton size="large" onClick={addContainer}>
-        <AddCircleIcon color="primary" />
-      </IconButton>
+      <Button
+        onClick={addContainer}
+        color="primary"
+        sx={{
+          backgroundColor: "#1d5393",
+          color: "#fff",
+          margin: 2,
+        }}
+      >
+        Add Main Process
+      </Button>
       <MyModal
         open={isModalOpen} // Use 'open' instead of 'isOpen'
         onClose={handleCloseModal}

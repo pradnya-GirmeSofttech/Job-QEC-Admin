@@ -313,9 +313,7 @@ function DrillingTable({
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
                         displayToolingDrilling.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            {name}
-                          </MenuItem>
+                          <MenuItem value={name}>{name}</MenuItem>
                         ))
                       )}
                     </Select>

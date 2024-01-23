@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -25,8 +25,6 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import ClearIcon from "@mui/icons-material/Clear";
 
-// import { machineData, processList, toolList } from "./Data";
-
 function MillingTable({
   handleDeleteRow,
   processTableData,
@@ -45,7 +43,6 @@ function MillingTable({
   displayToolingMilling,
   handleValidation,
 }) {
-  console.log("displayToolingMilling", displayToolingMilling);
   return (
     <>
       <Table sx={{ minWidth: 1500 }} aria-label="simple table">
@@ -331,9 +328,7 @@ function MillingTable({
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
                         displayToolingMilling.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            {name}
-                          </MenuItem>
+                          <MenuItem value={name}>{name}</MenuItem>
                         ))
                       )}
                     </Select>

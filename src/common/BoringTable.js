@@ -304,9 +304,7 @@ function BoringTable({
                         <MenuItem disabled>No items found</MenuItem>
                       ) : (
                         displayToolingBoring.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            {name}
-                          </MenuItem>
+                          <MenuItem value={name}>{name}</MenuItem>
                         ))
                       )}
                     </Select>

@@ -181,7 +181,7 @@ function BoringTable({
 
                 <TableCell align="center">
                   <TextField
-                    label="tooling Size"
+                    label="Tooling Size"
                     className="fixed-width-input"
                     size="small"
                     name={`toolingSize-${rowIndex}`}

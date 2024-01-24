@@ -58,12 +58,11 @@ const ViewMillingTable = ({ processTableData }) => {
               EST.HRS
             </TableCell>
             <TableCell align="center" sx={{ color: "#fff" }}>
-              Actual CT(min)
-            </TableCell>
-            <TableCell align="center" sx={{ color: "#fff" }}>
               Estimated CT(min)
             </TableCell>
-
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Actual CT(min)
+            </TableCell>
             <TableCell align="center" sx={{ color: "#fff" }}>
               Start Date
             </TableCell>
@@ -131,10 +130,10 @@ const ViewMillingTable = ({ processTableData }) => {
                   {row.estimatedHrs ? row.estimatedHrs : "-"}
                 </TableCell>
                 <TableCell align="center">
-                  {row.estimatedCT ? row.estimatedCT : "-"}
+                  {row.actualCT ? row.actualCT : "-"}
                 </TableCell>
                 <TableCell align="center">
-                  {row.actualCT ? row.actualCT : "-"}
+                  {row.estimatedCT ? row.estimatedCT : "-"}
                 </TableCell>
                 <TableCell align="center">
                   {formattedDate(row.startDate)}

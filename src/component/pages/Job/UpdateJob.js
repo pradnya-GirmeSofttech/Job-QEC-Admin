@@ -276,9 +276,6 @@ function UpdateJob() {
         // nop: 0,
       };
 
-      setMachineNameSearch("");
-      setToolingSearch("");
-      setProcessSearch("");
       // Create a new array with the updated processTableData
       const updatedProcessTableData = [
         ...containerToUpdate.processTableData,

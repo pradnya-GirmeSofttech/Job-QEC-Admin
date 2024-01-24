@@ -439,9 +439,6 @@ function CreateJob() {
       // toolingSize: 0,
     });
 
-    setMachineNameSearch("");
-    setToolingSearch("");
-    setProcessSearch("");
     setContainers(updatedContainers);
 
     setFormData((prevData) => ({

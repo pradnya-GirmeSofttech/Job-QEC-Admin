@@ -267,12 +267,6 @@ function BoringTable({
                         "Boring"
                       )
                     }
-                    // error={processTableErrors[rowIndex]?.length}
-                    // helperText={
-                    //   processTableErrors[rowIndex]?.length
-                    //     ? "This field is required"
-                    //     : ""
-                    // }
                   />
                 </TableCell>
                 <TableCell align="center">

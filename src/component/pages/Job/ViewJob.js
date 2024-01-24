@@ -84,15 +84,29 @@ function ViewJob() {
               component={Paper}
               sx={{ marginTop: 3 }}
             >
-              <Typography
-                sx={{ flex: "1 1 100%", margin: 3 }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
+              <Box
+                sx={{
+                  display: "flex",
+                  margin: 2,
+                  justifyContent: "space-between",
+                }}
               >
-                {containerIndex + 1} {container.processName}
-              </Typography>
-
+                <Typography variant="h6" id="tableTitle" component="div">
+                  {containerIndex + 1} {container.processName}
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  <Typography variant="h6" id="tableTitle" component="div">
+                    Setting Time :
+                  </Typography>
+                  <Typography variant="h6" id="tableTitle" component="div">
+                    {container.setting} {"min"}
+                  </Typography>
+                </Box>
+              </Box>
               <ViewProcessTable
                 key={containerIndex}
                 data={container.processTableData}

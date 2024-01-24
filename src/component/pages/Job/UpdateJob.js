@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -17,15 +17,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import Dashboard from "../../dashboard/Dashboard";
-import {
-  machineData,
-  processList,
-  toolListDrilling,
-  toolListBoring,
-  toolListMilling,
-  toolListTapping,
-} from "../../../common/Data";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
@@ -47,7 +39,8 @@ function UpdateJob() {
   const [modalMessage, setModalMessage] = useState("");
   const [containers, setContainers] = useState([
     {
-      processName: "", // Add any initial values you need
+      processName: "",
+      setting: null, // Add any initial values you need
       processTableData: [],
     },
   ]);
@@ -85,64 +78,13 @@ function UpdateJob() {
       estimatedCT: false,
     })) || []
   );
-  const [machineNameSearch, setMachineNameSearch] = useState("");
-  const [processSearch, setProcessSearch] = useState("");
-  const [toolingSearch, setToolingSearch] = useState("");
 
-  const displayMachineName = useMemo(
-    () =>
-      machineData.filter((option) => containsText(option, machineNameSearch)),
-    [machineNameSearch]
-  );
-
-  const displayedProcess = useMemo(
-    () => processList.filter((option) => containsText(option, processSearch)),
-    [processSearch]
-  );
-
-  const displayToolingBoring = useMemo(
-    () =>
-      toolListBoring.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingMilling = useMemo(
-    () =>
-      toolListMilling.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingDrilling = useMemo(
-    () =>
-      toolListDrilling.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingTapping = useMemo(
-    () =>
-      toolListTapping.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dispatch(getSingleJob(id));
         setFormData(response.payload);
         setContainers(response.payload.processTable);
-        // const initialProcessTableErrors =
-        //   response.payload?.processTable?.map(() => ({
-        //     process: false,
-        //     description: false,
-        //     machineName: false,
-        //     toolingUsed: false,
-        //     dc: false,
-        //     length: false,
-        //     width: false,
-        //     feed: false,
-        //     estimatedCT: false,
-        //   })) || [];
-
-        // setProcessTableErrors(initialProcessTableErrors);
       } catch (error) {
         console.error("Error fetching job data:", error);
       }
@@ -169,30 +111,34 @@ function UpdateJob() {
     setIsModalOpen(false);
     setModalMessage("");
   };
-  // ... Rest of your component code
+
+  const handleValidation = (event, rowIndex) => {
+    const enteredValue = event.target.value;
+    console.log("validation", enteredValue);
+    if (!/^[0-9]*$/.test(enteredValue)) {
+      // If the entered value is not a number, update the error state
+
+      setProcessTableErrors((prevErrors) => ({
+        ...prevErrors,
+        [rowIndex]: {
+          ...prevErrors[rowIndex],
+          toolingSize: "Only numbers are allowed",
+        },
+      }));
+    } else {
+      // If the entered value is a number, clear the error state
+      setProcessTableErrors((prevErrors) => ({
+        ...prevErrors,
+        [rowIndex]: {
+          ...prevErrors[rowIndex],
+          toolingSize: "",
+        },
+      }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Calculate the totalEstimatedCT as you did before
-    // const totalEstimatedCT = containers.reduce((total, container) => {
-    //   const containerEstimatedCT = container.processTableData.reduce(
-    //     (containerTotal, data) => {
-    //       if (!isNaN(data.estimatedCT)) {
-    //         return containerTotal + data.estimatedCT;
-    //       }
-    //       return containerTotal;
-    //     },
-    //     0
-    //   );
-    //   return total + containerEstimatedCT;
-    // }, 0);
-
-    // Update the formData with the new totalEstimatedCT value
-    // setFormData((prevData) => ({
-    //   ...prevData,
-    //   actualtotalCT: totalEstimatedCT, // Update the actualtotalCT here
-    // }));
 
     const editFormData = {
       formData: {
@@ -316,13 +262,7 @@ function UpdateJob() {
         description: "",
         machineName: "",
         toolingUsed: "",
-        // dc: 0,
-        // mr: 0,
-        // length: 0,
-        // width: 0,
-        // feed: 0,
-        // estimatedCT: 0,
-        // actualCT: 0,
+
         startDate: new Date().toISOString().split("T")[0],
         startTime: "",
         endDate: new Date().toISOString().split("T")[0],
@@ -334,9 +274,6 @@ function UpdateJob() {
         endTime1: "",
         userName: "",
         // nop: 0,
-        // fpp: 0,
-        // estimatedHrs: 0,
-        // toolingSize: 0,
       };
 
       setMachineNameSearch("");
@@ -699,11 +636,15 @@ function UpdateJob() {
     }));
   };
 
-  const handleDropdownChange = (e, containerIndex) => {
-    const updatedContainers = [...containers];
-    updatedContainers[containerIndex].processName = e.target.value;
+  const handleDropdownChange = (e, containerIndex, fieldName) => {
+    const updatedContainers = JSON.parse(JSON.stringify(containers));
 
-    // Update the state with the selected process name
+    updatedContainers.forEach((item, index) => {
+      if (index === containerIndex) {
+        item[fieldName] = e.target.value;
+      }
+    });
+
     setContainers(updatedContainers);
   };
 
@@ -813,7 +754,7 @@ function UpdateJob() {
                   <TableCell align="center">Estimated CT</TableCell>
                   <TableCell align="center">
                     <TextField
-                      label="Total CT"
+                      label="Estimated CT"
                       id="outlined-size-small"
                       size="small"
                       name="estimatedtotalCT"
@@ -875,7 +816,7 @@ function UpdateJob() {
                         className="input"
                         size="large"
                         onChange={(e) =>
-                          handleDropdownChange(e, containerIndex)
+                          handleDropdownChange(e, containerIndex, "processName")
                         }
                       >
                         <MenuItem value="Milling">MILLING</MenuItem>
@@ -885,21 +826,22 @@ function UpdateJob() {
                       </Select>
                     </FormControl>
                   </TableCell>
-                  {/* <TableCell>
-                    <Select
-                      value={container.processName}
-                      label="processName"
+                  <TableCell align="center">
+                    Setting for All Process Admin have to add setting Time in
+                    minutes
+                  </TableCell>
+                  <TableCell align="center">
+                    <TextField
+                      label="settingTime"
                       className="input"
                       size="small"
-                      onChange={(e) => handleDropdownChange(e, containerIndex)}
-                      selectedProcessName={container.processName}
-                    >
-                      <MenuItem value="Milling">MILLING</MenuItem>
-                      <MenuItem value="Boring">BORING</MenuItem>
-                      <MenuItem value="Drilling">DRILLING</MenuItem>
-                      <MenuItem value="Tapping">TAPPING</MenuItem>
-                    </Select>
-                  </TableCell> */}
+                      name={`setting-${containerIndex}`}
+                      value={container.setting}
+                      onChange={(e) =>
+                        handleDropdownChange(e, containerIndex, "setting")
+                      }
+                    />
+                  </TableCell>
                 </div>
                 <Tooltip title="Delete Container" arrow placement="top">
                   <IconButton size="small" sx={{ marginRight: 3 }}>
@@ -920,28 +862,13 @@ function UpdateJob() {
                 containerIndex={containerIndex}
                 handleAddRow={handleAddRow}
                 selectedProcessName={container.processName}
-                machineNameSearch={machineNameSearch}
-                setMachineNameSearch={setMachineNameSearch}
-                processSearch={processSearch}
-                setProcessSearch={setProcessSearch}
-                toolingSearch={toolingSearch}
-                setToolingSearch={setToolingSearch}
-                displayMachineName={displayMachineName}
-                displayedProcess={displayedProcess}
-                displayToolingMilling={displayToolingMilling}
-                displayToolingDrilling={displayToolingDrilling}
-                displayToolingBoring={displayToolingBoring}
-                displayToolingTapping={displayToolingTapping}
-                // ... other props you may need
+                handleValidation={handleValidation}
               />
             </TableContainer>
           ))}
 
           <Box display={"flex"} marginTop={5}>
             <div>
-              {/* <IconButton size="large" onClick={addContainer}>
-                <AddCircleIcon color="primary" />
-              </IconButton> */}
               <Button
                 color="primary"
                 sx={{
@@ -973,31 +900,6 @@ function UpdateJob() {
               buttonText="OK" // Set the button text you want to display
               onButtonClick={handleCloseModal} // Set the button click handler
             />
-
-            {/* <div style={{ marginLeft: "auto" }}>
-              <Button
-                color="primary"
-                sx={{
-                  backgroundColor: "#1d5393",
-                  color: "#fff",
-                  marginRight: 2,
-                }}
-                onClick={calculateTotalCT}
-              >
-                CalculateTotal CT
-              </Button>
-              <TextField
-                label="Actual Total CT"
-                id="outlined-size-small"
-                size="small"
-                name="actualtotalCT"
-                value={formData?.actualtotalCT}
-                onChange={handleChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div> */}
           </Box>
         </>
       )}

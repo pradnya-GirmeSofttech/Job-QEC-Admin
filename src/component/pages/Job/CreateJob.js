@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,14 +12,13 @@ import {
   Box,
   Select,
   MenuItem,
-  Typography,
   FormControl,
   InputLabel,
   Tooltip,
 } from "@mui/material";
 import "./ProcessTable.css";
 import Dashboard from "../../dashboard/Dashboard";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+
 import { useNavigate } from "react-router-dom";
 import { ProcessTable } from "./ProcessTable";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -29,14 +28,6 @@ import { ArrowBack } from "../../../common/BackArrow";
 import { handleSelection } from "../../../utils/HandleBreadcrumb";
 import CustomBreadcrumb from "../../../common/CustomBreadcrumb";
 import MyModal from "../../../utils/Modal";
-import {
-  machineData,
-  processList,
-  toolListDrilling,
-  toolListBoring,
-  toolListMilling,
-  toolListTapping,
-} from "../../../common/Data";
 
 function CreateJob() {
   const dispatch = useDispatch();
@@ -44,7 +35,8 @@ function CreateJob() {
   const [selected, setSelected] = useState([]);
   const [containers, setContainers] = useState([
     {
-      processName: "", // Add any initial values you need
+      processName: "",
+      setting: null, // Add any initial values you need
       processTableData: [],
     },
   ]);
@@ -89,50 +81,6 @@ function CreateJob() {
         }));
     });
   });
-
-  const [machineNameSearch, setMachineNameSearch] = useState("");
-  const [processSearch, setProcessSearch] = useState("");
-  const [toolingSearch, setToolingSearch] = useState("");
-
-  const containsText = (text, searchText) => {
-    const contains = text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-
-    return contains;
-  };
-
-  const displayMachineName = useMemo(
-    () =>
-      machineData.filter((option) => containsText(option, machineNameSearch)),
-    [machineNameSearch]
-  );
-
-  const displayedProcess = useMemo(
-    () => processList.filter((option) => containsText(option, processSearch)),
-    [processSearch]
-  );
-  const displayToolingMilling = useMemo(
-    () =>
-      toolListMilling.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingBoring = useMemo(
-    () =>
-      toolListBoring.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingDrilling = useMemo(
-    () =>
-      toolListDrilling.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
-
-  const displayToolingTapping = useMemo(
-    () =>
-      toolListTapping.filter((option) => containsText(option, toolingSearch)),
-    [toolingSearch]
-  );
 
   const handleValidation = (event, rowIndex) => {
     const enteredValue = event.target.value;
@@ -534,10 +482,14 @@ function CreateJob() {
     // Update the state with the modified containers array
     setContainers(updatedContainers);
   };
-  const handleDropdownChange = (e, containerIndex) => {
+  const handleDropdownChange = (e, containerIndex, fieldsName) => {
     const updatedContainers = [...containers];
-    updatedContainers[containerIndex].processName = e.target.value;
-
+    // updatedContainers[containerIndex].processName = e.target.value;
+    updatedContainers.map((item, index) => {
+      if (index === containerIndex) {
+        item[fieldsName] = e.target.value;
+      }
+    });
     // Update the state with the selected process name
     setContainers(updatedContainers);
   };
@@ -640,7 +592,7 @@ function CreateJob() {
               <TableCell align="center">Estimated CT</TableCell>
               <TableCell align="center">
                 <TextField
-                  label="Total CT"
+                  label="Estimated CT"
                   id="outlined-size-small"
                   size="small"
                   name="estimatedtotalCT"
@@ -692,8 +644,10 @@ function CreateJob() {
                     value={container.processName}
                     label="processName"
                     className="input"
-                    size="large"
-                    onChange={(e) => handleDropdownChange(e, containerIndex)}
+                    size="small"
+                    onChange={(e) =>
+                      handleDropdownChange(e, containerIndex, "processName")
+                    }
                   >
                     <MenuItem value="Milling">MILLING</MenuItem>
                     <MenuItem value="Boring">BORING</MenuItem>
@@ -701,6 +655,22 @@ function CreateJob() {
                     <MenuItem value="Tapping">TAPPING</MenuItem>
                   </Select>
                 </FormControl>
+              </TableCell>
+              <TableCell align="center">
+                Setting for All Process Admin have to add setting Time in
+                minutes
+              </TableCell>
+              <TableCell align="center">
+                <TextField
+                  label="settingTime"
+                  className="input"
+                  size="small"
+                  name={`setting-${containerIndex}`}
+                  value={container.setting}
+                  onChange={(e) =>
+                    handleDropdownChange(e, containerIndex, "setting")
+                  }
+                />
               </TableCell>
             </div>
             <Tooltip title="Delete Container" arrow placement="top">
@@ -723,25 +693,10 @@ function CreateJob() {
             handleAddRow={handleAddRow}
             selectedProcessName={container.processName}
             handleValidation={handleValidation}
-            machineNameSearch={machineNameSearch}
-            setMachineNameSearch={setMachineNameSearch}
-            processSearch={processSearch}
-            setProcessSearch={setProcessSearch}
-            toolingSearch={toolingSearch}
-            setToolingSearch={setToolingSearch}
-            displayMachineName={displayMachineName}
-            displayedProcess={displayedProcess}
-            displayToolingMilling={displayToolingMilling}
-            displayToolingDrilling={displayToolingDrilling}
-            displayToolingBoring={displayToolingBoring}
-            displayToolingTapping={displayToolingTapping}
           />
         </TableContainer>
       ))}
 
-      {/* <IconButton size="large" onClick={addContainer}>
-        <AddCircleIcon color="primary" />
-      </IconButton> */}
       <Button
         onClick={addContainer}
         color="primary"

@@ -1136,9 +1136,7 @@ export const processList = [
   "Marking",
   "Finishing Operations (Dbr/Cln/Hand Tapping)",
   "Marking and Hand Drilling",
-  "जॉबचा प्रोसेस चार्ट बनविण्यापूर्वी त्याच्या शक्य त्या साईजेस चेक करून घेणे",
-  "जॉब लोड करण्यापूर्वी ड्रॉईंग आणि प्रोसेस चार्ट प्रोडक्शन इन्चार्जने सुपरवायजरला समजावून सांगणे",
-  "जॉब लोड करण्यापूर्वी ड्रॉईंग आणि प्रोसेस चार्ट सुपरवायजरने मशीन ऑपरेटरला समजावून सांगणे",
+
   "MACHINE CLEAN & UNWANTED MATERIAL RETURN",
   "ALL OPERATIONS DONE",
   "ALL SIZES CHECKED",

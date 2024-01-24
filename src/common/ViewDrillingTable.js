@@ -53,11 +53,12 @@ function ViewDrillingTable({ processTableData }) {
               EST.HRS
             </TableCell>
             <TableCell align="center" sx={{ color: "#fff" }}>
-              Estimated CT(min)
-            </TableCell>
-            <TableCell align="center" sx={{ color: "#fff" }}>
               Actual CT(min)
             </TableCell>
+            <TableCell align="center" sx={{ color: "#fff" }}>
+              Estimated CT(min)
+            </TableCell>
+
             <TableCell align="center" sx={{ color: "#fff" }}>
               Start Date
             </TableCell>

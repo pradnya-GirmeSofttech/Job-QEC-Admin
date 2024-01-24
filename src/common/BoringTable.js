@@ -381,7 +381,7 @@ function BoringTable({
                     size="small"
                     name={`actualCT-${rowIndex}`}
                     value={row.actualCT}
-                    disabled
+                    // disabled
                     InputLabelProps={{
                       shrink: true,
                     }}

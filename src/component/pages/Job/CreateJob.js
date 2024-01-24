@@ -693,7 +693,6 @@ function CreateJob() {
           />
         </TableContainer>
       ))}
-
       <Button
         onClick={addContainer}
         color="primary"
@@ -701,10 +700,17 @@ function CreateJob() {
           backgroundColor: "#1d5393",
           color: "#fff",
           margin: 2,
+          "&:hover": {
+            backgroundColor: "#245BA1", // Adjust the color for hover effect
+          },
+          "&:active": {
+            backgroundColor: "#1d5393", // Keep the same color as the initial state
+          },
         }}
       >
         Add Main Process
       </Button>
+
       <MyModal
         open={isModalOpen} // Use 'open' instead of 'isOpen'
         onClose={handleCloseModal}
@@ -719,6 +725,12 @@ function CreateJob() {
         sx={{
           backgroundColor: "#1d5393",
           color: "#fff",
+          "&:hover": {
+            backgroundColor: "#245BA1", // Adjust the color for hover effect
+          },
+          "&:active": {
+            backgroundColor: "#1d5393", // Keep the same color as the initial state
+          },
         }}
         onClick={handleSubmit}
       >

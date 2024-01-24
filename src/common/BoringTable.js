@@ -415,6 +415,12 @@ function BoringTable({
               color: "#fff",
               width: 100,
               margin: 3,
+              "&:hover": {
+                backgroundColor: "#245BA1", // Adjust the color for hover effect
+              },
+              "&:active": {
+                backgroundColor: "#1d5393", // Keep the same color as the initial state
+              },
             }}
             onClick={() => handleAddRow(containerIndex)}
           >

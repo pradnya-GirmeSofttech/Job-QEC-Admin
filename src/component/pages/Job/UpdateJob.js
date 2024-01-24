@@ -867,13 +867,19 @@ function UpdateJob() {
           <Box display={"flex"} marginTop={5}>
             <div>
               <Button
+                onClick={addContainer}
                 color="primary"
                 sx={{
                   backgroundColor: "#1d5393",
                   color: "#fff",
-                  marginRight: "10px",
+                  margin: 2,
+                  "&:hover": {
+                    backgroundColor: "#245BA1", // Adjust the color for hover effect
+                  },
+                  "&:active": {
+                    backgroundColor: "#1d5393", // Keep the same color as the initial state
+                  },
                 }}
-                onClick={addContainer}
               >
                 Add Main Process
               </Button>
@@ -883,6 +889,12 @@ function UpdateJob() {
                   backgroundColor: "#1d5393",
                   color: "#fff",
                   marginRight: "10px",
+                  "&:hover": {
+                    backgroundColor: "#245BA1", // Adjust the color for hover effect
+                  },
+                  "&:active": {
+                    backgroundColor: "#1d5393", // Keep the same color as the initial state
+                  },
                 }}
                 onClick={handleSubmit}
               >

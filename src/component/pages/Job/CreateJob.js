@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -33,23 +33,30 @@ function CreateJob() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
-  const [containers, setContainers] = useState([
-    {
-      processName: "",
-      setting: null, // Add any initial values you need
-      processTableData: [],
-    },
-  ]);
-  const [formData, setFormData] = useState({
-    soWo: "",
-    prodOrderNo: "",
-    woDate: new Date().toISOString().split("T")[0],
-    jobName: "",
-    poNo: "",
-    estimatedtotalCT: null,
-    actualtotalCT: 0,
-    dragNo: "",
-    processTable: containers,
+  const [containers, setContainers] = useState(() => {
+    const savedContainers = JSON.parse(localStorage.getItem('containers'));
+    return savedContainers || [
+      {
+        processName: "",
+        setting: null, // Add any initial values you need
+        processTableData: [],
+      },
+    ];
+  });
+
+  const [formData, setFormData] = useState(() => {
+    const savedFormData = JSON.parse(localStorage.getItem('formData'));
+    return savedFormData || {
+      soWo: "",
+      prodOrderNo: "",
+      woDate: new Date().toISOString().split("T")[0],
+      jobName: "",
+      poNo: "",
+      estimatedtotalCT: null,
+      actualtotalCT: 0,
+      dragNo: "",
+      processTable: containers,
+    };
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -81,6 +88,25 @@ function CreateJob() {
         }));
     });
   });
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      localStorage.removeItem('formData');
+      localStorage.removeItem('containers');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+ useEffect(() => {
+    localStorage.setItem('formData', JSON.stringify(formData));
+    localStorage.setItem('containers', JSON.stringify(containers));
+  }, [formData, containers]);
 
   const handleValidation = (event, rowIndex) => {
     const enteredValue = event.target.value;
@@ -119,7 +145,7 @@ function CreateJob() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const totalEstimatedCT = containers.reduce((total, container) => {
       const containerEstimatedCT = container.processTableData.reduce(
         (containerTotal, data) => {
@@ -222,7 +248,23 @@ function CreateJob() {
     });
 
     dispatch(createJob(formData));
-    navigate(-1); // This will navigate back to the previous screen
+    navigate(-1); 
+    setFormData({
+      soWo: "",
+      prodOrderNo: "",
+      woDate: new Date().toISOString().split("T")[0],
+      jobName: "",
+      poNo: "",
+      estimatedtotalCT: null,
+      actualtotalCT: 0,
+      dragNo: "",
+      processTable: [], // Reset process table data
+    });
+    setContainers([]);
+
+    // Clear localStorage after saving job
+    localStorage.removeItem('formData');
+    localStorage.removeItem('containers');
   };
   console.log(processTableErrors);
 

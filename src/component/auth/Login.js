@@ -14,39 +14,20 @@ import {
   InputAdornment,
   Divider,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import loginImg from "../../utils/logo.png";
-import Loader from "../loader/Loader";
 
 const Login = () => {
-  //  const dispatch = useDispatch();
-  //   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
-  const error = useSelector((state) => state.auth.error);
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const login = async () => {
-  //   try {
-  //     const res = await axios.post(
-  //       "https://job-qec.onrender.com/api/v1/login",
-  //       {
-  //         email: "pratiksha.d@girmesofttech.com",
-  //         password: "1234567890",
-  //       }
-  //     );
-
-  //     console.log(res.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
-    // login();
   }, [isAuthenticated, navigate]);
 
   const [formData, setFormData] = useState({
@@ -70,7 +51,6 @@ const Login = () => {
       });
       return;
     }
-
     dispatch(loginUser(formData));
   };
 
@@ -82,6 +62,7 @@ const Login = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(formData.email);
   };
+
   return (
     <>
       <Container
@@ -127,9 +108,6 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               error={formData.email && !isEmailValid()}
-              // InputLabelProps={{
-              //   shrink: true,
-              // }}
               helperText={
                 formData.email && !isEmailValid()
                   ? "Invalid email format"
@@ -146,9 +124,6 @@ const Login = () => {
               type={formData.showPassword ? "text" : "password"}
               value={formData.password}
               onChange={handleChange}
-              // InputLabelProps={{
-              //   shrink: true,
-              // }}
               error={formData.password && formData.password.length < 8}
               helperText={
                 formData.password && formData.password.length < 8
@@ -162,11 +137,7 @@ const Login = () => {
                       aria-label="toggle password visibility"
                       onClick={handleShowPassword}
                     >
-                      {formData.showPassword ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
+                      {formData.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -185,9 +156,14 @@ const Login = () => {
               variant="contained"
               m={2}
               fullWidth
-              sx={{ backgroundColor: "#1d5393" }}
+              sx={{ backgroundColor: "#1d5393", position: "relative" }}
+              disabled={loading}
             >
-              Login
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
         </Card>

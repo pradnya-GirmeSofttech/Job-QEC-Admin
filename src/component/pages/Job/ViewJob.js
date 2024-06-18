@@ -24,6 +24,7 @@ import { ArrowBack } from "../../../common/BackArrow";
 import Loader from "../../loader/Loader";
 import { ProcessTable } from "./ProcessTable";
 import { ViewProcessTable } from "./ViewProcessTable";
+import PrintIcon from "@mui/icons-material/Print";
 
 function ViewJob() {
   const { id } = useParams();
@@ -35,6 +36,17 @@ function ViewJob() {
     dispatch(getSingleJob(id));
   }, [dispatch, id]);
 
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  // Function to handle the print action
+  const handlePrint = () => {
+    setIsPrinting(true);
+    setTimeout(() => {
+      window.print();
+      setIsPrinting(false);
+    }, 500); // Delay printing for smoother transition
+  };
+
   return (
     <Dashboard>
       {loading ? (
@@ -44,6 +56,13 @@ function ViewJob() {
           <Box display={"flex"}>
             <ArrowBack />
             <h2>Job Details</h2>
+            {/* {!isPrinting && ( // Render the print button only if not printing
+              <Tooltip title="Print">
+                <IconButton onClick={handlePrint}>
+                  <PrintIcon />
+                </IconButton>
+              </Tooltip>
+            )} */}
           </Box>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -82,31 +101,24 @@ function ViewJob() {
             <TableContainer
               key={containerIndex}
               component={Paper}
-              sx={{ marginTop: 3 }}
+              sx={{
+                marginTop: 3,
+                "@media print": {
+                  overflow: "hidden", // Hide scrollbars when printing
+                },
+              }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  margin: 2,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="h6" id="tableTitle" component="div">
-                  {containerIndex + 1} {container.processName}
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                  }}
-                >
-                  <Typography variant="h6" id="tableTitle" component="div">
-                    Setting Time :
-                  </Typography>
-                  <Typography variant="h6" id="tableTitle" component="div">
-                    {container.setting} {"min"}
-                  </Typography>
-                </Box>
-              </Box>
+              <TableRow sx={{ display: "flex" }}>
+                <div sx={{ justifyContent: "space-between" }}>
+                  <TableCell>{containerIndex + 1}</TableCell>
+                  <TableCell>{container.processName}</TableCell>
+                  <TableCell>
+                    Setting for All Process Admin have to add setting Time in
+                    minutes
+                  </TableCell>
+                  <TableCell align="center">{container.setting}</TableCell>
+                </div>
+              </TableRow>
               <ViewProcessTable
                 key={containerIndex}
                 data={container.processTableData}

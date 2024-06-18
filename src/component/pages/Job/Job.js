@@ -23,7 +23,12 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
-import { deleteJob, generatePDF, getAllJob } from "../../../actions/job";
+import {
+  copyOfJob,
+  deleteJob,
+  generatePDF,
+  getAllJob,
+} from "../../../actions/job";
 import { useDispatch, useSelector } from "react-redux";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Loader from "../../loader/Loader";
@@ -40,7 +45,9 @@ function Job() {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  // const [selectedId, setSelectedId] = useState(null);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
+  const [copyCount, setCopyCount] = useState(1);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -77,6 +84,7 @@ function Job() {
   const handleOpen = (id) => {
     setSelectedId(id);
     setOpen(true);
+    handleMenuClose();
   };
   const handleClose = () => {
     setSelectedId(null);
@@ -100,6 +108,18 @@ function Job() {
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value); // Update the search query state
+  };
+  const handleCopyClose = () => {
+    console.log("close here");
+    setOpenCopyModal(false); // Close the copy modal as well
+    handleMenuClose();
+  };
+
+  const handleCopy = () => {
+    if (selectedId) {
+      dispatch(copyOfJob({ id: selectedId, count: copyCount }));
+      handleCopyClose();
+    }
   };
 
   const downloadPDF = (id) => {
@@ -262,6 +282,15 @@ function Job() {
                             <MenuItem onClick={() => downloadPDF(job._id)}>
                               Download PDF
                             </MenuItem>
+                            <MenuItem
+                              onClick={() => {
+                                setSelectedId(job._id);
+                                setOpenCopyModal(true);
+                                handleMenuClose();
+                              }}
+                            >
+                              Copy
+                            </MenuItem>
                           </Menu>
                         </TableCell>
                       </TableRow>
@@ -327,6 +356,73 @@ function Job() {
                   </Box>
                 </Box>
               </Modal>
+              <Modal
+                open={openCopyModal}
+                onClose={handleCopyClose}
+                aria-labelledby="copy-modal-title"
+                aria-describedby="copy-modal-description"
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: 400,
+                    bgcolor: "background.paper",
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+                  }}
+                >
+                  <Typography variant="h6" gutterBottom>
+                    Copy Job
+                  </Typography>
+                  <TextField
+                    label="Number of Copies"
+                    type="number"
+                    value={copyCount}
+                    onChange={(e) => setCopyCount(parseInt(e.target.value))}
+                    inputProps={{ min: 1 }}
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      onClick={handleCopyClose}
+                      sx={{
+                        backgroundColor: "#1d5393",
+                        color: "#fff",
+                        marginRight: 2,
+                        "&:hover": {
+                          backgroundColor: "#245BA1",
+                        },
+                        "&:active": {
+                          backgroundColor: "#1d5393",
+                        },
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleCopy}
+                      sx={{
+                        backgroundColor: "#1d5393",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: "#245BA1",
+                        },
+                        "&:active": {
+                          backgroundColor: "#1d5393",
+                        },
+                      }}
+                    >
+                      Copy
+                    </Button>
+                  </Box>
+                </Box>
+              </Modal>
+
               {!searchQuery && (
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, 50]}

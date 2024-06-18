@@ -9,6 +9,7 @@ import {
   TextField,
   IconButton,
   Button,
+  Typography,
   Box,
   Select,
   MenuItem,
@@ -116,7 +117,10 @@ function CreateJob() {
     setIsModalOpen(false);
     setModalMessage("");
   };
-
+  // const handlePrint = () => {
+  //   // Use the window.print() method to trigger the browser's print dialog
+  //   window.print();
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -654,8 +658,17 @@ function CreateJob() {
                 </FormControl>
               </TableCell>
               <TableCell align="center">
-                Setting for All Process Admin have to add setting Time in
-                minutes
+                <Typography
+                  variant="body2"
+                  style={{
+                    color: "#6B7280",
+                    width: 200,
+                    alignSelf: "flex-end",
+                  }}
+                >
+                  Setting for All Process Admin have to add setting time in
+                  minutes
+                </Typography>
               </TableCell>
               <TableCell align="center">
                 <TextField
@@ -736,6 +749,22 @@ function CreateJob() {
       >
         Save
       </Button>
+      {/* <Button
+        color="primary"
+        sx={{
+          backgroundColor: "#1d5393",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#245BA1",
+          },
+          "&:active": {
+            backgroundColor: "#1d5393",
+          },
+        }}
+        onClick={handlePrint}
+      >
+        Print
+      </Button> */}
     </Dashboard>
   );
 }

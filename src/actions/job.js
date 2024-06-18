@@ -139,3 +139,24 @@ export const generatePDF = createAsyncThunk("jobs/generatePDF", async (id) => {
     };
   }
 });
+
+export const copyOfJob = createAsyncThunk(
+  "jobs/copyJob",
+  async ({ id, count }) => {
+    console.log("pppid", id, count);
+    try {
+      const response = await api.post(`/copyJob/${id}`, { count }); // Pass count in the request body
+      console.log("ppp", response);
+      return response.data.jobs; // Return the duplicated jobs
+    } catch (error) {
+      console.error(
+        "Error generating:",
+        error.response ? error.response.data : error.message
+      );
+      return {
+        success: false,
+        error: error.response ? error.response.data : error.message,
+      };
+    }
+  }
+);

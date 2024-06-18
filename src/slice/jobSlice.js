@@ -6,6 +6,7 @@ import {
   editJob,
   getAllJob,
   getSingleJob,
+  copyOfJob,
 } from "../actions/job"; // Import your async actions
 
 const initialState = {
@@ -87,6 +88,27 @@ const jobSlice = createSlice({
         state.jobs[index] = action.payload.data;
       })
       .addCase(editJob.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(copyOfJob.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(copyOfJob.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Fulfilled action payload", action.payload);
+        if (Array.isArray(action.payload)) {
+          state.jobs = [...state.jobs, ...action.payload];
+        } else {
+          console.error(
+            "Expected payload to be an array, but received:",
+            action
+          );
+          state.error = "Unexpected payload structure";
+        }
+      })
+      .addCase(copyOfJob.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

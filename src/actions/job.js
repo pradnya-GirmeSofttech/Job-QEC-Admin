@@ -146,8 +146,10 @@ export const copyOfJob = createAsyncThunk(
     console.log("pppid", id, count);
     try {
       const response = await api.post(`/copyJob/${id}`, { count }); // Pass count in the request body
-      console.log("ppp", response);
-      return response.data.jobs; // Return the duplicated jobs
+      
+      const job = response.data.Jobs;
+      console.log("ppp", response.data.Jobs);
+      return job; // Return the duplicated jobs
     } catch (error) {
       console.error(
         "Error generating:",

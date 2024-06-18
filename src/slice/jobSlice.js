@@ -97,7 +97,7 @@ const jobSlice = createSlice({
       })
       .addCase(copyOfJob.fulfilled, (state, action) => {
         state.loading = false;
-        console.log("Fulfilled action payload", action.payload);
+     
         if (Array.isArray(action.payload)) {
           state.jobs = [...state.jobs, ...action.payload];
         } else {

@@ -27,6 +27,19 @@ function MillingTable({
   handleValidation,
 }) {
   console.log("process search", processSearch);
+  // const filterOptions = (options, { inputValue }) => {
+  //   const filteredOptions = options.filter(option =>
+  //     option.toLowerCase().includes(inputValue.toLowerCase())
+  //   );
+    
+  //   filteredOptions.sort((a, b) => {
+  //     if (a.toLowerCase().startsWith(inputValue.toLowerCase())) return -1;
+  //     if (b.toLowerCase().startsWith(inputValue.toLowerCase())) return 1;
+  //     return 0;
+  //   });
+
+  //   return filteredOptions;
+  // };
   return (
     <>
       <Table sx={{ minWidth: 1500 }} aria-label="simple table">
@@ -154,7 +167,8 @@ function MillingTable({
                     className="input"
                     id={`toolingUsed-${rowIndex}`}
                     options={toolListMilling}
-                    getOptionLabel={(option) => option}
+                    getOptionLabel={(option) =>option }
+                    // filterOptions={filterOptions}
                     value={row.toolingUsed}
                     onChange={(e, newValue) =>
                       handleTextFieldChange(
